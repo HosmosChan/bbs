@@ -31,7 +31,6 @@ public class ScheduledTask {
 	@Scheduled(cron = "0/10 * * * * ?")
 	    public void updata() throws ParseException{
 			int daytime=22;
-			System.err.println("更新成功 时间为"+new Date());
 			roleserviceImpl.checkBestActivityUser(daytime);
 		}
 		
