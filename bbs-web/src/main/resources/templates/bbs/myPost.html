@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>我的帖子</title>
+    <link rel="stylesheet" href="/bbs/css/reset.css"/>
+    <link rel="stylesheet" href="/bbs/css/homeHead.css"/>
+    <link rel="stylesheet" href="/bbs/css/homePublic.css"/>
+    <link rel="stylesheet" href="/bbs/css/public.css"/>
+    <link rel="stylesheet" href="/bbs/css/myWrite.css"/>
+    <script type="text/javascript" th:src="@{/js/jquery-3.3.1.min.js}"></script>
+   	<script type="text/javascript" th:src="@{/js/person/person.js}"></script>
+	<script type="text/javascript" th:src="@{/js/layer.js}"></script>
+    <!-- 分页部分的样式 -->
+	<link href="/bbs/css/bootstrap.min.css" rel="stylesheet">
+    <script src="/bbs/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="/bbs/js/bootstrap-paginator.js" type="text/javascript"></script>
+</head>
+<body>
+<header class="ltHead">
+    <div class="ltHead_cen">
+        <a href=""><img src="img/logo.png" alt="" class="headPic1"/></a>
+        <ul class="headNav">
+            <li><a href="/post/index">首页</a></li>
+            <tr th:each="module : ${session.moduleList}">
+                <li><a th:href="@{/post/moudelPost(code=${module.code})}" th:text="${module.moduleName}"></a></li>
+            </tr>
+        </ul>
+        <!--未登入开始-->
+        <div th:if="${session.user1==null}">
+            <div class="ltForm appear">
+                <a href=""><img src="img/indexForm_bg.png" alt=""
+                                class="headPic2"/></a>
+                <ul>
+                    <li><a th:href="@{/user1/demo}">登录</a></li>
+                    <li><a th:href="@{/user1/UserRegister}">注册</a></li>
+                </ul>
+            </div>
+        </div>
+        <div th:if="${session.user1!=null}">
+            <div class="lt_login appear" th:if="${session.user1.userName != null}">
+                <ul>
+                    <li><a href="/index/home" class="navMe" th:text="${session.user1.userName}"></a></li>
+                    <li><a th:href="@{/user1/logOut}">退出</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</header>
+<div class="homeCen">
+    <div class="homeCen_left">
+        <ul th:if="${session.user1!=null}">
+            <li><a href="/index/home">我的主页</a></li>
+            <li><a href="/role/mangerUser">基本设置</a></li>
+            <li class="on"><a href="/post/myPost">我的贴子</a></li>
+            <li th:if="${session.user1.roleName =='版主'}"><a href="javascript:void(0)" id="moduleMessage">版块信息</a></li>
+            <li th:if="${session.user1.roleName =='版主'}"><a href="/module/ModuleData">版块数据</a></li>
+            <li th:if="${session.user1.roleName =='管理员'}"><a href="/role/login" target="_blank">后台数据管理</a></li>
+        </ul>
+    </div>
+    <div class="homeCen_right">
+        <div class="baseHead">
+            <ul>
+                <li><a href="" class="on">我的发帖</a></li>
+                <!--<li><a href="">我收藏的贴</a></li>-->
+            </ul>
+        </div>
+        <div class="myWrite_con" id="myPosts">
+            <div class="writeHead">
+                <div class="writeHead1">帖子标题</div>
+                <div class="writeHead2">发表时间</div>
+                <div class="writeHead3">浏览量</div>
+                <div class="writeHead4">操作</div>
+            </div>
+            <!--    列表形式展示出个人的所有帖子 -->
+            <tr th:each="post : ${page.result}">
+                <div class="writeFoot">
+                    <div class="writeFoot1"><p><a th:href="'/post/getPostByCode/?code='+${post.code}" th:text="${post.title}" target="_blank"></a></p></div>
+                    <div class="writeFoot2" th:text="${#dates.format(post.createDate,'yyyy-MM-dd HH:mm:ss')}"></div>
+                    <div class="writeFoot3" th:text="${post.readingAmount}"></div>
+                    <div class="writeFoot4"><a href="javascript:void(0)"  th:onclick="'deletePost(`'+${post.code}+'`)'">删除</a></div>
+                </div>
+            </tr>
+        </div>
+        <div class="indexFooter">
+            <!--   分页 -->
+            <div class="container">
+                <div>
+                    <ul id="page"></ul>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+</body>
+<script type="text/javascript">
+    $(function () {
+        var account = [[${session.user1.account}]];
+        var currentPage = [[${page.pageNum}]];
+        var totalPages = [[${page.pages}]];
+        $("#page").bootstrapPaginator({
+            bootstrapMajorVersion: 3, //对应的bootstrap版本
+            currentPage: currentPage, //当前页数
+            numberOfPages: 8, //每次显示页数
+            totalPages: totalPages, //总页数
+            shouldShowPage: true,//是否显示该按钮
+            useBootstrapTooltip: true,
+            //点击事件
+            onPageClicked: function (event, originalEvent, type, page) {
+
+                $.ajax({
+                    type: "POST",
+                    data: {
+                        "account": account,
+                        "currentPage": page
+                    },
+                    dataType: "json",
+                    url: "/post/myPostforJson",
+                    async: true,
+                    success: function (data) {
+                        var strHtml = `
+                            <div class="writeHead">
+        		                <div class="writeHead1">帖子标题</div>
+        		                <div class="writeHead2">发表时间</div>
+        		                <div class="writeHead3">浏览量</div>
+        		                <div class="writeHead4">操作</div>
+        		            </div>
+        		            <div class="writeFoot">
+                        `;
+                        for (var i = 0; i < data.length; i++) {
+                            strHtml += `<div class="writeFoot1"><p><a href="/post/getPostByCode?code=` + data[i]['code'] + `" target="_blank">` + data[i]['title'] + `</a></p></div>
+         	                <div class="writeFoot2" pattern="yyyy-MM-dd HH:mm:ss">` + data[i]['createDate'] + `</div>
+         	                <div class="writeFoot3" >` + data[i]['readingAmount'] + `</div>
+         	                <div class="writeFoot4"><a href="javascript:void(0)"  onclick="deletePost('` + data[i]["code"] + `')">删除</a></div>`
+                        }
+                        strHtml + `</div>`;
+                        $("#myPosts").html(strHtml);
+                    },
+                    error: function (error) {
+                        alert("错误了！！！" + page);
+                    }
+                });
+            }
+        });
+
+    });
+
+   /*
+   *  autor:wangshixu 2018/7/23/17:22
+   *	此处有一个重大bug，后台在执行成功的情况下，还是会调转到error。重大疑问，苦恼。
+   * */
+   function deletePost(postCode) {
+       $.ajax({
+           type: "POST",
+           data: {
+               "postCode": postCode
+           },
+           dataType: "json",
+           url: "/complain/deletePost",
+           async: false,
+           success: function (data) {
+               alert("删帖成功1！！"+data);
+               window.location.reload();
+           },
+           error: function () {
+               alert("删帖成功2");
+               window.location.reload();
+           }
+       });
+   }; 
+</script>
+
+</html>

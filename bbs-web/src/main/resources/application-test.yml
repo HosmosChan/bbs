@@ -1,0 +1,18 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://10.243.3.46:3306/bbs?characterEncoding=utf-8
+    username: root
+    password: 111111
+    type: com.alibaba.druid.pool.DruidDataSource
+mybatis:
+  type-aliases-package: com.bbs.domain
+imagepath: /root/bbs/img
+pagehelper:
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSql
+logging:
+    level:
+      com.bbs.post.mapper: error

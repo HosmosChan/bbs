@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper  
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="com.bbs.data.mapper.DataMapper">
+<!-- 查找 -->
+<!--     根据模块Id和find进行模糊查找返回报表数据 -->
+    <select id="listData" parameterType="String" resultType="Data">
+        select * from bbs.bbs_sumdata_table WHERE 1=1
+       and day like CONCAT('%', #{date},'%') and moduleId=#{moduleId}
+    </select>
+<!--     根据模块Id和具体时间返回报表数据 -->
+	<select id="getData" parameterType="String" resultType="Data">
+        select * from bbs.bbs_sumdata_table WHERE day=#{time} and moduleId=#{moduleId}
+    </select>
+<!--     根据模块Id和时间返回所有用户的发帖和登录记录 -->
+    <select id="getUserByModuleId" parameterType="java.util.Map" resultType="UserLiveness">
+        select * from bbs.bbs_user_liveness WHERE loginModuleId=#{code} and loginDate=#{selectdate}
+    </select>
+<!--     获得当天用户在某模块的发贴和登录纪录 -->
+     <select id="getLoginUser" parameterType="java.util.Map" resultType="UserLiveness">
+        select * from bbs.bbs_user_liveness WHERE userTid=#{userId} and loginDate=#{date} and loginModuleId=#{loginModuleId}
+    </select>
+<!-- 更新 -->
+<!--     根据报表数据来更新当前行数据 -->
+ <update id="updateData" parameterType="Data" >
+        update bbs.bbs_sumdata_table
+        <trim prefix="set" suffixOverrides=','>
+            <if test="tid!=null">tid=#{tid},</if>  
+            <if test="sumPost!=null">sumPost=#{sumPost},</if>
+             <if test="sumPraise!=null">sumPraise=#{sumPraise},</if>
+            <if test="maxPraisePostName!=null">maxPraisePostName=#{maxPraisePostName},</if>
+            <if test="bestActiviteUsername!=null">bestActiviteUsername=#{bestActiviteUsername},</if>
+            <if test="createDate!=null">createDate=#{createDate},</if>
+            <if test="createBy!=null">createBy=#{createBy},</if>
+            <if test="modifyDate!=null">modifyDate=#{modifyDate},</if>
+            <if test="modifyBy!=null">modifyBy=#{modifyBy},</if>
+        </trim>
+           where day=#{day} and moduleId=#{moduleId}
+    </update>
+
+<!--     更新最佳活跃用户 -->
+    <update id="updatesumdatebyActivityUsername" parameterType="java.util.Map" >
+		update bbs.bbs_sumdata_table
+		set bestActiviteUsername=#{bestActivityname}
+		where day=#{date} and moduleId=#{moduleId}
+    </update>
+<!--     根据用户活跃度数据来更新当前行数据 -->
+     <update id="updateUserLiveness" parameterType="UserLiveness" >
+        update bbs.bbs_user_liveness
+        <trim prefix="set" suffixOverrides=','>
+            <if test="tid!=null">tid=#{tid},</if>
+            <if test="loginTimes!=null">loginTimes=#{loginTimes},</if>
+            <if test="publishTimes!=null">publishTimes=#{publishTimes},</if>
+            <if test="userLiveness!=null">userLiveness=#{userLiveness},</if>
+            <if test="createDate!=null">createDate=#{createDate},</if>
+            <if test="createBy!=null">createBy=#{createBy},</if>
+            <if test="modifyDate!=null">modifyDate=#{modifyDate},</if>
+            <if test="modifyBy!=null">modifyBy=#{modifyBy},</if>
+        </trim>
+           where loginDate=#{loginDate} and loginModuleId=#{loginModuleId} and userTid=#{userTid}
+    </update>
+<!-- 插入 -->
+<!-- 保存用户活跃度 -->
+    <insert id="saveUserLiveness" parameterType="UserLiveness"> 
+        insert into bbs.bbs_user_liveness(userTid,loginDate,loginTimes,loginModuleId,publishTimes,userLiveness,createDate,CreateBy,modifyDate,modifyBy)
+        values (#{userTid},#{loginDate},#{loginTimes},#{loginModuleId},#{publishTimes},#{userLiveness},#{createDate},#{createBy},#{modifyDate},#{modifyBy})
+    </insert>
+<!--     为所有模块创建当天的报表数据行 -->
+    <insert id="autoCreateNewData" parameterType="Data"> 
+        insert into bbs.bbs_sumdata_table(day,moduleId,sumPost,sumPraise,maxPraisePostName,bestActiviteUsername,createDate,CreateBy,modifyDate,modifyBy)
+        values (#{day},#{moduleId},#{sumPost},#{sumPraise},#{maxPraisePostName},#{bestActiviteUsername},#{createDate},#{createBy},#{modifyDate},#{modifyBy})
+    </insert>
+<!-- 删除 -->
+<!--     //根据名字删除帖子类（建立在帖子类名唯一性的基础上） -->
+    <delete id="deletepostclass" parameterType="String">
+       delete from bbs.bbs_post_class where className=#{name}
+    </delete>
+</mapper>

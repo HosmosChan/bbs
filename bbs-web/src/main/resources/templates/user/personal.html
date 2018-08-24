@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title>个人主页</title>
+	<link rel="stylesheet" type="text/css" href="/css/personal/main.css" />
+	<script type="text/javascript" th:src="@{/js/jquery-3.3.1.min.js}"></script>
+	<script type="text/javascript" th:src="@{/js/layer.js}"></script>
+	<script type="text/javascript" th:src="@{/js/person/person.js}"></script>
+	<script type="text/javascript" th:src="@{/js/person/person2.js}"></script>
+<!--
+	<script type="text/javascript" th:src="@{/js/person/personSearching.js}"></script>
+-->
+	<style type="text/css">
+
+	</style>
+</head>
+<body>
+<div id="top_nav_banner" class="tap_nav_banner_bbs">
+	<div id="top_nav_wrap">
+		<div class="clearfix" id="top_nav">
+			<div class="top-nav-logo"></div>
+			<a href="#"></a>
+		</div>
+	</div>
+</div>
+<!--&lt;!&ndash;
+ - 搜索帖子
+ - author：chenhuayang 2018/7/23
+ &ndash;&gt;
+<div id="searching-post-result" class="searching-post-result">
+	<label id="searching-post-result-name">检索：</label>
+	<input  name="searchingDetails" id="searchingDetails" type="text" value="请输入检索内容" style="color:#9D9D9D;"
+			onfocus= "if(this.value == '请输入检索内容') { this.value = ''; this.style.color='#000000';}"
+			onblur = "if(this.value =='') { this.value = '请输入检索内容'; this.style.color='#9D9D9D';} " >
+	<input  name="searchingDetails0" id="searchingDetails0" type="Date" value="请输入检索内容" style="color:#9D9D9D;"
+			onfocus= "if(this.value == '请输入检索内容') { this.value = ''; this.style.color='#000000';}"
+			onblur = "if(this.value =='') { this.value = '请输入检索内容'; this.style.color='#9D9D9D';} " >
+	<select name="searchingType" id="searchingType">
+		<option value="1">搜帖子</option>
+		<option value="2">搜作者</option>
+		<option value="3">搜时间</option>
+	</select>
+	<input type="submit" class="searchingPoser" id="searchingPost" value="搜 索">
+</div>-->
+<div id="huebox" class="skin-c119 hue-blue"
+	 style="background-image: url(/images/119.jpg); min-height: 686px;">
+	<div id="doc">
+		<div id="hd">
+			<div class="clearfix header-profile self-profile">
+				<div class="img-left">
+					<a href="" class="user-pic"> <img src="" width="130"
+													  height="130">
+					</a>
+				</div>
+				<div class="text-right"></div>
+			</div>
+		</div>
+		<div id="bd" class="layout-wrapper-lmr clearfix">
+			<div class="layout-left">
+				<!--<div>左导航列表</div>-->
+				<div id="left_nav">
+					<ul class="clearfix">
+						<li class="curr"><a href="#" class="index">个人首页</a></li>
+						<li><a href="javascript:void(0)" class="post" onclick="javascript:getPersonalPost()">我的帖子</a></li>
+						<li><a href="/module/bbsModule">BBS板块</a></li>
+						<li><a id="newModule" href="javascript:void(0)">添加新板块</a></li>
+						<li><a href="javascript:void(0)">添加新类别</a></li>
+						<li><a href="javascript:void(0)" id="moduleManage">板主管理</a></li>
+					</ul>
+				</div>
+			</div>
+			<div class="layout-middle">
+				<div id="twitter_area">
+					<form action="/post/savePost" method="POST"
+						  enctype="multipart/form-data">
+						<div style="width: 550px" class="suiji-report">
+							<div class="hd">
+								<span class="suiji-icon">发帖</span> <span class="arrow"></span>
+							</div>
+							<div class="edit-wrap" style="display: block;">
+								<div class="bd">
+									<div class="post_module_class">
+										<!-- module 板块 -->
+										帖子归类：<select id="province">
+										<option>--选择板块--</option>
+										<option value="0">北京</option>
+										<option value="1">上海</option>
+										<option>其他</option>
+									</select>
+										<select id="city">
+											<option id="city0">--选择类别--</option>
+										</select>
+									</div>
+									<div class="title">
+										输入帖子的标题：<textarea name="title" id="suiji_title" class="title-area"
+														  style="width: 400px; padding: 0px 15px; overflow-y: scroll; height: 35px;"></textarea>
+										<div class="line"></div>
+									</div>
+									<div class="content">
+											<textarea name="article" id="suiji_text" class="text-area"
+													  bindcursor="true"
+													  style="width: 534px; padding: 0px 15px; overflow-y: scroll; height: 140px;"></textarea>
+									</div>
+									选择帖子图片：
+									<input type="file" name="filename"value="选择图片" accept="image/gif,image/jpeg,image/jpg,image/png,image/svg" multiple>
+								</div>
+
+								<div class="ft">
+									<input type="button" class="cancle" value="取 消"> <input
+										type="submit" class="submit" value="发 布">
+								</div>
+							</div>
+						</div>
+					</form>
+				</div>
+				<div id="suiji_feed">
+					<div class="sj-feed-nav clearfix">
+						<div class="feed-nav-filter">
+							<a href="#" class="filter-state"><span>感兴趣的帖子</span></a>
+						</div>
+					</div>
+					<!-- 帖子展示 -->
+					<div class="sj-feed-content">
+						<div id="personalPosts" class="feed-content-item">
+							<!-- 评论框 -->
+							<div class="f-i-bd">
+								<div class="bd-comment sj-comment" style="display: block;">
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="layout-right"></div>
+		</div>
+	</div>
+	<div id="foot"></div>
+</div>
+
+
+</body>
+<script type="text/javascript">
+
+    /*
+     * author wangshixu 2018/7/25 15:08
+     * 发帖选择板块和类别
+     */
+
+    var provinces =new Array(new Array("海淀","朝阳"),new Array("浦东","虹桥"));
+    //给省份选项改变的事件
+    $("#province").change(function(){
+        //清空上次操作的数据
+        $("#city0").siblings().remove();
+        //没个省份对应value
+        var shengfen = $(this).val();
+
+        for(var i=0; i < provinces[shengfen].length;i++) {
+            //创建option标签
+            var $opt = $("<option></option>");
+            $opt.html(provinces[shengfen][i]);
+            $("#city").append($opt);
+        }
+    });
+</script>
+
+</html>

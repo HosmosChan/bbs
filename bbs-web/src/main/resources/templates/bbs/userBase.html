@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>我的资料</title>
+     <link rel="stylesheet" href="/bbs/css/reset.css"/>
+    <link rel="stylesheet" href="/bbs/css/homeHead.css"/>
+    <link rel="stylesheet" href="/bbs/css/homePublic.css"/>
+    <link rel="stylesheet" href="/bbs/css/base.css"/>
+    <link rel="stylesheet" href="/bbs/css/reset.css"/>
+    <link rel="stylesheet" href="/bbs/css/public.css"/>
+    <link rel="stylesheet" href="/bbs/css/index.css"/>
+    <link rel="stylesheet" href="/css/index.css"/>
+    <script type="text/javascript" th:src="@{/js/jquery-3.3.1.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/person/personalSearching.js}"></script>
+    <script type="text/javascript"  th:src="@{/js/user/editUser.js}"></script>
+   	<script type="text/javascript" th:src="@{/js/person/person.js}"></script>
+	<script type="text/javascript" th:src="@{/js/layer.js}"></script>
+</head>
+<body>
+<header class="ltHead">
+    <div class="ltHead_cen">
+        <a href=""><img src="img/logo.png" alt="" class="headPic1"/></a>
+        <ul class="headNav">
+            <li><a href="/post/index">首页</a></li>
+            <tr th:each="module : ${session.moduleList}">
+					<li><a th:href="@{/post/moudelPost(code=${module.code})}" th:text="${module.moduleName}"></a></li>
+				</tr>
+        </ul>
+        <!--未登入开始-->
+        <div th:if="${session.user1==null}">
+            <div class="ltForm appear">
+                <a href=""><img src="img/indexForm_bg.png" alt=""
+                                class="headPic2"/></a>
+                <ul>
+                    <li><a th:href="@{/user1/demo}">登录</a></li>
+                    <li><a th:href="@{/user1/UserRegister}">注册</a></li>
+                </ul>
+            </div>
+        </div>
+        <div th:if="${session.user1!=null}">
+            <div class="lt_login appear" th:if="${session.user1.userName != null}">
+                <ul>
+                    <li><a href="/index/home" class="navMe" th:text="${session.user1.userName}"></a></li>
+                    <li><a th:href="@{/user1/logOut}">退出</a></li>
+                </ul>
+            </div>
+        </div>
+        <!-- 隐藏框 -->
+        <div th:if="${session.user1==null}">
+            <div class="navFix">
+                <a class="navLogin" th:href="@{/user1/demo}">登录</a>
+            </div>
+        </div>
+    </div>
+</header>
+<div class="homeCen">
+    <div class="homeCen_left">
+        <ul th:if="${session.user1!=null}">
+            <li><a href="/index/home">我的主页</a></li>
+            <li class="on"><a href="/role/mangerUser">基本设置</a></li>
+            <li><a href="/post/myPost">我的贴子</a></li>
+            <li th:if="${session.user1.roleName =='版主'}"><a href="javascript:void(0)" id="moduleMessage">版块信息</a></li>
+            <li th:if="${session.user1.roleName =='版主'}"><a href="/module/ModuleData">版块数据</a></li>
+            <li th:if="${session.user1.roleName =='管理员'}"><a href="/role/login" target="_blank">后台数据管理</a></li>
+        </ul>
+    </div>
+    <div class="homeCen_right">
+        <div class="baseHead">
+            <ul>
+                <li><a href="" class="on">我的资料</a></li>
+            </ul>
+        </div>
+         <input th:value="${editUser.account}" name="account" id="account" type="hidden" />
+        <div class="baseCon">
+        <div class="baseCon_son">
+                <div class="baseCon_son_left">
+                    账号：
+                </div>
+                <div class="baseCon_son_right">
+                     <input readonly="readonly" type="text" name="account" id="userName" th:value="${editUser.account}" >
+                </div>
+            </div>
+            <div class="baseCon_son">
+                <div class="baseCon_son_left">
+                    用户名
+                </div>
+                <div class="baseCon_son_right">
+                     <input  type="text" name="userName" id="userName" th:value="${editUser.userName}" >
+                </div>
+            </div>
+            <div class="baseCon_son">
+                <div class="baseCon_son_left">
+                    密码
+                </div>
+                <div class="baseCon_son_right">
+                  <input type="password" name="password"  id="password" th:value="${editUser.password}" class="text-word">
+                </div>
+            </div>
+            <input type="button" value="确认修改" id="editUser" class="upload_sure"/>
+        </div>
+    </div>
+</div>
+</body>
+<script type="text/javascript">
+
+var editUser = $("#editUser");
+editUser.click(function(){
+	var account = $("#account").val();
+	var  password = $("#password").val();
+	var userName = $("#userName").val();
+	$.ajax({
+          url:"/role/mangerUserSubmit",
+          type:"post",
+          data:{
+          	"account":account,
+          	"password":password,
+          	"userName":userName
+          },
+          success:function(data){
+          	alert(data);
+          	location.href="/role/mangerUser";
+          }
+      
+      }); 
+});
+</script>
+</html>

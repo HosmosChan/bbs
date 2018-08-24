@@ -1,0 +1,11 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<html>
+<head>
+<meta charset="UTF-8">
+<title>BBS论坛主页</title>
+</head>
+<body>
+<h1 align="center">BBS论坛主页</h1>
+<h3>欢迎您：<span th:text="${session.user1.userName}"></span><span>&nbsp;&nbsp;</span><span><a th:href="@{/user1/logOut}";style="font-size: 20px; color: red">注销</a></span></h3>
+</body>
+</html>
