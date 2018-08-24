@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>帖子</title>
+    <link rel="stylesheet" href="/bbs/css/reset.css"/>
+    <link rel="stylesheet" href="/bbs/css/public.css"/>
+    <link rel="stylesheet" href="/bbs/css/index.css"/>
+    <link rel="stylesheet" href="/css/index.css"/>
+    <script type="text/javascript" th:src="@{/js/jquery-3.3.1.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/layer.js}"></script>
+    <script type="text/javascript" th:src="@{/js/person/personalSearching.js}"></script>
+
+</head>
+<body>
+<header class="ltHead">
+    <div class="ltHead_cen">
+        <a href=""><img src="img/logo.png" alt="" class="headPic1"/></a>
+        <ul class="headNav">
+            <li><a href="/post/index">首页</a></li>
+            <tr th:each="module : ${session.moduleList}">
+                <li><a th:href="@{/post/moudelPost(code=${module.code})}" th:text="${module.moduleName}"></a></li>
+            </tr>
+        </ul>
+        <!--未登入开始-->
+        <div th:if="${session.user1==null}">
+            <div class="ltForm appear">
+                <a href=""><img src="img/indexForm_bg.png" alt="" class="headPic2"/></a>
+                <ul>
+                    <li><a th:href="@{/user1/demo}">登录</a></li>
+                    <li><a th:href="@{/user1/UserRegister}">注册</a></li>
+                </ul>
+            </div>
+        </div>
+        <div th:if="${session.user1!=null}">
+            <div class="lt_login appear" th:if="${session.user1.userName != null}">
+                <ul>
+                    <li><a href="/index/home" class="navMe" th:text="${session.user1.userName}"></a></li>
+                    <li><a th:href="@{/user1/logOut}">退出</a></li>
+                </ul>
+            </div>
+        </div>
+        <!-- 隐藏框 -->
+        <div th:if="${session.user1==null}">
+            <div class="navFix">
+                <a class="navLogin" th:href="@{/user1/demo}">登录</a>
+            </div>
+        </div>
+    </div>
+</header>
+<div class="indexMain">
+    <div class="indexMain_left">
+        <div class="tzCon">
+            <div class="tzCon_head">
+                <div class="tzCon_head_left"><img src="/images/touxiang.jpg"/></div>
+                <div class="tzCon_head_right">
+                    <h1 th:text="${post.title}"></h1>
+                    <ul>
+                        <li th:text="${post.userName}"></li>
+                        <li th:text="${#dates.format(post.createDate,'yyyy-MM-dd HH:mm:ss')}"></li>
+                        <li th:text="${post.readingAmount}"></li>
+                    </ul>
+                </div>
+                <div class="clear"></div>
+            </div>
+            <div class="tzCon_con" th:text="${post.article}"></div>
+<!--             <div th:if="${post.icon} != null">
+                <div class="havePic">
+                    <img th:src="@{${post.icon}}">
+                </div>
+            </div> -->
+            <div class="tzCon_foot">
+                <div class="tzCollect">
+                    <input id="praiseOrNot" type="hidden" value="1"></input>
+                    <div class="tzCollect_left" id="praise" th:onclick="'javascript:opPraise(\''+${post.code}+'\')'">赞
+                    </div>
+                    <div class="tzCollect_right"><span id="praiseAmount" th:text="${post.praiseAmount}"></span></div>
+                    <a href="javascript:void(0)" th:onclick="'javascript:postReport(\''+${post.code}+'\')'">
+                        <div class="tzCollect_right" style="padding-left: 16px;">举报</div>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="newPending">
+            <div class="newPending_head">
+                <div class="tzHeng"></div>
+                <div class="newPending_head_tittle">最新评论(<span th:text="${post.replyAmount}"></span>)</div>
+            </div>
+            <!--楼主可以删除评论、自己可以删除自己的评论删除按钮酌情出现-->
+            <tr th:each="comment,commentList : ${listComment}">
+                <div class="newPending_son">
+                    <div class="pendPic"><img src="/images/touxiang.jpg"/></div>
+                    <div class="pendDetail">
+                        <div class="pendDetail_head">
+                            <p><span th:text="${comment.userName}"></span> <span th:text="${#dates.format(comment.commentTime,'yyyy-MM-dd HH:mm:ss')}"></span></p>
+                            <i th:text="${commentList.index}+1+'楼'"></i>
+                        </div>
+                        <div class="pendDetail_con">
+                            <p th:text="${comment.content}"></p>
+                        </div>
+                        <!--<div class="pendDetail_btn">
+                            <ul>
+                                <li class="delateBtn">删除</li>
+                            </ul>
+                        </div>-->
+                        <div class="pendDetail_action">
+                            <input type="text" value="回复XXX:"/>
+                            <button>评论</button>
+                            <button>取消</button>
+                        </div>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+            </tr>
+        </div>
+        <div class="indexFooter">
+            <div class="indexFooter_con">
+                <a href="javascript:"><</a>
+                <a href="" class="on">1</a>
+                <a href="">2</a>
+                <a href="">3</a>
+                <a href="javascript:">></a>
+            </div>
+        </div>
+        <div class="writePending">
+            <div class="newPending_head">
+                <div class="tzHeng"></div>
+                <div class="newPending_head_tittle">评论</div>
+            </div>
+            <div class="writePending_con">
+                <div style="display:none" th:if="${session.user1 != null}">
+                    <span id="currentAccount" type="hidden" th:text="${session.user1.account}"></span>
+                </div>
+                <input type="text" id="commentContent" placeholder="写下你的评论..."/>
+                <input style="display:none" type="text" id="postCodeId" th:value="${post.code}"/>
+                <input type="submit" value="评论" id="commentContentId"/>
+            </div>
+        </div>
+    </div>
+    <div class="indexMain_right">
+        <a href="/index/write" class="newMsg">发新帖</a>
+        <div class="myMsg">
+            <div class="myMsg_con">
+                <div class="myMsg_conPic"><img src="/images/touxiang.jpg"/></div>
+                <p th:text="${post.userName}"></p>
+            </div>
+            <div class="myMsg_footer">
+                <ul>
+                    <!--<li><a href="">
+                        <p>主题数</p>
+                        <p>23</p>
+                    </a></li>
+                    <li><a href="">
+                        <p>精华数</p>
+                        <p>23</p>
+                    </a></li>
+                    <li><a href="">
+                        <p>注册排名</p>
+                        <p>23</p>
+                    </a></li>-->
+                </ul>
+            </div>
+        </div>
+        <div class="search">
+            <!--
+            - 搜索帖子
+            - author：chenhuayang 2018/8/13
+            -->
+            <div id="searching-post-result" class="searching-post-result">
+                <input name="searchingDetails" id="searchingDetails" type="text" value="请输入检索内容" style="color:#9D9D9D;"
+                       onfocus="if(this.value == '请输入检索内容') { this.value = ''; this.style.color='#000000';}"
+                       onblur="if(this.value =='') { this.value = '请输入检索内容'; this.style.color='#9D9D9D';} ">
+                <input name="searchingDetails0" id="searchingDetails0" type="Date" value="请输入检索内容"
+                       style="color:#9D9D9D;"
+                       onfocus="if(this.value == '请输入检索内容') { this.value = ''; this.style.color='#000000';}"
+                       onblur="if(this.value =='') { this.value = '请输入检索内容'; this.style.color='#9D9D9D';} ">
+                <select name="searchingType" id="searchingType">
+                    <option value="1">搜帖子</option>
+                    <option value="2">搜作者</option>
+                    <option value="3">搜时间</option>
+                </select>
+                <input type="submit" class="searchingPoser" id="searchingPost" value="搜 索">
+            </div>
+        </div>
+        <div class="indexPublic">
+            <div class="indexPublic_head">本周热议</div>
+            <div class="indexPublic_con">
+                <ul class="weekHot">
+                    <tr th:each="PostOrderByList : ${session.PostOrderByList}">
+                        <li>
+                            <a th:href="@{/post/getPostByCode/(code=${PostOrderByList.code})}" th:text="${PostOrderByList.title}"></a>
+                            <span th:text="${PostOrderByList.readingAmount}"></span>
+                        </li>
+                    </tr>
+                </ul>
+            </div>
+        </div>
+        <div class="indexPublic">
+            <div class="indexPublic_head">
+                友情链接
+            </div>
+            <div class="indexPublic_con">
+                <ul class="indexLink">
+                    <li><a href="https://www.baidu.com" target="_blank">百度</a></li>
+                    <li><a href="https://ienjoys.com/" target="_blank">智慧深圳市智慧享联网络技术有限公司</a></li>
+                    <li><a href="https://www.jb51.net" target="_blank">脚本之家</a></li>
+                    <li><a href="http://www.qq.com" target="_blank">腾讯首页</a></li>
+                    <li><a href="https://www.twitter.com/" target="_blank">推特</a></li>
+                    <li><a href="https://m.hujiang.com" target="_blank">沪江网校</a></li>
+                    <li><a href="https://hk.google.com" target="_blank">谷歌</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="indexWxpublic">
+            <p>打开智慧享联官网</p>
+        </div>
+    </div>
+    <div class="clear"></div>
+</div>
+<footer class="publicFooter">
+    <p>Copyrigh &copy; 深圳市智慧享联网络技术有限公司  版权所有    粤ICP备05144415-1</p>
+</footer>
+</body>
+</html>
+<script src="/bbs/js/tiezi.js"></script>
+<script>
+var message = "";
+if(message!='[[${message}]]'){
+	message='[[${message}]]';
+	alert(message);
+	message = null;
+};
+function postReport(postCode){
+	layer.open({
+        type: 2,
+        skin: '#e43e20',
+        title: '帖子举报',
+        fix: false,
+        shadeClose: true,
+        area: ['700px', '670px'],
+        content: '/complain/addComplain?code='+postCode,
+    })
+};
+$("#commentContentId").click(function(){
+	var content = $("#commentContent").val();
+	var postCode = $("#postCodeId").val();
+	var account = $("#currentAccount").text();
+	if(content==""){
+		alert("评论不能为空！");
+		return false;
+	}
+	if(account){
+		$.ajax({
+			type: "POST", 
+	        data:{
+	        	"account":account,
+	        	"postCode":postCode,
+	        	"content":content
+	        },
+	        url: "/post/commentPublish",
+	        async: true, 
+	        success: function(data) {
+	        	alert("评论成功");
+	        	window.location.href="/post/getPostByCode/?code="+postCode;
+	        },
+	        error:function(){
+	        	alert("发表评论出错！");
+	        }
+		});
+	}else{
+		alert("评论前请先登录！");
+		window.location.href="/user1/demo"; 
+		
+	}
+});
+/*
+*  点赞
+*
+* */
+ function opPraise(postCode){
+	 var flag = $("#praiseOrNot").val();
+	 $.ajax({ 
+			type: "POST", 
+		       data:{
+		    	   "postCode":postCode,
+		    	   "flag":flag
+		       },
+		       dataType:"json",
+		       url: "/about/praise",
+		       async: true, 
+		       success: function(data) {
+		       	$("#praiseAmount").html(data);
+		       },
+		 });
+	 if(flag==1){
+		 background: ;
+		 $("#praise").css("background","url(/bbs/img/tzCollect_hover.png) no-repeat 15px center");	
+		 $("#praiseOrNot").val(-1);
+		 
+	 }else{
+		 $("#praise").css("background","url(/bbs/img/tzCollect.png) no-repeat 15px center");
+		 $("#praiseOrNot").val(1);
+	 }
+};
+</script>
