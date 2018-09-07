@@ -49,7 +49,7 @@
 	
 	<!-- 根据用户的account修改用户信息 -->
 	<update id="updateuser1ByAccount" parameterType="User1">
-	UPDATE bbs.bbs_user_info SET userName = #{userName},PASSWORD= #{password} WHERE account = #{account}
+	UPDATE bbs.bbs_user_info SET userName = #{userName},PASSWORD= #{password},sex = #{sex} WHERE account = #{account}
 	</update>
 	
 	<!-- 根据用户id,account,userName,roleName查询用户 -->

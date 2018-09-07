@@ -66,7 +66,7 @@ public class PostController {
 		if (postclassexit != null) {
 
 			if (postclass.getCode() == null) {
-				return "module/postClassType";// 找不到
+				return "module/addnewPostClass";// 找不到
 			} else {
 				getname = postclass.getCode();
 				return "redirect:updatePost";
@@ -171,11 +171,10 @@ public class PostController {
 
 	}
 
-	/*
+	/**
 	 * 获取当前用户的帖子 author: wangshixu 2018/7/9 修改 wanghsixu 2018/7/23
 	 */
 	@SuppressWarnings("finally")
-
 	@RequestMapping(value = "/savePost")
 	public ModelAndView savePost(PostVo postVo, HttpServletRequest request,
 			@RequestParam("filename") MultipartFile file) {
@@ -211,10 +210,9 @@ public class PostController {
 				// postDetail.addObject("message", "发帖失败");
 				// e.printStackTrace();
 				// }
+				String icon = uploader.uploadImage(file);
+				postVo.setIcon(icon);
 			}
-
-			String icon = uploader.uploadImage(file);
-			postVo.setIcon(icon);
 			postVo.setHostAccount(user1.getAccount());
 			postService.savePost(postVo);
 			try {
@@ -222,8 +220,8 @@ public class PostController {
 			} finally {
 				postVo = postService.getPostbyCode(postVo);
 				postDetail.addObject("message", "发帖成功 ");
-				List<Comment> listComment = aboutPostService.getOnePostComments(postVo.getCode());
-				postDetail.addObject("listComment", listComment);
+				Page<Object> page = aboutPostService.getOnePostComments(postVo.getCode(), 1, 8);
+				postDetail.addObject("page", page);
 				postDetail.addObject("post", postVo);
 				postDetail.setViewName("bbs/post");
 				return postDetail;
@@ -248,7 +246,7 @@ public class PostController {
 	 * (Exception e) { e.printStackTrace(); return "error"; } }
 	 */
 
-	/*
+	/**
 	 * 获取当前用户的帖子 author: wangshixu 2018/8/9 修改：wangshixu 2018/8/13
 	 */
 	@ResponseBody
@@ -271,7 +269,7 @@ public class PostController {
 		}
 	}
 
-	/*
+	/**
 	 * 获取当前用户的帖子 author: wangshixu 2018/8/13
 	 */
 	@ResponseBody
@@ -312,8 +310,10 @@ public class PostController {
 			Integer reading = postVo.getReadingAmount();
 			reading += 1;
 			postService.addReadingAmount(code, reading);
-			List<Comment> listComment = aboutPostService.getOnePostComments(code);
-			postDetail.addObject("listComment", listComment);
+			Integer currentPage = 1;
+			Integer pageSize = 8;
+			Page<Object> page = aboutPostService.getOnePostComments(code, currentPage, pageSize);
+			postDetail.addObject("page", page);
 			postDetail.addObject("post", postVo);
 			postDetail.setViewName("bbs/post");
 			return postDetail;
@@ -323,7 +323,7 @@ public class PostController {
 		}
 	}
 
-	/*
+	/**
 	 * 通过code进入帖子
 	 */
 	@RequestMapping(value = "/code")
@@ -356,57 +356,25 @@ public class PostController {
 	}
 
 	/**
-	 * 根据标题搜索帖子
+	 * 搜索帖子
 	 *
 	 * @author chenhuayang
 	 * @version 2018/7/19
+	 * @version 2018/9/1
 	 */
-	@ResponseBody
-	@RequestMapping(value = "/searchingPostInfo1")
-	public List<PostVo> searchingPostInfo1(String title) {
-		try {
-			List<PostVo> listPost = postService.searchingPostInfo1(title);
-			return listPost;
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
-		}
-	}
-
-	/**
-	 * 根据作者搜索帖子
-	 *
-	 * @author chenhuayang
-	 * @version 2018/7/19
-	 */
-	@ResponseBody
-	@RequestMapping(value = "/searchingPostInfo2")
-	public List<PostVo> searchingPostInfo2(String userName) {
-		try {
-			List<PostVo> listPost = postService.searchingPostInfo2(userName);
-			return listPost;
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
-		}
-	}
-
-	/**
-	 * 根据发表时间搜索帖子
-	 *
-	 * @author chenhuayang
-	 * @version 2018/7/19
-	 */
-	@ResponseBody
-	@RequestMapping(value = "/searchingPostInfo3")
-	public List<PostVo> searchingPostInfo3(String publishDate) {
-		try {
-			List<PostVo> listPost = postService.searchingPostInfo3(publishDate);
-			return listPost;
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
-		}
+	@RequestMapping(value = "/searchingPostInfo")
+	public ModelAndView searchingPostInfo(String searchingDetails, Integer searchingType,Integer currentPage) {
+	    if(currentPage==null) {
+	        currentPage = 1;
+	    }
+        Integer pageSize = 10;
+        Page<Object> page = postService.searchingPostInfo(searchingDetails, searchingType,currentPage,pageSize);
+		ModelAndView searchingPost = new ModelAndView();
+		searchingPost.setViewName("post/searchingPost");
+		searchingPost.addObject("page",page);
+		searchingPost.addObject("searchingDetails",searchingDetails);
+		searchingPost.addObject("searchingType",searchingType);
+		return searchingPost;
 	}
 
 	/**
@@ -420,7 +388,7 @@ public class PostController {
 		return "post/searchingPost";
 	}
 
-	/*
+	/**
 	 * 进入论坛首页 author: wangshixu 2018/8/9
 	 * 
 	 */
@@ -437,30 +405,53 @@ public class PostController {
 		moduleList.remove(0);// 去掉第一个超级版块的模块 第一个Sitong专用 不用来具体版块
 		session.setAttribute("moduleList", moduleList);
 		List<PostClass> postClassList = aboutPostService.getAllPostClass();
-		session.setAttribute("postClassList", postClassList);
+		session.setAttribute("allPostClassList", postClassList);
 
 		List<PostVo> PostOrderByList = postService.selectPostOrderBy6();
 		session.setAttribute("PostOrderByList", PostOrderByList);
 
-		// indexPageModelAndView.addObject("moduleList",moduleList);
+		 indexPageModelAndView.addObject("moduleList",moduleList);
 		indexPageModelAndView.setViewName("bbs/index");
-		return indexPageModelAndView;
+  		return indexPageModelAndView;
 	}
 
+	@ResponseBody
 	@RequestMapping(value = "/moudelPost")
-	public ModelAndView moudelPost(HttpServletRequest request, String code, String classCode) {
+	public String moudelPost(HttpServletRequest request,String code) {
+//		ModelAndView moudelPost = new ModelAndView();
+//		HttpSession session = request.getSession();
+		List<PostClass> postClassList = aboutPostService.selectALlClass(code);
+		/*Integer currentPage = 1;
+		Integer pageSize = 10;*/
+		if (!postClassList.isEmpty()) {
+			/*session.setAttribute("postClass", postClassList);
+			Page<Object> page = aboutPostService.selectAllPostClassByCode(postClassList.get(0).getCode(), currentPage,
+					pageSize);
+			moudelPost.addObject("page", page);
+			moudelPost.addObject("code", code);
+			moudelPost.addObject("currentClassCode", postClassList.get(0).getCode());
+			moudelPost.setViewName("bbs/moudelPost");*/
+			return "1";
+		} else {
+			return "2";
+		}	
+
+	}
+	
+	@RequestMapping(value = "/PostRediect")
+	public ModelAndView moudelPost2(HttpServletRequest request,String code) {
 		ModelAndView moudelPost = new ModelAndView();
 		HttpSession session = request.getSession();
 		List<PostClass> postClassList = aboutPostService.selectALlClass(code);
-		// moudelPost.addObject("postClass", postClassList);
-		session.setAttribute("postClass", postClassList);
 		Integer currentPage = 1;
 		Integer pageSize = 10;
+
+		session.setAttribute("postClass", postClassList);
 		Page<Object> page = aboutPostService.selectAllPostClassByCode(postClassList.get(0).getCode(), currentPage,
 				pageSize);
 		moudelPost.addObject("page", page);
+		moudelPost.addObject("code", code);
 		moudelPost.addObject("currentClassCode", postClassList.get(0).getCode());
-
 		moudelPost.setViewName("bbs/moudelPost");
 		return moudelPost;
 	}

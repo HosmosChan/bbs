@@ -9,28 +9,29 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>搜索结果</title>
-    <script type="text/javascript" src="/js/jquery-3.3.1.min.js"></script>
-    <script type="text/javascript" src="/js/post/searchingPost.js"></script>
-    <link rel="stylesheet" href="/bbs/css/reset.css"/>
-    <link rel="stylesheet" href="/bbs/css/homeHead.css"/>
-    <link rel="stylesheet" href="/bbs/css/homePublic.css"/>
-    <link rel="stylesheet" type="text/css" href="/css/reset.css"/>
-    <link rel="stylesheet" type="text/css" href="/bbs/css/public.css"/>
-    <link rel="stylesheet" type="text/css" href="/css/index.css"/>
-    <link rel="stylesheet" type="text/css" href="/css/search.css"/>
+    <script type="text/javascript" src="/../../js/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="/../../js/searching.js"></script>
+    <link rel="stylesheet" type="text/css" href="/../../bbs/css/reset.css"/>
+    <link rel="stylesheet" type="text/css" href="/../../bbs/css/homeHead.css"/>
+    <link rel="stylesheet" type="text/css" href="/../../bbs/css/homePublic.css"/>
+    <link rel="stylesheet" type="text/css" href="/../../css/reset.css"/>
+    <link rel="stylesheet" type="text/css" href="/../../bbs/css/public.css"/>
+    <link rel="stylesheet" type="text/css" href="/../../css/index.css"/>
+    <link rel="stylesheet" type="text/css" href="/../../css/search.css"/>
     <!-- 分页部分的样式 -->
-    <link href="/bbs/css/bootstrap.min.css" rel="stylesheet">
-    <script src="/bbs/js/bootstrap.min.js" type="text/javascript"></script>
-    <script src="/bbs/js/bootstrap-paginator.js" type="text/javascript"></script>
+    <link rel="stylesheet" type="text/css" href="/../../bbs/css/bootstrap.min.css">
+    <script type="text/javascript" src="/../../bbs/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/../../bbs/js/bootstrap-paginator.js"></script>
+    <script type="text/javascript" src="../../js/user/modulePost.js"></script>
 </head>
 <body>
 <header class="ltHead">
     <div class="ltHead_cen">
-        <a href=""><img src="img/logo.png" alt="" class="headPic1"/></a>
         <ul class="headNav">
-            <li><a href="/post/index">首页</a></li>
+            <li><a href="/../../post/index">首页</a></li>
             <tr th:each="module : ${session.moduleList}">
-                <li><a th:href="@{/post/moudelPost(code=${module.code})}" th:text="${module.moduleName}"></a></li>
+            <li><a href="javascript:void(0)" class="moduleClass"
+						th:value="${module.code}" th:text="${module.moduleName}"></a></li>
             </tr>
         </ul>
         <!--未登入开始-->
@@ -38,68 +39,122 @@
             <div class="ltForm appear">
                 <a href=""><img src="img/indexForm_bg.png" alt="" class="headPic2"/></a>
                 <ul>
-                    <li><a th:href="@{/user1/demo}">登录</a></li>
-                    <li><a th:href="@{/user1/UserRegister}">注册</a></li>
+                    <li><a th:href="@{/../../user1/demo}">登录</a></li>
+                    <li><a th:href="@{/../../user1/UserRegister}">注册</a></li>
                 </ul>
             </div>
         </div>
         <div th:if="${session.user1!=null}">
             <div class="lt_login appear" th:if="${session.user1.userName != null}">
                 <ul>
-                    <li><a href="/index/home" class="navMe" th:text="${session.user1.userName}"></a></li>
-                    <li><a th:href="@{/user1/logOut}">退出</a></li>
+                    <li><a href="/../../index/home" class="navMe" th:text="${session.user1.userName}"></a></li>
+                    <li><a th:href="@{/../../user1/logOut}">退出</a></li>
                 </ul>
             </div>
         </div>
         <!-- 隐藏框 -->
         <div th:if="${session.user1==null}">
             <div class="navFix">
-                <a class="navLogin" th:href="@{/user1/demo}">登录</a>
+                <a class="navLogin" th:href="@{/../../user1/demo}">登录</a>
             </div>
         </div>
     </div>
 </header>
 <!--搜索栏-->
 <div class="searchBody">
-    <div id="searching-post-result" class="searching-post-result">
+    <form action="/../../post/searchingPostInfo" method="post" id="searching-post-result" class="searching-post-result">
         <div class="newPending_head">
             <div class="tzHeng"></div>
             <div class="newPending_head_tittle">搜索</div>
         </div>
-        <input name="searchingDetails" id="searchingDetails" class="searchingDetails" type="text" value="请输入检索内容"
-               style="color:#9D9D9D;"
-               onfocus="if(this.value == '请输入检索内容') { this.value = ''; this.style.color='#000000';}"
-               onblur="if(this.value =='') { this.value = '请输入检索内容'; this.style.color='#9D9D9D';} ">
-        <input name="searchingDetails0" id="searchingDetails0" class="searchingDetails0" type="Date" value="请输入检索内容"
-               style="color:#9D9D9D;"
-               onfocus="if(this.value == '请输入检索内容') { this.value = ''; this.style.color='#000000';}"
-               onblur="if(this.value =='') { this.value = '请输入检索内容'; this.style.color='#9D9D9D';} ">
-        <select name="searchingType" id="searchingType" class="searchingType">
-            <option value="1">搜帖子</option>
-            <option value="2">搜作者</option>
-            <option value="3">搜时间</option>
+        <input name="searchingDetails" th:value="${searchingDetails}" class="searchingDetails" id="searchingDetails"
+               style="color:#000;" placeholder="请输入搜索关键字">
+        <select name="searchingType" class="searchingType" id="searchingType">
+            <option th:selected="${searchingType eq 1}" value="1">搜帖子</option>
+            <option th:selected="${searchingType eq 2}" value="2">搜作者</option>
+            <option th:selected="${searchingType eq 3}" value="3">搜时间</option>
         </select>
-        <input type="submit" class="searchingPoser" id="searchingPost" value="搜 索">
-    </div>
+        <input type="submit" class="searchingPost" id="searchingPost" value="搜 索">
+    </form>
     <!--搜索结果显示-->
     <div id="result-detail" class="result-detail">
-        <div id="result-list-table" class="result-list-table">
+        <div id="result-list-table" class="result-list-table" th:each="post : ${page.result}">
+            <div class="indexCon_msg">
+                <div class="indexCon_msg_pic"></div>
+                <div class="indexCon_msg_detail">
+                    <a href="">
+                        <div class="indexCon_msg_detail_tittle">
+                            <span th:text="${post.className}"></span>
+                        </div>
+                    </a>
+                    <a th:href="@{/../../post/getPostByCode(code=${post.code})}" target="_blank">
+                        <div class="indexCon_msg_detail_tittle">
+                            <p th:text="${post.title}"></p>
+                        </div>
+                    </a>
+                    <div class="havePic" th:if="${post.icon}" !="null">
+                        <img th:src="${'../img/read?path=' + post.icon}" onload="javascript:DrawImage(this,110)">
+                    </div>
+                    <div class="indexCon_msg_detail_other">
+                        <ul>
+                            <li th:text="${post.userName}"></li>
+                            <li th:text="${#dates.format(post.createDate,'yyyy-MM-dd HH:mm:ss')}"></li>
+                            <li th:text="${post.readingAmount}"></li>
+                            <li th:text="${post.praiseAmount}"></li>
+                            <li th:text="${post.replyAmount}"></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="clear"></div>
+            </div>
         </div>
     </div>
-   	<!--   分页 -->
+    <!--   分页 -->
     <div class="indexFooter">
-	        <div class="container">
-	         <div>
-	            <ul style="padding-left: 10%;" id="page"></ul>
-	        </div>
+        <div class="container">
+            <div>
+                <ul style="padding-left: 20%;" id="page"></ul>
             </div>
+        </div>
     </div>
 </div>
 </body>
 <script type="text/javascript">
+    /**
+     * @author chenhuayang
+     * @version 2018/8/30
+     * 图片按宽高比例进行自动缩放
+     * @param ImgObj
+     * 缩放图片源对象
+     * @param maxWidth
+     * 允许缩放的最大宽度
+     * @param maxHeight
+     * 允许缩放的最大高度
+     * @usage
+     * 调用：<img src="图片" onload="javascript:DrawImage(this,*,*)">
+     */
+    function DrawImage(ImgObj, maxHeight) {
+        var image = new Image();
+        //原图片原始地址（用于获取原图片的真实宽高，当<img>标签指定了宽、高时不受影响）
+        image.src = ImgObj.src;
+        // 用于设定图片的宽度和高度
+        var tempWidth;
+        var tempHeight;
+        if (image.width > 0 && image.height > 0) {
+            tempHeight = maxHeight;
+            // 按原图片的比例进行缩放
+            tempWidth = (image.width * maxHeight) / image.height;
+            // 设置页面图片的宽和高
+            ImgObj.height = tempHeight;
+            ImgObj.width = tempWidth;
+            // 提示图片的原来大小
+            ImgObj.alt = image.width + "×" + image.height;
+        }
+    }
+
     $(function () {
-        var currentPage = 1;
-        var totalPages = 25;
+        var currentPage = [[${page.pageNum}]];
+        var totalPages = [[${page.pages}]];
         $("#page").bootstrapPaginator({
             bootstrapMajorVersion: 3, //对应的bootstrap版本
             currentPage: currentPage, //当前页数
@@ -109,8 +164,15 @@
             useBootstrapTooltip: true,
             //点击事件
             onPageClicked: function (event, originalEvent, type, page) {
+                var searchingDetails = $("#searchingDetails").val();
+                var searchingType = $("#searchingType option:selected").val();
+                window.location.href = "/../../post/searchingPostInfo?currentPage="
+                    + page + "&searchingDetails="
+                    + searchingDetails + "&searchingType="
+                    + searchingType;
             }
         });
     });
+    
 </script>
 </html>

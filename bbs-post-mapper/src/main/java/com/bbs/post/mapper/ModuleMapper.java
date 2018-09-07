@@ -9,40 +9,39 @@ import com.bbs.domain.User1;
 
 public interface ModuleMapper {
 
-	public List<Module> getAllModule();
+    List<Module> getAllModule();
 
-	Integer saveModule(Module module);
+    Integer saveModule(Module module);
 
-	List<Module> moduleList();// 返回模块列表
+    List<Module> moduleList();// 返回模块列表
 
-	public List<Module> selectAllModule();
+    List<Module> selectAllModule();
 
-	public Module selectByIdModule(String code);
-	
-	public Module selectByIdModuleCode(String code);
+    Module selectByIdModule(String code);
 
-	public void updateModule(Module module);
+    Module selectByIdModuleCode(String code);
 
-	public void updateUser(User1 user1);
+    void updateModule(Module module);
 
-	public void updateModuleUser(Module module);
+    void updateUser(User1 user1);
 
-	public void insertModule(Module module);
+    void updateModuleUser(Module module);
 
-	public void insertUser(Module module);
+    void insertModule(Module module);
 
-	public PostClass selectByIdPostClass(String code);
+    void insertUser(Module module);
 
-	public void updatePostClass(PostClass post);
+    PostClass selectByIdPostClass(String code);
 
-	public List<PostClass> selectALlClass(String code);
+    void updatePostClass(PostClass post);
 
-	public void insertPostClasss(PostClass postClass);
+    List<PostClass> selectALlClass(String code);
 
+    void insertPostClasss(PostClass postClass);
 
-	public List<PostVo> selectPostClassByCode(String classCode);
+    List<PostVo> selectPostClassByCode(String classCode);
 
-	public void deletePostClassByCode(String code);
-	
-	public List<PostVo> selectAllPostClassByCode(String classCode);
+    void deletePostClassByCode(String code);
+
+    List<PostVo> selectAllPostClassByCode(String classCode);
 }

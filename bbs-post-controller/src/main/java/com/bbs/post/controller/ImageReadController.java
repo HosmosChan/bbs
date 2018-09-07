@@ -4,17 +4,16 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.concurrent.ConcurrentHashMap;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.bbs.utils.CodingUtil;
 
 /**
 * @author:tanglei
@@ -27,7 +26,7 @@ import com.bbs.utils.CodingUtil;
 public class ImageReadController {
 	
 //	private ConcurrentHashMap<String, byte[]> bufferCache = new ConcurrentHashMap<>();
-	
+    private static Logger logger = LogManager.getLogger(ImageReadController.class);
 	@Value("${imagepath}")
 	private String imagePath;
 
@@ -50,7 +49,9 @@ public class ImageReadController {
 			IOUtils.copy(input, output);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			//e.printStackTrace();
+		    logger.error("没有找到对应的图片");
+		   
 		}finally {
 			IOUtils.closeQuietly(input);
 			IOUtils.closeQuietly(output);

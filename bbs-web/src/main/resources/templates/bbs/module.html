@@ -6,42 +6,45 @@
     <link rel="stylesheet" href="/bbs/css/reset.css"/>
     <link rel="stylesheet" href="/bbs/css/public.css"/>
     <link rel="stylesheet" href="/bbs/css/index.css"/>
-    <script type="text/javascript"   th:src="@{/js/jquery-3.3.1.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/jquery-3.3.1.min.js}"></script>
+    <script type="text/javascript" src="../../js/user/modulePost.js"></script>
 </head>
 <body>
 <header class="ltHead">
     <div class="ltHead_cen">
         <a href=""><img src="img/logo.png" alt="" class="headPic1"/></a>
         <ul class="headNav">
-			<li><a href="/post/index">首页</a></li>
-			<tr th:each="module : ${session.moduleList}">
-            <li><a href="" th:text="${module.moduleName}"></a></li>
-         	</tr>
+            <li><a href="/post/index">首页</a></li>
+            <tr th:each="module : ${session.moduleList}">
+                <li><a href="javascript:void(0)" class="moduleClass" th:value="${module.code}"  
+						th:text="${module.moduleName}"></a></li>
+            </tr>
         </ul>
     <!--未登入开始-->
-			<div th:if="${session.user1==null}">
-				<div class="ltForm appear">
-					<a href=""><img src="img/indexForm_bg.png" alt=""
-						class="headPic2" /></a>
-					<ul>
-						<li><a th:href="@{/user1/demo}">登录</a></li>
-						<li><a th:href="@{/user1/UserRegister}">注册</a></li>
-					</ul>
-				</div>
-			</div>
-			<div th:if="${session.user1!=null}">
-				<div class="lt_login appear"
-					th:if="${session.user1.userName != null}">
-					<ul>
-						<li><span th:text="${session.user1.userName}"></span></li>
-						<li><a th:href="@{/user1/logOut}">退出</a></li>
-					</ul>
-				</div>
-			</div>
-       <div class="navFix">
-                <a href="/index/home" class="navMe" th:text="${session.user1.userName}"></a>
-                <a href="/index/write" class="navWrite">发新帖</a>
+        <div th:if="${session.user1==null}">
+            <div class="ltForm appear">
+                <a href="">
+                    <img src="img/indexForm_bg.png" alt="" class="headPic2"/>
+                </a>
+                <ul>
+                    <li><a th:href="@{/user1/demo}">登录</a></li>
+                    <li><a th:href="@{/user1/UserRegister}">注册</a></li>
+                </ul>
             </div>
+        </div>
+        <div th:if="${session.user1!=null}">
+            <div class="lt_login appear"
+                 th:if="${session.user1.userName != null}">
+                <ul>
+                    <li><span th:text="${session.user1.userName}"></span></li>
+                    <li><a th:href="@{/user1/logOut}">退出</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="navFix">
+            <a href="/index/home" class="navMe" th:text="${session.user1.userName}"></a>
+            <a href="/index/write" class="navWrite">发新帖</a>
+        </div>
     </div>
 </header>
 <div class="indexMain">
@@ -55,29 +58,36 @@
         <div class="indexMain_left_con">
             <!--有主题图循环开始-->
             <tr th:each="post : ${postList}">
-            <div class="indexCon_msg">
-                <div class="indexCon_msg_pic"><img src="/images/touxiang.jpg"/></div>
-                <div class="indexCon_msg_detail">
-                    <a th:href="@{/post/getPostByCode(code=${post.code})}">
-                        <div class="indexCon_msg_detail_tittle">
-                            <span>标题</span>
-                            <p th:text="${post.title}"></p>
+                <div class="indexCon_msg">
+                    <div class="indexCon_msg_pic">
+                        <img src="/images/touxiang.jpg"/>
+                    </div>
+                    <div class="indexCon_msg_detail">
+                        <a th:href="@{/post/getPostByCode(code=${post.code})}">
+                            <div class="indexCon_msg_detail_tittle">
+                                <span>标题</span>
+                                <p th:text="${post.title}"></p>
+                            </div>
+                        </a>
+                        <div class="havePic" th:if="${post.icon}">
+                            <a href="">
+                                <div class="havePic_head">
+                                    <img th:src="${'../img/read?path=' + post.icon}"
+                                         onload="javascript:DrawImage(this,110)">
+                                </div>
+                            </a>
                         </div>
-                    </a>
-                    <div class="havePic" th:if="${post.icon}">
-                        <a href=""><div class="havePic_head"> <img th:src="${'../img/read?path=' + post.icon}"></div></a>
+                        <div class="indexCon_msg_detail_other">
+                            <ul>
+                                <li th:text="${post.hostAccount}"></li>
+                                <li th:text="${#dates.format(post.createDate,'yyyy-MM-dd HH:mm:ss')}"></li>
+                                <li th:text="${post.readingAmount}"></li>
+                                <li th:text="${post.replyAmount}"></li>
+                            </ul>
+                        </div>
                     </div>
-                    <div class="indexCon_msg_detail_other">
-                        <ul>
-                            <li th:text="${post.hostAccount}"></li>
-                            <li th:text="${#dates.format(post.createDate,'yyyy-MM-dd HH:mm:ss')}"></li>
-                            <li th:text="${post.readingAmount}"></li>
-                            <li th:text="${post.replyAmount}"></li>
-                        </ul>
-                    </div>
+                    <div class="clear"></div>
                 </div>
-                <div class="clear"></div>
-            </div>
             </tr>
             <!--有主题图循环结束-->
             <!--无主题图循环结束-->
@@ -106,17 +116,20 @@
                 <input type="text" placeholder="请输入关键词"/>
                 <input type="submit" value="搜索"/>
             </div>
-         <div class="indexPublic">
-					<div class="indexPublic_head">本周热议</div>
-					<div class="indexPublic_con">
-						<ul class="weekHot">
-							<tr th:each="PostOrderByList : ${session.PostOrderByList}">
-								<li><a th:href="@{/post/getPostByCode(code=${PostOrderByList.code})}" th:text="${PostOrderByList.title}"></a><span
-									th:text="${PostOrderByList.readingAmount}"></span></li>
-							</tr>
-						</ul>
-					</div>
-				</div>
+            <div class="indexPublic">
+                <div class="indexPublic_head">本周热议</div>
+                <div class="indexPublic_con">
+                    <ul class="weekHot">
+                        <tr th:each="PostOrderByList : ${session.PostOrderByList}">
+                            <li>
+                                <a th:href="@{/post/getPostByCode(code=${PostOrderByList.code})}"
+                                   th:text="${PostOrderByList.title}"></a>
+                                <span th:text="${PostOrderByList.readingAmount}"></span>
+                            </li>
+                        </tr>
+                    </ul>
+                </div>
+            </div>
             <div class="indexPublic">
                 <div class="indexPublic_head">
                     友情链接
@@ -133,34 +146,69 @@
                     </ul>
                 </div>
             </div>
-            <div class="indexWxpublic">
-                <p>打开智慧享联官网</p>
-            </div>
+            <a href="https://ienjoys.com/" target="_blank">
+                <div class="indexWxpublic">
+                    <p>打开智慧享联官网</p>
+                </div>
+            </a>
         </div>
     </div>
     <div class="clear"></div>
 </div>
 <footer class="publicFooter">
-   <p>Copyrigh &copy; 深圳市智慧享联网络技术有限公司  版权所有    粤ICP备05144415-1</p>
+    <p>Copyrigh &copy; 深圳市智慧享联网络技术有限公司 版权所有 粤ICP备05144415-1</p>
 </footer>
 </body>
 </html>
 <script>
-    $(".indexMain_left_btn li a").click(function(){
+    /**
+     * @author chenhuayang
+     * @version 2018/8/30
+     * 图片按宽高比例进行自动缩放
+     * @param ImgObj
+     * 缩放图片源对象
+     * @param maxWidth
+     * 允许缩放的最大宽度
+     * @param maxHeight
+     * 允许缩放的最大高度
+     * @usage
+     * 调用：<img src="图片" onload="javascript:DrawImage(this,*,*)">
+     */
+    function DrawImage(ImgObj, maxHeight) {
+        var image = new Image();
+        //原图片原始地址（用于获取原图片的真实宽高，当<img>标签指定了宽、高时不受影响）
+        image.src = ImgObj.src;
+        // 用于设定图片的宽度和高度
+        var tempWidth;
+        var tempHeight;
+        if (image.width > 0 && image.height > 0) {
+            tempHeight = maxHeight;
+            // 按原图片的比例进行缩放
+            tempWidth = (image.width * maxHeight) / image.height;
+            // 设置页面图片的宽和高
+            ImgObj.height = tempHeight;
+            ImgObj.width = tempWidth;
+            // 提示图片的原来大小
+            ImgObj.alt = image.width + "×" + image.height;
+        }
+    }
+
+    $(".indexMain_left_btn li a").click(function () {
         $(".indexMain_left_btn li a").removeClass("on");
         $(this).addClass("on");
     });
-    window.onscroll=function(){
-        var scrolls=document.body.scrollTop||document.documentElement.scrollTop;
-        var slided=60;
-        if(scrolls>=slided){
+    window.onscroll = function () {
+        var scrolls = document.body.scrollTop || document.documentElement.scrollTop;
+        var slided = 60;
+        if (scrolls >= slided) {
             $(".appear").hide();
             $(".navFix").show();
             $(".ltHead").addClass("navTop");
-        }else{
+        } else {
             $(".appear").show();
             $(".navFix").hide();
             $(".ltHead").removeClass("navTop");
         }
     };
+   
 </script>

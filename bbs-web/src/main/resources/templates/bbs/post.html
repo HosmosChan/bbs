@@ -3,14 +3,18 @@
 <head lang="en">
     <meta charset="UTF-8">
     <title>帖子</title>
+    <!-- 分页部分的样式 -->
+    <link href="/bbs/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/bbs/css/reset.css"/>
     <link rel="stylesheet" href="/bbs/css/public.css"/>
     <link rel="stylesheet" href="/bbs/css/index.css"/>
     <link rel="stylesheet" href="/css/index.css"/>
     <script type="text/javascript" th:src="@{/js/jquery-3.3.1.min.js}"></script>
+    <script type="text/javascript" src="/../../js/searching.js"></script>
     <script type="text/javascript" th:src="@{/js/layer.js}"></script>
-    <script type="text/javascript" th:src="@{/js/person/personalSearching.js}"></script>
-
+    <script src="/bbs/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="/bbs/js/bootstrap-paginator.js" type="text/javascript"></script>
+    <script type="text/javascript" src="../../js/user/modulePost.js"></script>
 </head>
 <body>
 <header class="ltHead">
@@ -19,7 +23,8 @@
         <ul class="headNav">
             <li><a href="/post/index">首页</a></li>
             <tr th:each="module : ${session.moduleList}">
-                <li><a th:href="@{/post/moudelPost(code=${module.code})}" th:text="${module.moduleName}"></a></li>
+               <li><a href="javascript:void(0)" class="moduleClass"
+						th:value="${module.code}" th:text="${module.moduleName}"></a></li>
             </tr>
         </ul>
         <!--未登入开始-->
@@ -63,12 +68,13 @@
                 </div>
                 <div class="clear"></div>
             </div>
-            <div class="tzCon_con" th:text="${post.article}"></div>
-<!--             <div th:if="${post.icon} != null">
-                <div class="havePic">
-                    <img th:src="@{${post.icon}}">
-                </div>
-            </div> -->
+            <!--   帖子内容 -->
+            <div id="postArticle" class="tzCon_con" th:text="${post.article}"></div>
+            <!-- <div th:if="${post.icon} != null">
+               <div class="Pic">
+                   <img th:src="${'../img/read?path=' + post.icon}">
+               </div>
+           </div> -->
             <div class="tzCon_foot">
                 <div class="tzCollect">
                     <input id="praiseOrNot" type="hidden" value="1"></input>
@@ -87,20 +93,26 @@
                 <div class="newPending_head_tittle">最新评论(<span th:text="${post.replyAmount}"></span>)</div>
             </div>
             <!--楼主可以删除评论、自己可以删除自己的评论删除按钮酌情出现-->
-            <tr th:each="comment,commentList : ${listComment}">
+            <tr th:each="comment,commentList : ${page.result}">
                 <div class="newPending_son">
                     <div class="pendPic"><img src="/images/touxiang.jpg"/></div>
                     <div class="pendDetail">
                         <div class="pendDetail_head">
-                            <p><span th:text="${comment.userName}"></span> <span th:text="${#dates.format(comment.commentTime,'yyyy-MM-dd HH:mm:ss')}"></span></p>
+                            <p>
+                                <span th:text="${comment.userName}"></span>
+                                <span th:text="${#dates.format(comment.commentTime,'yyyy-MM-dd HH:mm:ss')}"></span>
+                            </p>
                             <i th:text="${commentList.index}+1+'楼'"></i>
                         </div>
                         <div class="pendDetail_con">
                             <p th:text="${comment.content}"></p>
                         </div>
-                        <div class="pendDetail_btn">
+                        <div class="pendDetail_btn"
+                             th:if="${session.user1.account} == ${post.hostAccount} or ${session.user1.account} == ${comment.userAccount}">
                             <ul>
-                                <li class="delateBtn">删除</li>
+                                <li class="delateBtn"
+                                    th:onclick="'deleteComment(`'+${post.code}+'`,`'+${comment.code}+'`)'">删除
+                                </li>
                             </ul>
                         </div>
                         <div class="pendDetail_action">
@@ -113,15 +125,16 @@
                 </div>
             </tr>
         </div>
+        <div class="clear"></div>
+        <!--   分页 -->
         <div class="indexFooter">
-            <div class="indexFooter_con">
-                <a href="javascript:"><</a>
-                <a href="" class="on">1</a>
-                <a href="">2</a>
-                <a href="">3</a>
-                <a href="javascript:">></a>
+            <div class="container">
+                <div>
+                    <ul style="justify-content: center;" id="page"></ul>
+                </div>
             </div>
         </div>
+        <div class="clear"></div>
         <div class="writePending">
             <div class="newPending_head">
                 <div class="tzHeng"></div>
@@ -166,21 +179,17 @@
             - 搜索帖子
             - author：chenhuayang 2018/8/13
             -->
-            <div id="searching-post-result" class="searching-post-result">
-                <input name="searchingDetails" id="searchingDetails" type="text" value="请输入检索内容" style="color:#9D9D9D;"
-                       onfocus="if(this.value == '请输入检索内容') { this.value = ''; this.style.color='#000000';}"
-                       onblur="if(this.value =='') { this.value = '请输入检索内容'; this.style.color='#9D9D9D';} ">
-                <input name="searchingDetails0" id="searchingDetails0" type="Date" value="请输入检索内容"
-                       style="color:#9D9D9D;"
-                       onfocus="if(this.value == '请输入检索内容') { this.value = ''; this.style.color='#000000';}"
-                       onblur="if(this.value =='') { this.value = '请输入检索内容'; this.style.color='#9D9D9D';} ">
-                <select name="searchingType" id="searchingType">
+            <form action="/post/searchingPostInfo" method="post" id="searching-post-result"
+                  class="searching-post-result">
+                <input name="searchingDetails" class="searchingDetails" id="searchingDetails" style="color:#000;"
+                       placeholder="请输入搜索关键字">
+                <select name="searchingType" class="searchingType" id="searchingType">
                     <option value="1">搜帖子</option>
                     <option value="2">搜作者</option>
                     <option value="3">搜时间</option>
                 </select>
-                <input type="submit" class="searchingPoser" id="searchingPost" value="搜 索">
-            </div>
+                <input type="submit" class="searchingPost" id="searchingPost" value="搜 索">
+            </form>
         </div>
         <div class="indexPublic">
             <div class="indexPublic_head">本周热议</div>
@@ -188,7 +197,8 @@
                 <ul class="weekHot">
                     <tr th:each="PostOrderByList : ${session.PostOrderByList}">
                         <li>
-                            <a th:href="@{/post/getPostByCode/(code=${PostOrderByList.code})}" th:text="${PostOrderByList.title}"></a>
+                            <a th:href="@{/post/getPostByCode/(code=${PostOrderByList.code})}"
+                               th:text="${PostOrderByList.title}"></a>
                             <span th:text="${PostOrderByList.readingAmount}"></span>
                         </li>
                     </tr>
@@ -211,95 +221,152 @@
                 </ul>
             </div>
         </div>
-        <div class="indexWxpublic">
-            <p>打开智慧享联官网</p>
-        </div>
+        <a href="https://ienjoys.com/" target="_blank">
+            <div class="indexWxpublic">
+                <p>打开智慧享联官网</p>
+            </div>
+        </a>
     </div>
     <div class="clear"></div>
 </div>
 <footer class="publicFooter">
-    <p>Copyrigh &copy; 深圳市智慧享联网络技术有限公司  版权所有    粤ICP备05144415-1</p>
+    <p>Copyrigh &copy; 深圳市智慧享联网络技术有限公司 版权所有 粤ICP备05144415-1</p>
 </footer>
 </body>
 </html>
 <script src="/bbs/js/tiezi.js"></script>
 <script>
-var message = "";
-if(message!='[[${message}]]'){
-	message='[[${message}]]';
-	alert(message);
-	message = null;
-};
-function postReport(postCode){
-	layer.open({
-        type: 2,
-        skin: '#e43e20',
-        title: '帖子举报',
-        fix: false,
-        shadeClose: true,
-        area: ['700px', '670px'],
-        content: '/complain/addComplain?code='+postCode,
-    })
-};
-$("#commentContentId").click(function(){
-	var content = $("#commentContent").val();
-	var postCode = $("#postCodeId").val();
-	var account = $("#currentAccount").text();
-	if(content==""){
-		alert("评论不能为空！");
-		return false;
-	}
-	if(account){
-		$.ajax({
-			type: "POST", 
-	        data:{
-	        	"account":account,
-	        	"postCode":postCode,
-	        	"content":content
-	        },
-	        url: "/post/commentPublish",
-	        async: true, 
-	        success: function(data) {
-	        	alert("评论成功");
-	        	window.location.href="/post/getPostByCode/?code="+postCode;
-	        },
-	        error:function(){
-	        	alert("发表评论出错！");
-	        }
-		});
-	}else{
-		alert("评论前请先登录！");
-		window.location.href="/user1/demo"; 
-		
-	}
-});
-/*
-*  点赞
-*
-* */
- function opPraise(postCode){
-	 var flag = $("#praiseOrNot").val();
-	 $.ajax({ 
-			type: "POST", 
-		       data:{
-		    	   "postCode":postCode,
-		    	   "flag":flag
-		       },
-		       dataType:"json",
-		       url: "/about/praise",
-		       async: true, 
-		       success: function(data) {
-		       	$("#praiseAmount").html(data);
-		       },
-		 });
-	 if(flag==1){
-		 background: ;
-		 $("#praise").css("background","url(/bbs/img/tzCollect_hover.png) no-repeat 15px center");	
-		 $("#praiseOrNot").val(-1);
-		 
-	 }else{
-		 $("#praise").css("background","url(/bbs/img/tzCollect.png) no-repeat 15px center");
-		 $("#praiseOrNot").val(1);
-	 }
-};
+    /* 用于发帖成功后的提示消息  autor：wangshixu 2018/8/30  */
+    var message = "";
+    if (message != '[[${message}]]') {
+        message = '[[${message}]]';
+        alert(message);
+        message = null;
+    }
+    /* 帖子内容格式处理，回填帖子 autor：wangshixu 2018/8/30 */
+    {
+        var strHtml = "";
+        strHtml = $("#postArticle").text();
+        $("#postArticle").html(strHtml);
+    }
+
+    function postReport(postCode) {
+        layer.open({
+            type: 2,
+            skin: '#e43e20',
+            title: '举报',
+            fix: false,
+            shadeClose: true,
+            area: ['353px', '369px'],
+            content: '/complain/addComplain?code=' + postCode,
+        })
+    }
+
+    /**
+     * 根据code删除评论
+     *
+     * @author chenhuayang
+     * @version 2018/8/28
+     */
+    function deleteComment(postCode, code) {
+        $.ajax({
+            type: "POST",
+            data: {
+                "postCode": postCode,
+                "code": code
+            },
+            dataType: "json",
+            url: "/about/deleteComment",
+            async: false,
+            success: function (data) {
+                alert("删评论成功");
+                window.location.reload();
+            },
+            error: function () {
+                alert("删评论成功");
+                window.location.reload();
+            }
+        });
+    }
+
+    $("#commentContentId").click(function () {
+        var content = $("#commentContent").val();
+        var postCode = $("#postCodeId").val();
+        var account = $("#currentAccount").text();
+        if (content == "") {
+            alert("评论不能为空！");
+            return false;
+        }
+        if (account) {
+            $.ajax({
+                type: "POST",
+                data: {
+                    "account": account,
+                    "postCode": postCode,
+                    "content": content
+                },
+                url: "/post/commentPublish",
+                async: true,
+                success: function (data) {
+                    alert("评论成功");
+                    window.location.href = "/post/getPostByCode?code=" + postCode;
+                },
+                error: function () {
+                    alert("发表评论出错！");
+                }
+            });
+        } else {
+            alert("评论前请先登录！");
+            window.location.href = "/user1/demo";
+        }
+    });
+
+    /*
+    *  点赞
+    *
+    * */
+    function opPraise(postCode) {
+        var flag = $("#praiseOrNot").val();
+        $.ajax({
+            type: "POST",
+            data: {
+                "postCode": postCode,
+                "flag": flag
+            },
+            dataType: "json",
+            url: "/about/praise",
+            async: true,
+            success: function (data) {
+                $("#praiseAmount").html(data);
+            }
+        });
+        if (flag == 1) {
+            background: ;
+            $("#praise").css("background", "url(/bbs/img/zan_hover.png) no-repeat 15px center");
+            $("#praiseOrNot").val(-1);
+        } else {
+            $("#praise").css("background", "url(/bbs/img/zan.png) no-repeat 15px center");
+            $("#praiseOrNot").val(1);
+        }
+    }
+
+    /*  分页 */
+    $(function () {
+        var postCode = $("#postCodeId").val();
+        var currentPage = [[${page.pageNum}]];
+        var totalPages = [[${page.pages}]];
+        $("#page").bootstrapPaginator({
+            bootstrapMajorVersion: 3, //对应的bootstrap版本
+            currentPage: currentPage, //当前页数
+            numberOfPages: 7, //每次显示页数
+            totalPages: totalPages, //总页数
+            shouldShowPage: true,//是否显示该按钮
+            useBootstrapTooltip: true,
+            //点击事件
+            onPageClicked: function (event, originalEvent, type, page) {
+                window.location.href = "/about/getPostAndCommnetByCodeOfPage?currentPage="
+                    + page + "&postcode=" + postCode;
+            }
+        });
+    });
 </script>

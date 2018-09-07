@@ -18,6 +18,7 @@ public class ComplainVo extends Complain {
     public void setTyper(String typer) {
         this.typer = typer;
     }
+
     /**
      * 用户昵称
      */

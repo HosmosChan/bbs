@@ -21,6 +21,7 @@ public class InterceptorConfig extends WebMvcConfigurerAdapter {
 	public void addInterceptors(InterceptorRegistry registry) {
 		List<String> excludePathPatternsList=new ArrayList<String>();
 		excludePathPatternsList.add("/img/read");
+		excludePathPatternsList.add("/role/login");
 		 excludePathPatternsList.add("/user1/demo");
 		 excludePathPatternsList.add("/user1/UserRegister");
 		 excludePathPatternsList.add("/user1//success");
@@ -30,6 +31,7 @@ public class InterceptorConfig extends WebMvcConfigurerAdapter {
 		 excludePathPatternsList.add("/post/moudelPost");
 		 excludePathPatternsList.add("/user1/login1Submit");
 		 excludePathPatternsList.add("/post/moudelPost");
+		 excludePathPatternsList.add("/post/PostRediect");
 		 excludePathPatternsList.add("/post/listPostByClassCode");
 		 excludePathPatternsList.add("/user1/logOut");
 		 excludePathPatternsList.add("/index/postForJson");

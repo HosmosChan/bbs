@@ -1,5 +1,4 @@
 $(function(){
-	
 	//登录输入框效果
 	$('.form_text_ipt input').focus(function(){
 		$(this).parent().css({

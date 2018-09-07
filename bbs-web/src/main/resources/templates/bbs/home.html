@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head lang="en">
     <meta charset="UTF-8">
     <title>我的主页</title>
@@ -8,9 +8,10 @@
     <link rel="stylesheet" href="/bbs/css/homeHead.css"/>
     <link rel="stylesheet" href="/bbs/css/homePublic.css"/>
     <link rel="stylesheet" href="/bbs/css/home.css"/>
-   	<script type="text/javascript" th:src="@{/js/jquery-3.3.1.min.js}"></script>
-   	<script type="text/javascript" th:src="@{/js/person/person.js}"></script>
-	<script type="text/javascript" th:src="@{/js/layer.js}"></script>
+    <script type="text/javascript" th:src="@{/js/jquery-3.3.1.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/person/person.js}"></script>
+    <script type="text/javascript" th:src="@{/js/layer.js}"></script>
+     <script type="text/javascript" src="../../js/user/modulePost.js"></script>
 </head>
 <body>
 <header class="ltHead">
@@ -19,14 +20,16 @@
         <ul class="headNav">
             <li><a href="/post/index">首页</a></li>
             <tr th:each="module : ${session.moduleList}">
-					<li><a th:href="@{/post/moudelPost(code=${module.code})}" th:text="${module.moduleName}"></a></li>
-				</tr>
+               <li><a href="javascript:void(0)" class="moduleClass"
+						th:value="${module.code}" th:text="${module.moduleName}"></a></li>
+            </tr>
         </ul>
         <!--未登入开始-->
         <div th:if="${session.user1==null}">
             <div class="ltForm appear">
-                <a href=""><img src="img/indexForm_bg.png" alt=""
-                                class="headPic2"/></a>
+                <a href="">
+                    <img src="img/indexForm_bg.png" alt="" class="headPic2"/>
+                </a>
                 <ul>
                     <li><a th:href="@{/user1/demo}">登录</a></li>
                     <li><a th:href="@{/user1/UserRegister}">注册</a></li>
@@ -63,10 +66,14 @@
     <div class="homeCen_right">
         <div class="home_self"><img src="/images/touxiang.jpg"/></div>
         <!--男性为male，女性为female-->
-        <div class="home_name"><p class="male" th:text="${session.user1.userName}"></p></div>
+        <div class="home_name">
+            <p class="male" th:if="${session.user1.sex == 1}" th:text="${session.user1.userName}"></p>
+            <p class="female" th:if="${session.user1.sex == 2}" th:text="${session.user1.userName}"></p>
+            <p class="none" th:if="${session.user1.sex == 0}" th:text="${session.user1.userName}"></p>
+        </div>
         <div class="home_msg">
             <ul>
-            <li>用户身份：</li>
+                <li>用户身份：</li>
                 <li th:text="${session.user1.roleName}"></li>
             </ul>
         </div>

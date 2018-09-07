@@ -1,10 +1,7 @@
 package com.bbs.scheduled;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,13 +24,6 @@ public class ScheduledTask {
 	@Autowired
 	private RoleService roleserviceImpl;
 	
-	//测试      每隔1更新一次更新活跃用户
-	@Scheduled(cron = "0/10 * * * * ?")
-	    public void updata() throws ParseException{
-			int daytime=22;
-			roleserviceImpl.checkBestActivityUser(daytime);
-		}
-		
 	//定时函数一      每隔十分钟更新一次各个模块的每日最佳标题
 	@Scheduled(cron = "0 0/10 * * * ?")
     public void AutoUpdateMaxPraisePostTitle() throws ParseException{

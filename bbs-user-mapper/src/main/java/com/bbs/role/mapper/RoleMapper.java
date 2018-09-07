@@ -23,4 +23,7 @@ public interface RoleMapper {
 
 
 	public User1 getUserById(Integer tid);
+	
+
+	public int getManageNumber();
 }

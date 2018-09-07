@@ -31,6 +31,9 @@ public class User1 implements Serializable{
 
 	/*用户密码*/
 	private String password;
+
+	/*性别*/
+	private Integer sex;
 	
 	/*用户角色*/
 	private String roleName;
@@ -99,6 +102,14 @@ public class User1 implements Serializable{
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public Integer getSex() {
+		return sex;
+	}
+
+	public void setSex(Integer sex) {
+		this.sex = sex;
 	}
 
 	public String getRoleName() {

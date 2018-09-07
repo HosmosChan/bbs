@@ -10,42 +10,43 @@ import com.bbs.exception.BusinessRunException;
 import com.github.pagehelper.Page;
 
 public interface AboutPostService {
-	public List<Comment> getOnePostComments(String postCode);
+    Page<Object> getOnePostComments(String postCode, Integer currentPage, Integer pageSize);
 
-	public Integer saveComment(Comment comment);
+    Integer saveComment(Comment comment);
 
-	public Integer saveModule(Module module);
+    Integer saveModule(Module module);
 
-	public Integer addPraise(String postCode,Integer flag);
-	public List<Module> selectAllModule();
+    Integer addPraise(String postCode, Integer flag);
 
-	public Module selectByIdModule(String code);
+    List<Module> selectAllModule();
 
-	public void updateModel(Module module) throws BusinessRunException;
+    Module selectByIdModule(String code);
 
-	public void insertModuleUser(Module module) throws BusinessRunException;
+    void updateModel(Module module) throws BusinessRunException;
 
-	public void insertModule(Module module);
+    void insertModuleUser(Module module) throws BusinessRunException;
 
-	public List<PostClass> selectALlClass(String code);
+    void insertModule(Module module);
 
-	public void updatePostClass(PostClass post);
+    List<PostClass> selectALlClass(String code);
 
-	public PostClass selectByIdPostClass(String code);
+    void updatePostClass(PostClass post);
 
-	public void insertPostClasss(PostClass postClass) throws BusinessRunException;
-	
-	public List<Module> getAllModule();
+    PostClass selectByIdPostClass(String code);
 
-	public List<PostClass> getAllPostClass();
+    void insertPostClasss(PostClass postClass) throws BusinessRunException;
 
-	public List<PostVo> selectPostClassByCode(String classCode);
+    List<Module> getAllModule();
 
-	public void deletePostClassByCode(String code);
+    List<PostClass> getAllPostClass();
 
-	public void deleteCommentByPostCode(String postCode);
+    List<PostVo> selectPostClassByCode(String classCode);
 
-	Page<Object> selectAllPostClassByCode(String classCode,Integer currentPage,Integer pageSize);
-	
-	
+    void deletePostClassByCode(String code);
+
+    void deleteCommentByPostCode(String postCode);
+
+    Page<Object> selectAllPostClassByCode(String classCode, Integer currentPage, Integer pageSize);
+
+    void deleteComment(String code);
 }

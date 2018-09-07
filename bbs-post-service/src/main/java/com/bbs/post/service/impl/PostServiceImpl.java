@@ -11,7 +11,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import com.bbs.domain.PostClass;
 import com.bbs.exception.BusinessRunException;
 import com.bbs.post.mapper.PostClassMapper;
@@ -28,6 +27,7 @@ public class PostServiceImpl implements PostService {
     private PostMapper postMapper;
     @Autowired
     private PostClassMapper postClassMapper;
+
     /**
      * 保存帖子
      *
@@ -44,8 +44,8 @@ public class PostServiceImpl implements PostService {
             postVo.setPostClassCode(postClass.getCode());
             postVo.setModuleCode(postClass.getModuleCode());
             postVo.setPublishDate(new Date());
-            postVo.setCreateBy("admin");
             postVo.setCreateDate(new Date());
+            postVo.setCreateBy("Admin");
             postMapper.savePost(postVo);
         } catch (Exception e) {
             logger.info("保存帖子异常", e);
@@ -54,7 +54,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public Page<Object> getMyPost(String account,Integer currentPage) {
+    public Page<Object> getMyPost(String account, Integer currentPage) {
         Page<Object> page = PageHelper.startPage(currentPage, 10);
         postMapper.getMyPost(account);
         return page;
@@ -71,38 +71,27 @@ public class PostServiceImpl implements PostService {
     }
 
     /**
-     * 根据标题搜索帖子数据访问层
+     * 搜索帖子数据访问层
      *
      * @author chenhuayang
      * @version 2018/7/19
+     * @version 2018/9/1
      */
     @Override
-    public List<PostVo> searchingPostInfo1(String title) {
-        // TODO Auto-generated method stub
-        return postMapper.searchingPostInfo1(title);
+    public Page<Object> searchingPostInfo(String searchingDetails, Integer searchingType, Integer currentPage, Integer pageSize) {
+        Page<Object> page = PageHelper.startPage(currentPage, pageSize);
+        if (searchingType == 1) {
+            postMapper.searchingPostInfo1(searchingDetails);
+        }
+        if (searchingType == 2) {
+            postMapper.searchingPostInfo2(searchingDetails);
+        }
+        if (searchingType == 3) {
+            postMapper.searchingPostInfo3(searchingDetails);
+        }
+        return page;
     }
-    /**
-     * 根据作者搜索帖子数据访问层
-     *
-     * @author chenhuayang
-     * @version 2018/7/19
-     */
-    @Override
-    public List<PostVo> searchingPostInfo2(String userName) {
-        // TODO Auto-generated method stub
-        return postMapper.searchingPostInfo2(userName);
-    }
-    /**
-     * 根据发表时间搜索帖子数据访问层
-     *
-     * @author chenhuayang
-     * @version 2018/7/19
-     */
-    @Override
-    public List<PostVo> searchingPostInfo3(String publishDate) {
-        // TODO Auto-generated method stub
-        return postMapper.searchingPostInfo3(publishDate);
-    }
+
     /**
      * 根据code获取帖子的详情
      * autor：wangshixu 2018/7/23
@@ -115,17 +104,17 @@ public class PostServiceImpl implements PostService {
     @Override
     public String addPostClass(String modulecode, String className) {
         // TODO Auto-generated method stub
-    	String msg = null;
+        String msg = null;
         System.out.println(postMapper.getPostClassName(className).size());
         if (postMapper.getPostClassName(className).size() == 0)//如果没有在module模块下找到该类贴
         {
-             try {
+            try {
                 PostClass postclass = new PostClass();
                 postclass.setCode(GETuuid.getUUID());
                 postclass.setModuleCode(modulecode);
                 postclass.setClassName(className);
-                postclass.setCreateBy("admin");
                 postclass.setCreateDate(new Date());
+                postclass.setCreateBy("admin");
                 postMapper.AddPostClassName(postclass);
                 msg = "succeed";
             } catch (Exception e) {
@@ -162,9 +151,8 @@ public class PostServiceImpl implements PostService {
     @Override
     public void deletePostByCode(String postCode) {
         postMapper.deletePostByCode(postCode);
-        
     }
-    
+
     /**
      * 添加阅读量统计
      *
@@ -178,50 +166,55 @@ public class PostServiceImpl implements PostService {
         map.put("reading", reading);
         postMapper.addReadingAmount(map);
     }
-    /***********************添加阅读量统计   结束**************************/
 
-	@Override
-	public List<PostVo> selectPostOrderBy6() {
-		List<PostVo> PostOrderByList = postMapper.selectPostOrderBy6();
-		return PostOrderByList;
-	}
+    @Override
+    public List<PostVo> selectPostOrderBy6() {
+        List<PostVo> PostOrderByList = postMapper.selectPostOrderBy6();
+        return PostOrderByList;
+    }
+
     /**
      * 添加阅读量统计
      *
      * @author wangshixu
      * @version 2018/8/13 18:26
      */
-	@Override
-	public Page<Object> getAllPostPage( Integer currentPage, Integer pageSize) {
-		Page<Object> page = PageHelper.startPage(currentPage, pageSize);
-		postMapper.getAllPost();
-		return page;
-	}
+    @Override
+    public Page<Object> getAllPostPage(Integer currentPage, Integer pageSize) {
+        Page<Object> page = PageHelper.startPage(currentPage, pageSize);
+        postMapper.getAllPost();
+        return page;
+    }
 
-	@Override
-	public void updatePostByname(String name, String code) {
-		// TODO Auto-generated method stub
-		Map<String, Object> map = new HashMap<String, Object>();
+    @Override
+    public void updateComment(PostVo postVo) {
+        postMapper.updatePost(postVo);
+    }
+
+    @Override
+    public void updatePostByname(String name, String code) {
+        // TODO Auto-generated method stub
+        Map<String, Object> map = new HashMap<String, Object>();
         map.put("name", name);
-        map.put("code",code);
-		postMapper.updatepostclassByname(map);
-	}
+        map.put("code", code);
+        postMapper.updatepostclassByname(map);
+    }
 
-	@Override
-	public PostClass getpostclassByname(String name) {
-		// TODO Auto-generated method stub
-		return postMapper.getpostclassByname(name);
-	}
+    @Override
+    public PostClass getpostclassByname(String name) {
+        // TODO Auto-generated method stub
+        return postMapper.getpostclassByname(name);
+    }
 
-	@Override
-	public String getmoduleCodebyAccount(String Account) {
-		// TODO Auto-generated method stub
-		return postMapper.getmoduleCodebyAccount(Account);//得到帖子类;
-	}
+    @Override
+    public String getmoduleCodebyAccount(String Account) {
+        // TODO Auto-generated method stub
+        return postMapper.getmoduleCodebyAccount(Account);//得到帖子类;
+    }
 
-	@Override
-	public String getmoduleCodebypostCode(String postCode) {
-		// TODO Auto-generated method stub
-		return postMapper.getmoduleCodebypostCode(postCode);
-	}
+    @Override
+    public String getmoduleCodebypostCode(String postCode) {
+        // TODO Auto-generated method stub
+        return postMapper.getmoduleCodebypostCode(postCode);
+    }
 }

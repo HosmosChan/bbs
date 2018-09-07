@@ -23,5 +23,9 @@
 		select * from bbs.bbs_user_info where id=#{value}
 	</select>
 	
+	<select id="getManageNumber"  resultType="int">
+	SELECT COUNT(*) FROM bbs.bbs_user_info WHERE roleName ='管理员';
+	</select>
+	
 
 </mapper>

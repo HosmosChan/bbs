@@ -11,18 +11,21 @@ public interface ComplainMapper {
      *
      * @author chenhuayang
      * @version 2018/7/20
+     * @version 2018/9/6
      */
-    public Integer saveComplain(ComplainVo complainVo);
+    void saveComplain(ComplainVo complainVo);
 
-    public List<ComplainVo> getComplainType(ComplainVo complainVo);
+    List<ComplainVo> getComplainType(ComplainVo complainVo);
 
-    public PostVo postInfo(String code);
+    PostVo postInfo(String code);
 
-    public List<ComplainVo> getComplain(String status);
+    List<ComplainVo> getComplain(String status);
 
-    public ComplainVo findComplainByCode(String code);
+    ComplainVo findComplainByCode(String code);
 
-    public void updateComplainByCode(ComplainVo ignoreComplain);
+    void updateComplainByCode(ComplainVo ignoreComplain);
 
-    public void deleteComplain(String code);
+    void deleteComplainAndPostAndComment(String code);
+
+    void deleteComplain(String code);
 }

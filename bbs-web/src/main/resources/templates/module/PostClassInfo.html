@@ -193,14 +193,14 @@ function deletePost(postCode) {
             "postCode": postCode
         },
         dataType: "json",
-        url: "/post/deletePost",
+        url: "/complain/deletePost",
         async: false,
         success: function (data) {
-            alert("删帖成功1！！");
+            alert("删帖成功！");
             window.location.reload();
         },
         error: function () {
-            alert("删帖成功2");
+            alert("删帖成功！");
             window.location.reload();
         }
     });

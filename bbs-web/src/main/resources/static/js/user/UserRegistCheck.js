@@ -1,6 +1,13 @@
 $(function(){
 	 /*<![CDATA[*/
+  
 	var loginButton = $("#UserRegist");
+	  $("body").keydown(function(event) {
+	    	 if (event.keyCode == "13") {//keyCode=13是回车键
+	    		 loginButton.click();
+	    	 }
+	    });
+	  
 	  loginButton.click(function(){
 		var account = $('input[name="account"]').val();
 		var userName = $('input[name="userName"]').val();

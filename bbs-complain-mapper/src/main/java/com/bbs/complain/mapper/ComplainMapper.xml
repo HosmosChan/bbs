@@ -8,9 +8,6 @@
     - author:chenhuayang 2018/7/20
     -->
     <insert id="saveComplain" parameterType="ComplainVo">
-        <selectKey resultType="Integer" order="AFTER" keyProperty="tid">
-            SELECT LAST_INSERT_ID()
-        </selectKey>
         INSERT INTO
         bbs.bbs_complain_info(code,typeCode,postCode,postTitle,message,complainant,status,createBy,createDate)
         values(#{code},#{typeCode},#{postCode},#{postTitle},#{message},#{complainant},#{status},#{createBy},#{createDate});
@@ -27,7 +24,8 @@
         </if>
     </select>
     <select id="getComplain" parameterType="String" resultType="ComplainVo">
-        SELECT a.*,b.typer,d.userName FROM ( bbs.bbs_complain_info a LEFT JOIN bbs.bbs_complain_type b ON a.typeCode=b.code) LEFT JOIN bbs.bbs_user_info d ON a.complainant=d.account WHERE 1=1
+        SELECT a.*,b.typer,d.userName FROM ( bbs.bbs_complain_info a LEFT JOIN bbs.bbs_complain_type b ON
+        a.typeCode=b.code) LEFT JOIN bbs.bbs_user_info d ON a.complainant=d.account WHERE 1=1
         <if test="_parameter != null  and _parameter != '' ">
             AND a.status = #{status}
         </if>
@@ -61,7 +59,15 @@
     - author chenhuayang
     - version 2018/8/16
     -->
-    <delete id="deleteComplain" parameterType="String">
+    <delete id="deleteComplainAndPostAndComment" parameterType="String">
 		DELETE a,b,d FROM ( bbs.bbs_post_info AS a LEFT JOIN bbs.bbs_complain_info AS b ON a.code = b.postCode) LEFT JOIN bbs.bbs_comment_info AS d ON a.code = d.postCode WHERE a.code = #{code}
+	</delete>
+    <!--
+    - 根据code删除投诉信息
+    - author chenhuayang
+    - version 2018/9/6
+    -->
+    <delete id="deleteComplain" parameterType="String">
+		DELETE FROM bbs.bbs_complain_info WHERE code = #{code}
 	</delete>
 </mapper>

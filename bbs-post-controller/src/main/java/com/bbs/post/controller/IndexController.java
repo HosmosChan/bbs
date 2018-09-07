@@ -7,6 +7,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
@@ -59,25 +60,27 @@ public class IndexController {
      * author: wangshixu 2018/8/9
      * 
      * */
-	@ResponseBody
     @RequestMapping(value = "/postForJson")
-    public List<Object> indexPage(Integer currentPage) {
+    public ModelAndView indexPage(Integer currentPage, ModelAndView MV) {
     	if(currentPage == null)currentPage = 1;
     	Integer pageSize = 10;
     	Page<Object> page =  postService.getAllPostPage(currentPage,pageSize);
-    	return page.getResult();
+    	MV.addObject("page", page);
+    	MV.setViewName("bbs/index");
+    	return MV;
     }
     /*
      * 进入论坛首页
      * author: wangshixu 2018/8/15
      * 
      * */
-	@ResponseBody
 	@RequestMapping(value="/PostByClassCodeForJson")
-	public List<Object> listPostByClassCode(HttpServletRequest request,String classCode,Integer currentPage) {
+	public ModelAndView listPostByClassCode(ModelAndView MV, String classCode, Integer currentPage) {
 		if(currentPage == null)currentPage = 1;
     	Integer pageSize = 10;
     	Page<Object> page = aboutPostService.selectAllPostClassByCode(classCode,currentPage,pageSize);
-		return page.getResult();
+    	MV.addObject("page", page);
+    	MV.setViewName("bbs/moudelPost");
+		return MV;
 	}
 }

@@ -1,32 +1,43 @@
 <!--
-----搜索帖子页面
+----搜索投诉信息页面
 ----author:chenhuayang
-----version:2018/7/23
-----version:2018/7/25
-----version:2018/8/13
-----version:2018/8/15
+----version:2018/8/20
 -->
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>投诉信息汇总</title>
-    <script type="text/javascript" src="/js/jquery-3.3.1.min.js"></script>
-    <script type="text/javascript" src="/js/complain/searchingComplain.js"></script>
-    <link href="/css/css.css" type="text/css" rel="stylesheet"/>
-    <link href="/css/main.css" type="text/css" rel="stylesheet"/>
-    <link rel="shortcut icon" href="/images/main/favicon.ico"/>
-    <link rel="stylesheet" type="text/css" href="/css/complainDetail.css"/>
+    <script type="text/javascript" src="/../../js/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="/../../js/complain/searchingComplain.js"></script>
+    <link rel="stylesheet" type="text/css" href="/../../css/css.css"/>
+    <link rel="stylesheet" type="text/css" href="/../../css/main.css"/>
+    <link rel="shortcut icon" href="/../../images/main/favicon.ico"/>
+    <link rel="stylesheet" type="text/css" href="/../../css/complainDetail.css"/>
 </head>
 <body>
-<table width="99%" border="0" cellspacing="0" cellpadding="0" id="searchmain">
+<table class="complainMainTable" cellspacing="0" cellpadding="0" id="searchmain">
     <tr>
-        <td width="99%" align="left" valign="top">您的位置：投诉管理</td>
+        <td class="td1" align="left" valign="top">您的位置：投诉管理</td>
     </tr>
     <tr>
         <td align="left" valign="top">
-            <table width="100%" border="0" cellspacing="0" cellpadding="0" id="main-tab">
+            <table width="100%" border="0" cellspacing="0" cellpadding="0" id="search">
+                <tr>
+                    <td width="90%" align="left" valign="middle">
+                        <span>
+                            <a class="ignored" href="/../../complainIgnored/searchingComplainIgnored"
+                               onFocus="this.blur()">被忽视的记录</a>
+                        </span>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+    <tr>
+        <td align="left" valign="top">
+            <table cellspacing="0" cellpadding="0" id="main-tab">
                 <tr>
                     <th align="center" valign="middle" class="borderright">编号</th>
                     <th align="center" valign="middle" class="borderright">投诉内容</th>
@@ -35,18 +46,25 @@
                     <th align="center" valign="middle" class="borderright">投诉者</th>
                     <th align="center" valign="middle">操作</th>
                 </tr>
-                <tr th:each="complainlist,complain : ${page.result}" onMouseOut="this.style.backgroundColor='#ffffff'" onMouseOver="this.style.backgroundColor='#edf5ff'">
-                    <td align="center" valign="middle" class="borderright borderbottom" th:text="${complain.index}+1"></td>
-                    <td align="center" valign="middle" class="borderright borderbottom" th:text="${complainlist.message}"></td>
-                    <td align="center" valign="middle" class="borderright borderbottom" th:text="${complainlist.typer}"></td>
-                    <td align="center" valign="middle" class="borderright borderbottom" th:text="${complainlist.postTitle}">
-                        <a th:href="'/post/getPostByCode/?code='+${complainlist.postCode}" target="_blank"></a>
+                <tr th:each="complainlist,complain : ${page.result}" onMouseOut="this.style.backgroundColor='#ffffff'"
+                    onMouseOver="this.style.backgroundColor='#edf5ff'">
+                    <td align="center" valign="middle" class="borderright borderbottom"
+                        th:text="${complain.index}+1"></td>
+                    <td align="center" valign="middle" class="borderright borderbottom"
+                        th:text="${complainlist.message}"></td>
+                    <td align="center" valign="middle" class="borderright borderbottom"
+                        th:text="${complainlist.typer}"></td>
+                    <td align="center" valign="middle" class="borderright borderbottom">
+                        <a th:href="@{'/../../post/getPostByCode?code='+${complainlist.postCode}}" target="_blank"
+                           th:text="${complainlist.postTitle}"></a>
                     </td>
-                    <td align="center" valign="middle" class="borderright borderbottom" th:text="${complainlist.userName}"></td>
+                    <td align="center" valign="middle" class="borderright borderbottom"
+                        th:text="${complainlist.userName}+' || '+${complainlist.complainant}">
+                    </td>
                     <td align="center" valign="middle" class="borderbottom">
-                        <a th:href="@{/complain/ignoreComplain(code=${complainlist.code})}">忽视</a>
+                        <a th:href="@{/../../complain/ignoreComplain(code=${complainlist.code})}">忽视</a>
                         <span class="gray">&nbsp;|&nbsp;</span>
-                        <a th:href="@{/complain/deleteComplain(code=${complainlist.postCode})}">删除帖子（永久）</a>
+                        <a th:href="@{/../../complain/deleteComplainAndPostAndComment(code=${complainlist.postCode})}">删除帖子（永久）</a>
                     </td>
                 </tr>
             </table>
@@ -55,9 +73,8 @@
 </table>
 <div valign="top" class="fenye">
     <span id="btn0"> </span>
-    <input id="pageSize" type="text" size="1" maxlength="2" value="getDefaultValue()"/>
+    <input id="pageSize" type="text" size="1" maxlength="10" value="getDefaultValue()" readonly="readonly"/>
     <a> 条 </a>
-    <a href="#" id="pageSizeSet">设置</a>
     <span id="sjzl"> </span>
     <a href="#" id="btn1" target="mainFrame" onFocus="this.blur()">首页</a>
     <a href="#" id="btn2" target="mainFrame" onFocus="this.blur()">上一页</a>

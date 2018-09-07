@@ -5,9 +5,7 @@ import java.util.List;
 import com.bbs.domain.PostClass;
 
 public interface PostClassMapper {
+    List<PostClass> getAllPostClass();
 
-	List<PostClass> getAllPostClass();
-
-	PostClass getPostClassByClassName(String postClassName);
-
+    PostClass getPostClassByClassName(String postClassName);
 }

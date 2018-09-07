@@ -6,7 +6,9 @@ import com.bbs.domain.User;
 import com.bbs.domain.UserVo;
 
 public interface UserMapper {
-	public User getUser(UserVo userVo);
-	public Integer saveUser(User user);
-	public List<User> listUser(UserVo userVo);
+    User getUser(UserVo userVo);
+
+    Integer saveUser(User user);
+
+    List<User> listUser(UserVo userVo);
 }

@@ -1,65 +1,128 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <html>
-	<head>
-		<meta charset="utf-8">
-		<title>BBS论坛登录</title>
-		<link rel="stylesheet" href="/css/reset.css" />
-		<link rel="stylesheet" href="/css/common.css" />
-		<script type="text/javascript"  th:src="@{/js/jquery-3.3.1.min.js}"></script>
-        <script type="text/javascript"  th:src="@{/js/user/demo.js}"></script>
-	</head>
-	<body>
-		<div class="wrap login_wrap">
-			<div class="content">
-				
-				<div class="logo"></div>
-				
-				<div class="login_box">	
-					
-					<div class="login_form">
-						<div class="login_title">
-							登录
-						</div>
-						<form action="login1Submit" method="post" id="form">
-							
-							<div class="form_text_ipt">
-								<input name="account" type="text" placeholder="手机号/邮箱">
-							</div>
-							<div class="ececk_warning"><span>数据不能为空</span></div>
-							<div class="form_text_ipt">
-								<input name="password" type="password" placeholder="密码">
-							</div>
-							<div class="ececk_warning"><span>数据不能为空</span></div>
-							<div class="form_check_ipt">
-								<div class="left check_left">
-									<label><input name="" type="checkbox"> 下次自动登录</label>
-								</div>
-								<div class="right check_right">
-									
-								</div>
-							</div>
-							<div class="form_btn">
-							
-								<button type="button" id="demoLogin">登录</button>
-								
-							</div>
-							<div class="form_reg_btn">
-								<span>还没有帐号？</span><a href="./UserRegister">马上注册</a>
-							</div>
-						</form>
-						 <div class="other_login">
-							 <div class="left other_left">
-								<span></span>
-							</div>
-							<div class="right other_right">
-								<span></span>
-							</div> 
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<script type="text/javascript" src="/js/jquery.min.js" ></script>
-		<script type="text/javascript" src="/js/common.js" ></script>
-	</body>
+<head>
+    <meta charset="utf-8">
+    <title>BBS论坛登录</title>
+    <link rel="stylesheet" href="/css/reset.css"/>
+    <link rel="stylesheet" href="/css/common.css"/>
+    <script type="text/javascript" th:src="@{/js/jquery-3.3.1.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/user/demo.js}"></script>
+</head>
+<body>
+<div class="wrap login_wrap">
+    <div class="content">
+        <div class="logo"></div>
+        <div class="login_box">
+            <div class="login_form">
+                <div class="login_title">
+                    登录
+                </div>
+                <form action="login1Submit" method="post" id="form">
+                    <div class="form_text_ipt">
+                        <input name="account" type="text" placeholder="手机号/邮箱">
+                    </div>
+                    <div class="ececk_warning"><span>数据不能为空</span></div>
+                    <div class="form_text_ipt">
+                        <input name="password" type="password" placeholder="密码">
+                    </div>
+                    <div class="ececk_warning"><span>数据不能为空</span></div>
+                    <div class="v_code">
+                        <div class="input_code">
+                            <label for="inputCode">验证码：</label>
+                            <input type="text" id="inputCode"/>
+                            <canvas id="canvas" width="150" height="50"></canvas>
+                        </div>
+                        <span id="checkseccodeverify_cSC149v3">
+                            <img src="" class="vm" width="16" height="16" style="display: none">
+                        </span>
+                    </div>
+                    <div class="form_check_ipt">
+                        <div class="left check_left">
+                            <label><input name="" type="checkbox"> 下次自动登录</label>
+                        </div>
+                        <div class="right check_right">
+                        </div>
+                    </div>
+                    <div class="form_btn">
+                        <button type="button" id="demoLogin">登录</button>
+                    </div>
+                    <div class="form_reg_btn">
+                        <span>还没有帐号？</span><a href="./UserRegister">马上注册</a>
+                    </div>
+                </form>
+                <div class="other_login">
+                    <div class="left other_left">
+                        <span></span>
+                    </div>
+                    <div class="right other_right">
+                        <span></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="/js/jquery.min.js"></script>
+<script type="text/javascript" src="/js/common.js"></script>
+<script type="text/javascript">
+    function randomNum(min, max) {
+        return Math.floor(Math.random() * (max - min) + min);
+    }
+    var code1;
+
+    function randomColor(min, max) {
+        var r = randomNum(min, max);
+        var g = randomNum(min, max);
+        var b = randomNum(min, max);
+        return "rgb(" + r + "," + g + "," + b + ")";
+    }
+    document.getElementById("canvas").onclick = function(e) {
+        e.preventDefault();
+        drawPic();
+    };
+
+    function drawPic() {
+        var $canvas = document.getElementById("canvas");
+        var str = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        var code = "";
+        var num = 4;                                    //字符位数
+        var width = $canvas.width;
+        var height = $canvas.height;
+        var ctx = $canvas.getContext("2d");
+        ctx.textBaseline = "bottom";
+        ctx.fillStyle = randomColor(180, 240);
+        ctx.fillRect(0, 0, width, height);
+        for (var i = 0; i < num; i++) {
+            var x = (width - 10) / num * i + 10;
+            var y = randomNum(height / 2, height);
+            var deg = randomNum(-45, 45);
+            var txt = str[randomNum(0, str.length)];
+            code += txt;
+            ctx.fillStyle = randomColor(10, 100);
+            ctx.font = randomNum(16, 40) + "px SimHei";
+            ctx.translate(x, y);
+            //ctx.rotate(deg * Math.PI / 180);                      //翻转
+            ctx.fillText(txt, 0, 0);
+            //ctx.rotate(-deg * Math.PI / 180);                     //翻转
+            ctx.translate(-x, -y);
+        }
+        for (var i = 0; i < num; i++) {
+            ctx.strokeStyle = randomColor(90, 180);
+            ctx.beginPath();
+            ctx.moveTo(randomNum(0, width), randomNum(0, height));
+            ctx.lineTo(randomNum(0, width), randomNum(0, height));
+            ctx.stroke();
+        }
+        for (var i = 0; i < num * 10; i++) {
+            ctx.fillStyle = randomColor(0, 255);
+            ctx.beginPath();
+            ctx.arc(randomNum(0, width), randomNum(0, height), 1, 0, 2 * Math.PI);
+            ctx.fill();
+        }
+        code1 = code;
+        return code;
+    }
+    drawPic();
+</script>
+</body>
 </html>

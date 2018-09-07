@@ -3,8 +3,7 @@ body{
 }
 .writeCon{
     width: 1200px;
-    height: 840px;
-    margin: 0 auto;
+    margin: 0 auto 40px auto;
     margin-top: 14px;
     background-color: #fff;
     border-radius: 10px;

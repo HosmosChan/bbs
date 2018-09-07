@@ -13,7 +13,7 @@ public class UserVo1 {
 	
 	private static final long serialVersionUID = -3280429925480749144L;
 	String message;
-	
+
 	User1 user1;
 	
 	public User1 getUser1() {

@@ -23,4 +23,12 @@
 		DELETE FROM bbs.bbs_comment_info 
 		WHERE postCode = #{postCode}
 	</delete>
+	<!--
+    - 根据code删除评论
+    - author chenhuayang
+    - version 2018/8/28
+    -->
+	<delete id="deleteComment" parameterType="String">
+		DELETE FROM bbs.bbs_comment_info WHERE code = #{code}
+	</delete>
 </mapper>

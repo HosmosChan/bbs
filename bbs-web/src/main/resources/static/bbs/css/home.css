@@ -37,6 +37,9 @@
 .home_name p.female{
     background:url("../img/female.png") no-repeat right center ;
 }
+.home_name p.none{
+    background:url("../img/none.png") no-repeat right center ;
+}
 .home_msg{
     width: 100%;
     height: 30px;

@@ -13,10 +13,33 @@
 	<select id="getData" parameterType="String" resultType="Data">
         select * from bbs.bbs_sumdata_table WHERE day=#{time} and moduleId=#{moduleId}
     </select>
+    
+    
+    
+    
 <!--     根据模块Id和时间返回所有用户的发帖和登录记录 -->
     <select id="getUserByModuleId" parameterType="java.util.Map" resultType="UserLiveness">
-        select * from bbs.bbs_user_liveness WHERE loginModuleId=#{code} and loginDate=#{selectdate}
+        select * from bbs.bbs_user_liveness WHERE loginModuleId=#{code} and 
+        loginDate like CONCAT('%', #{selectdate},'%')
     </select>
+ <!--     根据模块Id和时间返回所有用户的发帖和登录记录 -->
+    <select id="findmsg" parameterType="java.util.Map" resultType="String">
+        select distinct userTid from bbs.bbs_user_liveness WHERE loginModuleId=#{code} and 
+        loginDate like CONCAT('%', #{selectdate},'%')
+    </select>
+ <!--     根据模块Id和时间返回所有用户的发帖和登录记录 -->
+    <select id="sumliveness" parameterType="java.util.Map" resultType="Integer">
+        select SUM(userLiveness) from bbs.bbs_user_liveness WHERE loginModuleId=#{code} and 
+        loginDate like CONCAT('%', #{selectdate},'%') and userTid=#{userTid}
+    
+    </select>
+    
+    
+    
+    
+    
+    
+    
 <!--     获得当天用户在某模块的发贴和登录纪录 -->
      <select id="getLoginUser" parameterType="java.util.Map" resultType="UserLiveness">
         select * from bbs.bbs_user_liveness WHERE userTid=#{userId} and loginDate=#{date} and loginModuleId=#{loginModuleId}

@@ -9,30 +9,26 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>帖子投诉</title>
-    <script type="text/javascript" src="/js/jquery-3.3.1.min.js"></script>
-    <script type="text/javascript" src="/js/complain/complainPublication.js"></script>
+    <script type="text/javascript" src="/../../js/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="/../../js/complain/complainPublication.js"></script>
+    <link rel="stylesheet" type="text/css" href="/../../css/complainPublication.css"/>
 </head>
 <body>
 <div>
-    <form action="/complain/saveComplain" method="post">
-        <input id="complainant" name="complainant" class="complainant" readonly="readonly" th:value="${session.user1.account}" style="color: #9D9D9D"
+    <form action="/../../complain/saveComplain" method="post">
+        <input id="complainant" name="complainant" class="complainant" th:value="${session.user1.account}"
                hidden="hidden">
-        <input id="postCode" name="postCode" class="postCode" readonly="readonly" th:value="${postInfo.code}" style="color: #9D9D9D"
-               hidden="hidden">
-        <label>帖子标题：</label>
-        <input id="postTitle" name="postTitle" class="postTitle" readonly="readonly" th:value="${postInfo.title}" style="color: #9D9D9D">
-        <br/>
-        <label>帖子作者：</label>
-        <input id="postHost" name="postHost" class="postHost" readonly="readonly" th:value="${postInfo.userName}" style="color: #9D9D9D">
-        <br/>
-        <label>投诉内容描述</label>
-        <textarea id="message" name="message" class="message" bindcursor="true"
-                  style="width: 534px; padding: 0px 15px; overflow-y: scroll; height: 140px;"></textarea>
-        <br/>
-        <label>投诉类型</label>
-        <select class="typeCode" name="typeCode" id="typeCode">
-        </select>
-        <br/>
+        <input id="postCode" name="postCode" class="postCode" th:value="${postInfo.code}" hidden="hidden">
+        <label class="postTitleLabel">帖子标题：</label>
+        <input id="postTitle" name="postTitle" class="postTitle" readonly="readonly" th:value="${postInfo.title}"><br/>
+        <label class="postHostLabel">帖子作者：</label>
+        <input id="postHost" name="postHost" class="postHost" readonly="readonly" th:value="${postInfo.userName}"><br/>
+        <label class="messageLabel">投诉内容：</label>
+        <textarea id="message" name="message" class="message" bindcursor="true" maxlength="20"
+                  onkeyup="this.value=this.value.substring(0, 20)" placeholder="最多可输入20字"></textarea>
+        <span id="text-count">0</span>/20<br/>
+        <label class="typeCodeLabel">投诉类型：</label>
+        <select class="typeCode" name="typeCode" id="typeCode"></select><br/>
         <input type="submit" class="saveComplain" id="saveComplain" value="提 交">
     </form>
 </div>

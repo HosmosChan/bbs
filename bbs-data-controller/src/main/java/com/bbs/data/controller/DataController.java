@@ -16,11 +16,13 @@ import com.bbs.data.service.DataService;
 import com.bbs.domain.Data;
 import com.bbs.domain.User1;
 import com.bbs.post.service.PostService;
+import com.bbs.role.service.RoleService;
 import com.bbs.utils.ExportExcel;
 
 
 /**
- * Hello world!
+ * author ：sitong
+ * 数据显示、数据导出
  *
  */
 @Controller
@@ -31,6 +33,20 @@ public class DataController
 	private DataService dataserviceImpl;
 	@Autowired
 	private PostService postserviceImpl;
+	@Autowired
+	private RoleService roleserviceImpl;
+	@RequestMapping(value="/login")
+	public String login() {
+		
+		return "data/login";
+	}
+	@RequestMapping(value="/testScheduled")
+	public String testScheduled() {
+		System.err.println("开始更新月数据");
+		roleserviceImpl.checkMonthActivityUser();
+		System.err.println("更新月数据成功");
+		return "data/login";
+	}
 	/*
 	 * 获取数据报表
 	 * */
@@ -81,10 +97,4 @@ public class DataController
 		ee.exportExcel(headers,listdata,fileName,response);
 		return "data/login";
 	}
-	/*
-	 * 手动更新所有自动更新数据 
-	 * 模拟某一用户登录                             在用户活跃度表格新增该用户在该模块的当天登录记录
-	 * 模拟某天半夜0点                              在报表中新增当天的数据记录
-	 * 模拟每隔一段时间更新报表数据      更新各个模块的每日最佳标题、每周每月最佳活跃用户
-	 * */
 }

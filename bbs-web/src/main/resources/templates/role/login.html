@@ -4,13 +4,15 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>后台管理登录界面</title>
     <link href="/css/alogin.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript"  th:src="@{/js/jquery-3.3.1.min.js}"></script>
+       <script type="text/javascript"  th:src="@{/js/user/manageLogin.js}"></script>
     <style>
     #sub{width:100px;height:35px;line-height:35px;background:transparent url(/images/login/btnlogin.gif) no-repeat;border:none;}
     
     </style>
 </head>
 <body>
-    <form id="form1" runat="server" th:action="@{/role/loginAttest}" method="post">
+    <form id="form1" runat="server" method="post">
     <div class="Main">
         <ul>
             <li class="top"></li>
@@ -32,10 +34,10 @@
             <li class="topE"></li>
             <li class="middle_A"></li>
             <li class="middle_B"></li>
-            <li class="middle_C"><span class="btn"><input type="submit"  id="sub" value=""/></span></li>
+            <li class="middle_C"><span class="btn"><button type="button" id="demoLogin">登录</button></span></li>
             <li class="middle_D"></li>
             <li class="bottom_A"></li>
-            <li class="bottom_B">网站后台管理系统&nbsp;&nbsp;www.php.com</li>
+            <li class="bottom_B">BBS论坛后台管理系统</li>
         </ul>
     </div>
     </form>

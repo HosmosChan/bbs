@@ -1,4 +1,5 @@
 package com.bbs.user.controller;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -9,6 +10,7 @@ import com.bbs.data.service.DataService;
 import com.bbs.domain.User1;
 import com.bbs.domain.UserVo1;
 import com.bbs.user.service.User1Service;
+import com.bbs.utils.IpUtil;
 
 @Controller
 @RequestMapping(value = "user1")
@@ -29,20 +31,23 @@ public class User1Controller {
 	@ResponseBody
 	@SuppressWarnings("finally")
 	@RequestMapping(value = "/login1Submit")
-	public String login1Submit(String account, String password, HttpSession session) throws Exception {
+	public String login1Submit(String account, String password, HttpSession session,HttpServletRequest request) throws Exception {
 
 		UserVo1 userVo1 =  user1serviceImp.anthentionUser(account, password);
-		session.setAttribute("user1", userVo1.getUser1());
-		//默认登录超级版块 更新用户登录活跃度
-        String loginModuleId="0";
-		String time=dataserviceImpl.getnewtime();
-		try {
-			dataserviceImpl.updateUserLogintimes(account, time,loginModuleId);
-		} finally {
-			return userVo1.getMessage();
+		if(userVo1.getUser1() != null) {
+			session.setAttribute("user1", userVo1.getUser1());
+			
+			//默认登录超级版块 更新用户登录活跃度
+	        String loginModuleId="0";
+			String time=dataserviceImpl.getnewtime();
+			dataserviceImpl.updateUserLogintimes(account, time,loginModuleId);	
+		}else {
+			userVo1.setMessage("3");
 		}
-		
+		return userVo1.getMessage();
 	}
+		
+
 	
 	// 访问主界面页面
 		@RequestMapping(value = "/homePage")

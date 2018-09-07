@@ -28,16 +28,11 @@ public class ComplainController {
      * @version 2018/8/9
      */
     @ResponseBody
-    @RequestMapping(value="/saveComplain")
-    public String saveComplain(ComplainVo complainVo){
-        try{
-            Integer tid=complainService.saveComplain(complainVo);
-            return ""+tid;
-        }catch(Exception e){
-            e.printStackTrace();
-            return "error";
-        }
+    @RequestMapping(value = "/saveComplain")
+    public void saveComplain(ComplainVo complainVo) {
+        complainService.saveComplain(complainVo);
     }
+
     /**
      * 获取帖子信息，传送到前端
      *
@@ -46,7 +41,7 @@ public class ComplainController {
      */
     @RequestMapping(value = "/addComplain")
     public ModelAndView addComplain(String code) {
-        ModelAndView complainPublication  = new ModelAndView();
+        ModelAndView complainPublication = new ModelAndView();
         PostVo postInfo = complainService.postInfo(code);
         complainPublication.setViewName("complain/complainPublication");
         complainPublication.addObject("postInfo", postInfo);

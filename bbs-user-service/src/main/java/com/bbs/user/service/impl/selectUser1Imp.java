@@ -34,17 +34,24 @@ public class selectUser1Imp implements User1Service{
 	public UserVo1 anthentionUser(String userName, String password) throws Exception {
 		// TODO Auto-generated method stub
 		UserVo1 userVo1 =   new  UserVo1();
-		userVo1.setUser1(this.findUserByUsrname(userName));
 		
-		
-		String db_password = userVo1.getUser1().getPassword();
-		
-		if(!db_password.equals(password)) {
+		if(this.findUserByUsrname(userName) != null) {
+			userVo1.setUser1(this.findUserByUsrname(userName));
+			String db_password = userVo1.getUser1().getPassword();
+			
+			if(!db_password.equals(password)) {
 
-			userVo1.setMessage("1");
+				userVo1.setMessage("1");
+			}else {
+				userVo1.setMessage("2");
+			}
+			
 		}else {
-			userVo1.setMessage("2");
+			userVo1.setUser1(null);
+			userVo1.setMessage("3");
 		}
+		
+		
 		return userVo1;
 	}
 

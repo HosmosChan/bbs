@@ -7,7 +7,9 @@ import com.bbs.domain.UserVo;
 import com.bbs.exception.BusinessRunException;
 
 public interface UserService {
-	public User getUser(UserVo userVo);
-	public Integer saveUser(User user) throws BusinessRunException;
-	public List<User> listUser(UserVo userVo);
+    User getUser(UserVo userVo);
+
+    Integer saveUser(User user) throws BusinessRunException;
+
+    List<User> listUser(UserVo userVo);
 }

@@ -60,7 +60,7 @@
             <if test="praiseAmount != null and praiseAmount !='' ">
                 praiseAmount = #{praiseAmount},
             </if>
-            <if test="replyAmount != null and replyAmount !='' ">
+            <if test="replyAmount != null and replyAmount !='' or 0==replyAmount ">
                 replyAmount = #{replyAmount},
             </if>
             <if test="status != null and status !='' ">

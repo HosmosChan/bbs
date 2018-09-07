@@ -15,6 +15,7 @@ import com.bbs.domain.Module;
 import com.bbs.domain.Role;
 import com.bbs.domain.User1;
 import com.bbs.domain.UserLiveness;
+import com.bbs.domain.UserVo1;
 import com.bbs.post.mapper.ModuleMapper;
 import com.bbs.role.mapper.RoleMapper;
 import com.bbs.role.service.RoleService;
@@ -69,29 +70,6 @@ public class RoleServiceImp implements RoleService {
 		return user1;
 	}
 
-	@Override
-	public User1 roleAnthentionUser(String account, String password) throws Exception {
-		// TODO Auto-generated method stub
-
-		User1 user1 = this.findUserByRoleUser(account);
-                      
- 		String db_password = user1.getPassword();
-
-		String db_roleName = user1.getRoleName();
-
-		String role = "管理员";
-
-		if (!db_password.equals(password)) {
-
-			throw new Exception("密码错误");
-		}
-		if (!db_roleName.equals(role)) {
-			throw new Exception("您不是管理员，无此权限！");
-		}
-		return user1;
-
-	}
-	
 	
 	@Override
 	public List<User1> listUserByRole() {
@@ -140,11 +118,11 @@ public class RoleServiceImp implements RoleService {
 					}
 				}
 			}
-			
+			String bestActivityname;
 			if (usertid.size() > 0) {
 				
 				String Accont=String.valueOf(usertid.get(0));
-				String bestActivityname = user1Mapper.findUser1ByAccount(Accont).getUserName();
+				bestActivityname = user1Mapper.findUser1ByAccount(Accont).getUserName();
 				int baseActivity = Integer.valueOf(String.valueOf(userliveness.get(0)));
 				for (int z = 0; z < usertid.size(); z++) {
 					int tempActivity = Integer.valueOf(String.valueOf(userliveness.get(z)));
@@ -153,7 +131,11 @@ public class RoleServiceImp implements RoleService {
 						String id =String.valueOf(usertid.get(z));
 						bestActivityname = user1Mapper.findUser1ByAccount(id).getUserName();
 					}
-				}
+				}}
+			else
+			{
+				bestActivityname="无";
+			}
 				// 更新当前模块下的前一天数据的最活跃用户项
 				String moduleId = module.getCode();
 				String date = getdate(daytime - 1);
@@ -167,85 +149,106 @@ public class RoleServiceImp implements RoleService {
 
 		}
 
-	}
 
 	public void checkMonthActivityUser() {
-		// 初始化数据
-		ArrayList usertid = new ArrayList();
-		ArrayList userliveness = new ArrayList();
 		Calendar c = Calendar.getInstance();//可以对每个时间域单独修改
 		String year=String.valueOf(c.get(Calendar.YEAR));
 		String lastmonth=String.valueOf(c.get(Calendar.MONTH));//更新上一个的数据
-		
-		int maxday = getmonthday(year, lastmonth);
 		if (lastmonth.length() < 2)
 			lastmonth = "0" + lastmonth;
-
+		
 		List<Module> modulelist = moduleMapper.moduleList();
+		
 		// 定义的模块0 为超级管理员的版块 获取用户的登陆活跃度
 		Module supermodule = modulelist.get(0);
 		int size = modulelist.size();
+		String selectdate= year + "-" + lastmonth;
+		
+		Map<String, Object> supermap= new HashMap<String, Object>();
+		supermap.put("code",supermodule.getCode());
+		supermap.put("selectdate",selectdate);
+		List<UserLiveness> superuserlist = dataMapper.getUserByModuleId(supermap);
+		
+		ArrayList userNamelogin =dataMapper.findmsg(supermap);
+		ArrayList userliveness = new ArrayList();
+		ArrayList userlivenesslogin = new ArrayList();
+		ArrayList userlivenesspublish = new ArrayList();
 		for (int i = 1; i < size; i++) {
 			Module module = modulelist.get(i);// 定义的版主版主 获取用户的发帖活跃度
-			for (int m = 1; m < maxday + 1; m++) {
-				String day = null;
-				if (m < 10)
-					day = "0" + m;
-				else
-					day = String.valueOf(m);
-				String selectdate = year + "-" + lastmonth + "-" + day;
-				Map<String, Object> map= new HashMap<String, Object>();
-		        map.put("code",supermodule.getCode());
-		        map.put("selectdate",selectdate);
-		        Map<String, Object> map2= new HashMap<String, Object>();
-		        map2.put("code",module.getCode());
-		        map2.put("selectdate",selectdate);
-				List<UserLiveness> superuserlist = dataMapper.getUserByModuleId(map);
-				List<UserLiveness> userlist = dataMapper.getUserByModuleId(map2);
-
-				if (!userlist.isEmpty() && !superuserlist.isEmpty()) {
-					for (int k = 0; k < userlist.size(); k++) {
-						int id = Integer.valueOf(userlist.get(k).getUserTid());
-						int liveness = userlist.get(k).getUserLiveness() + superuserlist.get(0).getUserLiveness();
-						if (usertid.indexOf(id) < 0) {
-							usertid.add(id);
-							userliveness.add(liveness);
-						}
-
-						else {
-							// 得到id的返回ID
-							int index = usertid.indexOf(id);
-							int oldliveness = Integer.valueOf(String.valueOf(userliveness.get(index)));
-							userliveness.set(index, oldliveness + liveness);
-						}
-					}
-				}
-			}
-			if (usertid.size() > 0) {
-				String bestActivityname = user1Mapper.findUser1ByAccount(String.valueOf(usertid.get(0))).getUserName();
-				int baseActivity = Integer.valueOf(String.valueOf(userliveness.get(0)));
-				for (int z = 0; z < usertid.size(); z++) {
-					int tempActivity = Integer.valueOf(String.valueOf(userliveness.get(z)));
-					if (tempActivity > baseActivity) {
+			Map<String, Object> modulemap= new HashMap<String, Object>();
+			modulemap.put("code",module.getCode());
+			modulemap.put("selectdate",selectdate);
+		    ArrayList userNamepublish=dataMapper.findmsg(modulemap);
+		    int index=0;
+		    for(int e=0;e<userNamelogin.size();e++)
+	        {
+	        	supermap.put("userTid",userNamelogin.get(e));
+	        	userlivenesslogin.add(dataMapper.sumliveness(supermap));
+	        	if(index<userNamepublish.size())
+	        	{
+	        		if(userNamepublish.get(index).equals(userNamelogin.get(e)))
+		        	{
+	        			modulemap.put("userTid",userNamelogin.get(e));
+		        		userlivenesspublish.add(dataMapper.sumliveness(modulemap));
+		        		index++;
+		        	}
+	        		else
+		        	{//默认添加一个对象，使得id对应各自的活跃度
+	        			userlivenesspublish.add("[0]");
+		        	}
+	        	}
+	        	else
+	        	{
+	        		userlivenesspublish.add("[0]");
+	        	}
+	        
+	        	
+	        	String loginString=String.valueOf(userlivenesslogin.get(e));
+	        	int loginActivity=Integer.parseInt(loginString.substring(1,loginString.length()-1));
+	        	
+	        	String publishString=String.valueOf(userlivenesspublish.get(e));
+	        	int publishActivity=Integer.parseInt(publishString.substring(1,publishString.length()-1));
+	        		
+	        	userliveness.add("["+(loginActivity+publishActivity)+"]");
+	        	String ActivityString=String.valueOf(userliveness.get(e));
+	        	int Activity=Integer.parseInt(ActivityString.substring(1,ActivityString.length()-1));
+	        	 }
+		    
+			String bestActivityname="无";
+			int baseActivity=0;
+			if (userNamelogin.size() > 0) {
+				String userId=String.valueOf(userNamelogin.get(0));
+				bestActivityname = user1Mapper.findUser1ByAccount(userId).getUserName();
+				
+				String Activity=String.valueOf(userliveness.get(0));
+				baseActivity =Integer.parseInt(Activity.substring(1,Activity.length()-1));
+				
+				for (int z = 0; z < userNamelogin.size(); z++) {
+					String activity=String.valueOf(userliveness.get(z));
+					int tempActivity =Integer.parseInt(activity.substring(1,activity.length()-1));
+					if (tempActivity > baseActivity)
+					{
 						baseActivity = tempActivity;
-						int id = Integer.valueOf(String.valueOf(usertid.get(z)));
-						bestActivityname = user1Mapper.findUser1ById(id).getUserName();
+						String id =String.valueOf(userNamelogin.get(z));
+						bestActivityname = user1Mapper.findUser1ByAccount(id).getUserName();
 					}
-				}
-				// System.out.println("本月最活跃用户为"+bestActivityname+"活跃度为"+baseActivity);
-				// 更新当前模块下的前一天数据的最活跃用户项
-				String moduleId = module.getCode();
-				int m = 0;
-				String date = getdate(m);
-				Map<String, Object> map= new HashMap<String, Object>();
-		        map.put("moduleId",moduleId);
-		        map.put("date",date);
-		        map.put("bestActivityname",bestActivityname);
-				dataMapper.updatesumdatebyActivityUsername(map);
+				}}
+			// 更新当前模块下的前一天数据的最活跃用户项
+			String moduleId = module.getCode();
+			int m = 0;
+			String date = getdate(m);
+			Map<String, Object> updatamap= new HashMap<String, Object>();
+			updatamap.put("moduleId",moduleId);
+			updatamap.put("date",date);
+			updatamap.put("bestActivityname",bestActivityname);
+			dataMapper.updatesumdatebyActivityUsername(updatamap);
+			
+			userliveness.clear();
+			userlivenesslogin.clear();
+			userlivenesspublish.clear();
+		}	
 			}
-		}
 
-	}
 	
 	public void checkLastWeekActivityUser()
 	{
@@ -296,8 +299,9 @@ public class RoleServiceImp implements RoleService {
 							}
 						}
 					}
+					String bestActivityname;
 					if (usertid.size() > 0) {
-						String bestActivityname = user1Mapper.findUser1ByAccount(String.valueOf(usertid.get(0))).getUserName();
+					bestActivityname = user1Mapper.findUser1ByAccount(String.valueOf(usertid.get(0))).getUserName();
 						int baseActivity = Integer.valueOf(String.valueOf(userliveness.get(0)));
 						for (int z = 0; z < usertid.size(); z++) {
 							int tempActivity = Integer.valueOf(String.valueOf(userliveness.get(z)));
@@ -307,6 +311,11 @@ public class RoleServiceImp implements RoleService {
 								bestActivityname = user1Mapper.findUser1ById(id).getUserName();
 							}
 						}
+					}
+					else
+					{
+						bestActivityname="无";
+					}
 						// 更新当前模块下的前一天数据的最活跃用户项
 						String moduleId = module.getCode();
 						int m =0;
@@ -316,11 +325,9 @@ public class RoleServiceImp implements RoleService {
 				        map.put("date",date);
 				        map.put("bestActivityname",bestActivityname);
 						dataMapper.updatesumdatebyActivityUsername(map);
-						System.out.println("更新上一个月最后一周活跃用户成功");
 					}
 				}
 
-	}
 	public String getdate(int m) {
 		Calendar c = Calendar.getInstance();//可以对每个时间域单独修改
 		String year=String.valueOf(c.get(Calendar.YEAR));
@@ -378,6 +385,44 @@ public class RoleServiceImp implements RoleService {
 		}
 		return maxtemp;
 	}
+
+	@Override
+	public UserVo1 roleAnthentionUser(String account, String password) throws Exception {
+		UserVo1 userVo1 = new UserVo1();
+		if(this.findUserByRoleUser(account) !=null) {
+			userVo1.setUser1(this.findUserByRoleUser(account));
+
+			String db_password = userVo1.getUser1().getPassword();
+
+			String db_roleName = userVo1.getUser1().getRoleName();
+
+			String role = "管理员";
+
+			if (!db_password.equals(password)) {
+				userVo1.setMessage("1");
+			}
+			if (db_password.equals(password)) {
+				if (!role.equals(db_roleName)) {
+					userVo1.setMessage("2");
+				}
+				if (role.equals(db_roleName)) {
+					userVo1.setMessage("3");
+				}
+			}
+		}else{
+			userVo1.setUser1(null);
+			userVo1.setMessage("4");
+		}
+		
+
+		return userVo1;
+	}
+
+	@Override
+	public int getManageNumber() {
+		return roleMapper.getManageNumber();
+	}
+	
 
 
 }
