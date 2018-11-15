@@ -1,6 +1,7 @@
 package com.bbs.scheduled;
 
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -65,7 +66,7 @@ public class ScheduledTask {
     //定时任务五     //测试
     @Scheduled(initialDelay=1000, fixedRate=6000)   //第一次延迟1秒后执行，之后按fixedRate的规则每6秒执行一次
     public void test() {
-        System.err.println(new Date());
+        //System.err.println(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
     }
 
     /*
