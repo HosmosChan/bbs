@@ -10,7 +10,6 @@ import com.fasterxml.jackson.annotation.JsonFormat;
  * 帖子信息
  */
 public class Post implements Serializable {
-
     private static final long serialVersionUID = -6405851612916402449L;
     private Integer tid;
     /**
@@ -161,7 +160,7 @@ public class Post implements Serializable {
         this.hostAccount = hostAccount;
     }
 
-    @JsonFormat(pattern="yyyy-MM-dd", timezone = "GMT+8")
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     public Date getPublishDate() {
         return publishDate;
     }
@@ -218,7 +217,7 @@ public class Post implements Serializable {
         this.status = status;
     }
 
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     public Date getCreateDate() {
         return createDate;
     }

@@ -1,52 +1,59 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <link rel="stylesheet" href="/../../css/dataShowReset.css"/>
     <link rel="stylesheet" href="/../../bbs/css/public.css"/>
     <link rel="stylesheet" href="/../../bbs/css/homeHead.css"/>
     <link rel="stylesheet" href="/../../bbs/css/homePublic.css"/>
     <link rel="stylesheet" href="/../../bbs/css/home.css"/>
-<script type="text/javascript"   th:src="@{/../../js/jquery-3.3.1.min.js}"></script>
-<script type="text/javascript"   th:src="@{/../../js/data/DataShowjs.js}"></script>
-<style>
-  #username{color:green;}
-  .td2,.td1{  
-border:#C8C8C8 solid;     
-border-width:0 1px 1px 0 ;  
-}
-  .td1{  
-   font-size:20px;
-   color:red;
-}
- .choose{  
+    <link rel="stylesheet" type="text/css" href="/../../css/index.css"/>
+    <script type="text/javascript" th:src="@{/../../js/jquery-3.3.1.min.js}"></script>
+    <script type="text/javascript" th:src="@{/../../js/data/DataShowjs.js}"></script>
+    <script type="text/javascript" src="../../js/user/modulePost.js"></script>
+    <style>
+        #username {
+            color: green;
+        }
 
-}
-.choose:hover{  
-   background-color:#e43e20;
-}
-  .td2:hover{  
-color:red;
-}
-</style>
-<title>数据统计页面</title>
+        .td2, .td1 {
+            border: #C8C8C8 solid;
+            border-width: 0 1px 1px 0;
+        }
+
+        .td1 {
+            font-size: 20px;
+            color: red;
+        }
+
+        .choose {
+
+        }
+
+        .choose:hover {
+            background-color: #e47667;
+        }
+
+        .td2:hover {
+            color: red;
+        }
+    </style>
+    <title>数据统计页面</title>
 </head>
 <body>
 <header class="ltHead">
     <div class="ltHead_cen">
-        <a href=""><img src="/../..img/logo.png" alt="" class="headPic1"/></a>
         <ul class="headNav">
-            <li><a href="/../../post/index">首页</a></li>
+            <li><a href="/post/index">首页</a></li>
             <tr th:each="module : ${session.moduleList}">
-                <li><a th:href="@{/post/moudelPost(code=${module.code})}" th:text="${module.moduleName}"></a></li>
+                <li><a href="javascript:void(0)" class="moduleClass" th:value="${module.code}"
+                       th:text="${module.moduleName}"></a></li>
             </tr>
         </ul>
         <!--未登入开始-->
         <div th:if="${session.user1==null}">
             <div class="ltForm appear">
-                <a href=""><img src="/../..img/indexForm_bg.png" alt=""
-                                class="headPic2"/></a>
                 <ul>
                     <li><a th:href="@{/user1/demo}">登录</a></li>
                     <li><a th:href="@{/user1/UserRegister}">注册</a></li>
@@ -54,7 +61,8 @@ color:red;
             </div>
         </div>
         <div th:if="${session.user1!=null}">
-            <div class="lt_login appear" th:if="${session.user1.userName != null}">
+            <div class="lt_login appear"
+                 th:if="${session.user1.userName != null}">
                 <ul>
                     <li><a href="/index/home" class="navMe" th:text="${session.user1.userName}"></a></li>
                     <li><a th:href="@{/user1/logOut}">退出</a></li>
@@ -70,68 +78,68 @@ color:red;
     </div>
 </header>
 <div align="center">
- <select id="year" style="width:200px;height:40px">
-<option value="00">请选择年份</option>
-<option value="2018">2018</option>
-<option value="2019">2019</option>
-<option value="2020">2020</option>
-<option value="2021">2021</option>
-<option value="2022">2022</option>
-<option value="2023">2023</option>
-</select>
- <select id="month" style="width:200px;height:40px">
-<option value="01">请选择月份</option>
-<option value="1">1</option>
-<option value="2">2</option>
-<option value="3">3</option>
-<option value="4">4</option>
-<option value="5">5</option>
-<option value="6">6</option>
-<option value="7">7</option>
-<option value="8">8</option>
-<option value="9">9</option>
-<option value="10">10</option>
-<option value="11">11</option>
-<option value="12">12</option>
-</select>
-<input type="button" class="choose" id="select"  style="width:200px;height:40px" value="查询数据"/>
-<input type="button" class="choose" id="exportMsg"  style="width:200px;height:40px" value="报表导出"/>
+    <select id="year" style="width:200px;height:40px">
+        <option value="00">请选择年份</option>
+        <option value="2018">2018</option>
+        <option value="2019">2019</option>
+        <option value="2020">2020</option>
+        <option value="2021">2021</option>
+        <option value="2022">2022</option>
+        <option value="2023">2023</option>
+    </select>
+    <select id="month" style="width:200px;height:40px">
+        <option value="01">请选择月份</option>
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+        <option value="6">6</option>
+        <option value="7">7</option>
+        <option value="8">8</option>
+        <option value="9">9</option>
+        <option value="10">10</option>
+        <option value="11">11</option>
+        <option value="12">12</option>
+    </select>
+    <input type="button" class="choose" id="select" style="width:200px;height:40px" value="查询数据"/>
+    <input type="button" class="choose" id="exportMsg" style="width:200px;height:40px" value="报表导出"/>
 </div>
-<table  width="1600" height="850" align="center" cellpadding="0" cellspacing="0">
-<tr>
-<td>
-<table   width="1200" border="1">
-      <tr>
-        <th height='23' width='200' valign="top" class="td1">序号</th>
-        <th height='23' width='200' valign="top" class="td1">日期</th>
-        <th height='23' width='200' valign="top" class="td1">日发帖量</th>
-        <th height='23' width='200' valign="top" class="td1">日点赞量</th>
-        <th height='23' width='400' valign="top" class="td1">每日最赞之帖</th>
-    </tr>  
-    <tbody id="area2">
-     <tr align="center" th:each="data,dataStat: ${listdata}">
-        <td height='22' class="td2" th:text="${dataStat.index}+1"></td>
-        <td height='22' class="td2" th:text="${data.day}"></td>
-        <td height='22' class="td2" th:text="${data.sumPost}"></td>
-        <td height='22' class="td2" th:text="${data.sumPraise}"></td>
-        <td height='22' class="td2" th:text="${data.maxPraisePostName}"></td>
-     </tr>
-     </tbody>
-</table>
-</td>
-<td>
-<table  width="400" border="1" align="top">
+<table width="1600" height="850" align="center" cellpadding="0" cellspacing="0">
     <tr>
-        <th  height='23' width='400' class="td1" valign="top">活跃之星</th>
+        <td>
+            <table width="1200" border="1">
+                <tr>
+                    <th height='23' width='200' valign="top" class="td1">序号</th>
+                    <th height='23' width='200' valign="top" class="td1">日期</th>
+                    <th height='23' width='200' valign="top" class="td1">日发帖量</th>
+                    <th height='23' width='200' valign="top" class="td1">日点赞量</th>
+                    <th height='23' width='400' valign="top" class="td1">每日最赞之帖</th>
+                </tr>
+                <tbody id="area2">
+                <tr align="center" th:each="data,dataStat: ${listdata}">
+                    <td height='22' class="td2" th:text="${dataStat.index}+1"></td>
+                    <td height='22' class="td2" th:text="${data.day}"></td>
+                    <td height='22' class="td2" th:text="${data.sumPost}"></td>
+                    <td height='22' class="td2" th:text="${data.sumPraise}"></td>
+                    <td height='22' class="td2" th:text="${data.maxPraisePostName}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </td>
+        <td>
+            <table width="400" border="1" align="top">
+                <tr>
+                    <th height='23' width='400' class="td1" valign="top">活跃之星</th>
+                </tr>
+                <tbody id="area1">
+                <tr align="center" th:each="data,dataStat : ${listWeek}">
+                    <td id="username" height="162" class="td2" th:text="${data}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </td>
     </tr>
-    <tbody id="area1">
-     <tr align="center" th:each="data,dataStat : ${listWeek}" >
-        <td  id="username" height="162" class="td2" th:text="${data}"></td>
-     </tr>
-     </tbody>
-</table>
-</td>
-</tr>
 </table>
 </body>
 </html>

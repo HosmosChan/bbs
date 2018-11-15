@@ -9,6 +9,8 @@ public interface User1Mapper {
 
     void addUser(User1 user1);
 
+    void addUserRole(User1 user1);
+
     User1 findUser1ByName(String userName);
 
     User1 findUser1ById(int id);

@@ -1,16 +1,20 @@
 html {
     border: 2px solid #ccc;
 }
+
 label, input, textarea, select {
     margin-bottom: 10px;
 }
-#postTitle,#postHost {
+
+#postTitle, #postHost {
     color: #9D9D9D;
     width: 226px;
 }
+
 .messageLabel {
     position: absolute;
 }
+
 .message {
     margin-left: 84px;
     width: 200px;
@@ -18,15 +22,19 @@ label, input, textarea, select {
     overflow-y: scroll;
     height: 140px;
 }
+
 .typeCode {
     width: 232px;
 }
+
 #saveComplain {
     margin-left: 140px;
 }
+
 option {
     margin-left: 10px;
 }
+
 #text-count {
     color: #FF0000;
     position: relative;

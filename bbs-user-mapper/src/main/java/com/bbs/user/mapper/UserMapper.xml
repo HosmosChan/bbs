@@ -1,23 +1,20 @@
-<?xml version="1.0" encoding="UTF-8" ?>  
-<!DOCTYPE mapper  
-  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
-  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.bbs.user.mapper.UserMapper">
-	<select id="getUser" parameterType="User" resultType="User">
-	SELECT * FROM bbs.bbs_user_info where 1=1
-	  <if test="account != null and account!='' ">
-    AND account=#{account}
- 	 </if>
-	</select>
-	
-	  <!-- 插入一个用户 -->
-    <insert id="saveUser" parameterType="User" >
-       <selectKey resultType="Integer" order="AFTER" keyProperty="tid">
-          SELECT LAST_INSERT_ID()
-      </selectKey>
-        INSERT INTO bbs.bbs_user_info(account,userName,password,levelCode,statusCode,createDate,createBy,modifyDate,modifyBy)values(#{account},#{userName},#{password},#{levelCode},#{statusCode},#{createDate},#{createBy},#{modifyDate},#{modifyBy});
+    <select id="getUser" parameterType="User" resultType="User">
+        SELECT * FROM bbs.bbs_user_info where 1=1
+        <if test="account != null and account!='' ">
+            AND account=#{account}
+        </if>
+    </select>
+    <!-- 插入一个用户 -->
+    <insert id="saveUser" parameterType="User">
+        <selectKey resultType="Integer" order="AFTER" keyProperty="tid">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        INSERT INTO
+        bbs.bbs_user_info(account,userName,password,levelCode,statusCode,createDate,createBy,modifyDate,modifyBy)values(#{account},#{userName},#{password},#{levelCode},#{statusCode},#{createDate},#{createBy},#{modifyDate},#{modifyBy});
     </insert>
-    
     <select id="listUser" parameterType="User" resultType="User">
     SELECT * FROM bbs.bbs_user_info 
     </select>

@@ -1,68 +1,122 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <html>
-	<head>
-		<meta charset="utf-8">
-		<title>用户注册</title>
-		<link rel="stylesheet" href="/css/reset.css" />
-		<link rel="stylesheet" href="/css/common.css" />
-		<script type="text/javascript" src="/js/jquery.min.js" ></script>
-		<script type="text/javascript" src="/js/common.js" ></script>
-		<script type="text/javascript"  th:src="@{/js/jquery-3.3.1.min.js}"></script>
-        <script type="text/javascript"  th:src="@{/js/user/UserRegistCheck.js}"></script>
-	</head>
-	<body>
-		<div class="wrap login_wrap">
-			<div class="content">
-				
-				<div class="logo"></div>
-				
-				<div class="login_box">	
-					
-					<div class="login_form">
-						<div class="login_title">
-							注册
-						</div>
-						<form action="registSubmit" method="post" id="form">
-							
-							<div class="form_text_ipt">
-								<input name="account" type="text" placeholder="手机号/邮箱">
-							</div>
-							<div class="ececk_warning"><span>数据不能为空</span></div>
-							
-							
-							<div class="form_text_ipt">
-								<input name="userName" type="text" placeholder="用户名">
-							</div>
-							<div class="ececk_warning"><span>数据不能为空</span></div>
-							
-							<div class="form_text_ipt">
-								<input name="password" type="password" placeholder="密码">
-							</div>
-							<div class="ececk_warning"><span>数据不能为空</span></div>
-							<div class="form_text_ipt">
-								<input name="password2" type="password" placeholder="确认密码">
-							</div>
-							<div class="ececk_warning"><span>数据不能为空</span></div>
-							
-							<div class="form_btn">
-								<button type="button" id="UserRegist">注册</button>
-							</div>
-							<div class="form_reg_btn">
-								<span>已有帐号？</span><a href="./demo">马上登录</a>
-							</div>
-						</form>
-						<div class="other_login">
-							<div class="left other_left">
-								<span>其它登录方式</span>
-							</div>
-							<div class="right other_right">
-								
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	
-	</body>
+<head>
+    <meta charset="utf-8">
+    <title>用户注册</title>
+    <link rel="stylesheet" href="/css/reset.css"/>
+    <link rel="stylesheet" href="/css/common.css"/>
+    <link rel="stylesheet" href="../../css/passwordEasyOrHard.css"/><!--注册密码难易程度提示css样式-->
+    <script type="text/javascript" src="/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/common.js"></script>
+    <script type="text/javascript" th:src="@{/js/jquery-3.3.1.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/user/UserRegistCheck.js}"></script>
+</head>
+<style>
+
+</style>
+<body>
+<div class="wrap login_wrap">
+    <div class="content">
+        <div class="logo"></div>
+        <div class="login_box">
+            <div class="login_form">
+                <div class="login_title">注册</div>
+                <form action="registSubmit" method="post" id="form">
+                    <div class="form_text_ipt">
+                        <input name="userName" type="text" placeholder="用户名/昵称">
+                    </div>
+                    <div class="ececk_warning">
+                        <span>数据不能为空</span>
+                    </div>
+                    <div class="form_text_ipt">
+                        <input name="account" type="text" placeholder="手机号">
+                    </div>
+                    <div class="ececk_warning">
+                        <span>数据不能为空</span>
+                    </div>
+                    <div class="form_text_ipt">
+                        <input name="password" type="password" id="password" placeholder="密码/密码长度应该在8~20个字符之间">
+                        <ul class="color" hidden="hidden">
+                            <li id="danger">弱</li>
+                            <li id="yellow">中</li>
+                            <li id="green">强</li>
+                            <li id="blue">超强</li>
+                        </ul>
+                    </div>
+                    <div class="ececk_warning">
+                        <span>数据不能为空</span>
+                    </div>
+                    <div class="form_text_ipt">
+                        <input name="password2" type="password" placeholder="确认密码">
+                    </div>
+                    <div class="ececk_warning">
+                        <span>数据不能为空</span>
+                    </div>
+                    <div class="form_btn">
+                        <button type="button" id="UserRegist">注册</button>
+                    </div>
+                    <div class="form_reg_btn">
+                        <span>已有帐号？</span><a href="./demo">马上登录</a>
+                    </div>
+                </form>
+                <div class="other_login">
+                    <div class="left other_left">
+                        <span>其它登录方式</span>
+                    </div>
+                    <div class="right other_right"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script type="text/javascript">
+    /**
+     * 注册密码难易程度提示
+     * @author chenhuayang
+     * @version 2018/9/16
+     */
+    window.onload = function () {
+        var password = document.getElementById("password");
+        var objLow = document.getElementById("danger");
+        var objMed = document.getElementById("yellow");
+        var objHi = document.getElementById("green");
+        var objMoreHi = document.getElementById("blue");
+        function keyUp() {
+            var gg_pwd = password.value;
+            if (gg_pwd.length < 8 && gg_pwd.length > 0) {
+                objMoreHi.className = "";
+                objHi.className = "";
+                objMed.className = "";
+                objLow.className = "danger";
+            } else {
+                var p1 = (gg_pwd.search(/[a-z]/) != -1) ? 1 : 0;
+                var p2 = (gg_pwd.search(/[0-9]/) != -1) ? 1 : 0;
+                var p3 = (gg_pwd.search(/[A-Z]/) != -1) ? 1 : 0;
+                var p4 = (gg_pwd.search(/[,./<>?;':"{}|~`!@#$%^&*()_+=]/) != -1) ? 1 : 0;
+                var pa = p1 + p2 + p3 + p4;
+                if (pa == 1) {
+                    objMoreHi.className = "";
+                    objHi.className = "";
+                    objMed.className = "";
+                    objLow.className = "danger";
+                } else if (pa == 2) {
+                    objMoreHi.className = "";
+                    objHi.className = "";
+                    objMed.className = "yellow";
+                } else if (pa == 3) {
+                    objMoreHi.className = "";
+                    objHi.className = "green";
+                }
+                else if (pa == 4) {
+                    objMoreHi.className = "blue";
+                }
+            }
+        }
+
+        password.onkeyup = function () {
+            keyUp()
+        }
+    }
+</script>
 </html>

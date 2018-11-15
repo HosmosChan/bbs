@@ -11,7 +11,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import com.bbs.domain.Comment;
 import com.bbs.domain.Module;
 import com.bbs.domain.PostClass;
@@ -31,7 +30,6 @@ import com.github.pagehelper.PageHelper;
 @Service
 public class AboutPostServiceImpl implements AboutPostService {
     protected final Logger logger = LoggerFactory.getLogger(getClass());
-
     @Autowired
     private CommentMapper commentMapper;
     @Autowired
@@ -102,7 +100,6 @@ public class AboutPostServiceImpl implements AboutPostService {
     @Override
     @Transactional(rollbackFor = BusinessRunException.class)
     public void insertModuleUser(Module module) throws BusinessRunException {
-
         try {
             module.setCode(GETuuid.getUUID());
             module.setCreateDate(new Date());
@@ -141,7 +138,6 @@ public class AboutPostServiceImpl implements AboutPostService {
     @Override
     public void updatePostClass(PostClass post) {
         moduleMapper.updatePostClass(post);
-
     }
 
     @Override
@@ -180,7 +176,7 @@ public class AboutPostServiceImpl implements AboutPostService {
     @Override
     public Page<Object> selectAllPostClassByCode(String classCode, Integer currentPage, Integer pageSize) {
         Page<Object> page = PageHelper.startPage(currentPage, pageSize);
-        List<PostVo> PostVoList2 = moduleMapper.selectAllPostClassByCode(classCode);
+        moduleMapper.selectAllPostClassByCode(classCode);
         return page;
     }
 

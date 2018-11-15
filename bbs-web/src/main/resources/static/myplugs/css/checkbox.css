@@ -1,5 +1,5 @@
 @CHARSET "UTF-8";
- .spcheckboxCheck {
+.spcheckboxCheck {
     height: 24px;
     display: block;
     float: left;
@@ -7,7 +7,8 @@
     cursor: pointer;
     background: url("checkbox.png") no-repeat left top;
 }
- .spcheckbox {
+
+.spcheckbox {
     height: 24px;
     display: block;
     float: left;
@@ -15,7 +16,8 @@
     cursor: pointer;
     background: url("checkbox.png") no-repeat left bottom;
 }
- .spradioCheck {
+
+.spradioCheck {
     height: 24px;
     display: block;
     float: left;
@@ -26,7 +28,7 @@
     border: 1px solid red;
 }
 
- .spradio {
+.spradio {
     height: 24px;
     display: block;
     float: left;
@@ -36,13 +38,14 @@
     margin-right: 20px;
 }
 
- .labelfor {
+.labelfor {
     margin-left: 35px;
     width: 170px;
     margin-bottom: 10px;
-    font-size:14px;
+    font-size: 14px;
 }
- input[type='checkbox'] {
+
+input[type='checkbox'] {
     filter: alpha(opacity=0);
     ZOOM: 1;
     opacity: 0;

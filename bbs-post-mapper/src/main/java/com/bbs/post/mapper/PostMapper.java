@@ -5,7 +5,6 @@ import java.util.Map;
 
 import com.bbs.domain.Post;
 import com.bbs.domain.PostClass;
-
 import com.bbs.domain.PostVo;
 
 public interface PostMapper {
@@ -22,7 +21,7 @@ public interface PostMapper {
     //司铜————————————
     void updateBestPost(Map<String, Object> map2);//根据帖子点赞度 更新数据中最佳帖子
 
-    List<PostClass> getPostClassName(String className);//在版块下查找是否存在某帖子类
+    List<PostClass> getPostClassName(Map<String, Object> map);//在版块下查找是否存在某帖子类
 
     //根据输入时间 获取当天点赞最多的帖子
     List<PostVo> getBestPost(Map<String, Object> map);
@@ -41,7 +40,7 @@ public interface PostMapper {
 
     void updatepostclassByname(Map<String, Object> map);//更新信息
 
-    PostClass getpostclassByname(String name);//得到帖子类
+    PostClass getpostclassByname(Map<String, Object> map);//得到帖子类
 
     List<PostVo> selectPostOrderBy6();//根据帖子的阅读量排序，取前6做为热点帖子
 
@@ -76,4 +75,20 @@ public interface PostMapper {
     String getmoduleCodebyAccount(String Account);
 
     List<PostVo> getAllPost();
+
+    /**
+     * 根据阅读量获取阅读量前5的帖子
+     *
+     * @author chenhuayang
+     * @version 2018/10/18 15:45
+     */
+    PostVo PostOrderByReadingAmount1();
+
+    PostVo PostOrderByReadingAmount2();
+
+    PostVo PostOrderByReadingAmount3();
+
+    PostVo PostOrderByReadingAmount4();
+
+    PostVo PostOrderByReadingAmount5();
 }

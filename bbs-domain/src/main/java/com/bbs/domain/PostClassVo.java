@@ -1,5 +1,4 @@
 package com.bbs.domain;
 
-public class PostClassVo extends PostClass{
-
+public class PostClassVo extends PostClass {
 }

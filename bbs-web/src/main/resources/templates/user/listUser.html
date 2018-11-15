@@ -1,10 +1,10 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<script type="text/javascript"   th:src="@{/js/jquery-3.3.1.min.js}"></script>
-<script type="text/javascript"   th:src="@{/js/user/listUser.js}"></script>
-<title>用户列表</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <script type="text/javascript" th:src="@{/js/jquery-3.3.1.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/user/listUser.js}"></script>
+    <title>用户列表</title>
 </head>
 <body>
 <table border="1">
@@ -14,15 +14,15 @@
         <th>角色</th>
         <th>创建时间</th>
     </tr>
-    <tr th:each="user,userStat : ${listUser}" >
+    <tr th:each="user,userStat : ${listUser}">
         <td th:text="${user.account}"></td>
         <td th:text="${user.userName}"></td>
         <td>
-        	<div th:switch="${user.levelCode}">
-        		<p th:case="1">普通用户</p>
-        		<p th:case="2">版主</p>
-        		<p th:case="3">管理员</p>
-        	</div>
+            <div th:switch="${user.levelCode}">
+                <p th:case="1">普通用户</p>
+                <p th:case="2">版主</p>
+                <p th:case="3">管理员</p>
+            </div>
         </td>
         <td th:text="${#dates.format(user.createDate,'yyyy-MM-dd HH:mm:ss')}"></td>
     </tr>

@@ -1,111 +1,92 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper  
-  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
-  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.bbs.post.mapper.ModuleMapper">
-
-<insert id="saveModule" parameterType="Module">
-	<selectKey resultType="Integer" order="AFTER" keyProperty="tid">
-		SELECT LAST_INSERT_ID()
-	</selectKey>
-	INSERT INTO
-	bbs.bbs_module_info(code,moduleName,userAccount,createDate,createBy,modifyDate,modifyBy)
-	values(#{code},#{moduleName},#{userAccount},#{createDate},#{createBy},#{modifyDate},#{modifyBy});
-</insert>
-<!--      sitong write -->
-   <!--                  返回模块列表 -->
-    <select id="moduleList"  resultType="Module">
+    <insert id="saveModule" parameterType="Module">
+        <selectKey resultType="Integer" order="AFTER" keyProperty="tid">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        INSERT INTO
+        bbs.bbs_module_info(code,moduleName,userAccount,createDate,createBy,modifyDate,modifyBy)
+        values(#{code},#{moduleName},#{userAccount},#{createDate},#{createBy},#{modifyDate},#{modifyBy});
+    </insert>
+    <!--      sitong write -->
+    <!--                  返回模块列表 -->
+    <select id="moduleList" resultType="Module">
         select * from bbs.bbs_module_info
     </select>
-
-<resultMap type="com.bbs.domain.Module" id="ModuleId">
-	<id property="tid" column="tid"/>
-	<result property="moduleName" column="moduleName"/>
-	<result property="userName" column="userName"/>
-	<result property="createDate" column="createDate"/>
-</resultMap>
- <select id="selectAllModule" resultMap="ModuleId">
+    <resultMap type="com.bbs.domain.Module" id="ModuleId">
+        <id property="tid" column="tid"/>
+        <result property="moduleName" column="moduleName"/>
+        <result property="userName" column="userName"/>
+        <result property="createDate" column="createDate"/>
+    </resultMap>
+    <select id="selectAllModule" resultMap="ModuleId">
 SELECT  bbs_module_info.tid,bbs_module_info.code,bbs_module_info.moduleName,bbs_user_info.userName,bbs_module_info.createDate 
 FROM bbs.bbs_module_info LEFT JOIN bbs.bbs_user_info 
 ON bbs_module_info.userAccount = bbs_user_info.account
 </select>
- 
-
-<!-- 根据查板块信息 -->
-<select id="selectByIdModule" parameterType="String" resultMap="ModuleId">
+    <!-- 根据查板块信息 -->
+    <select id="selectByIdModule" parameterType="String" resultMap="ModuleId">
 SELECT  bbs_module_info.tid,bbs_module_info.moduleName,bbs_user_info.userName,bbs_module_info.createDate,userAccount FROM bbs.bbs_module_info LEFT JOIN bbs.bbs_user_info ON bbs_module_info.userAccount = bbs_user_info.account where code = #{vaule};
 </select>
-
-
-<update id="updateModule"  parameterType="com.bbs.domain.Module">
- UPDATE bbs.bbs_module_info
- <trim prefix="set" suffixOverrides=",">
-  <if test="moduleName!=null and moduleName!='' ">moduleName=#{moduleName},</if>
- </trim>
- WHERE tid=#{tid}
-</update>
-
-<update id="updateUser" parameterType="com.bbs.domain.User1">
-	UPDATE bbs.bbs_user_info
-	<trim prefix="set" suffixOverrides=",">
-		<if test="userName!=null and userName !=''">
-		userName=#{userName},
-		</if>
-	</trim>
-	WHERE id=#{id}
-</update>
-
-<update id="updateModuleUser" parameterType="com.bbs.domain.Module">
-	UPDATE bbs.bbs_user_info 
-	<trim prefix="set" suffixOverrides=",">
-		<if test="user1!=null ">
-			<if test="user1.userName!=null and user1.userName!=''">
-				userName=#{user1.userName},
-			</if>
-		</if>
-	</trim>
-	WHERE id=#{userAccount}
-</update>
-
-<insert id="insertModule" parameterType="com.bbs.domain.Module">
+    <update id="updateModule" parameterType="com.bbs.domain.Module">
+        UPDATE bbs.bbs_module_info
+        <trim prefix="set" suffixOverrides=",">
+            <if test="moduleName!=null and moduleName!='' ">moduleName=#{moduleName},</if>
+        </trim>
+        WHERE tid=#{tid}
+    </update>
+    <update id="updateUser" parameterType="com.bbs.domain.User1">
+        UPDATE bbs.bbs_user_info
+        <trim prefix="set" suffixOverrides=",">
+            <if test="userName!=null and userName !=''">
+                userName=#{userName},
+            </if>
+        </trim>
+        WHERE id=#{id}
+    </update>
+    <update id="updateModuleUser" parameterType="com.bbs.domain.Module">
+        UPDATE bbs.bbs_user_info
+        <trim prefix="set" suffixOverrides=",">
+            <if test="user1!=null ">
+                <if test="user1.userName!=null and user1.userName!=''">
+                    userName=#{user1.userName},
+                </if>
+            </if>
+        </trim>
+        WHERE id=#{userAccount}
+    </update>
+    <insert id="insertModule" parameterType="com.bbs.domain.Module">
 INSERT INTO bbs.bbs_module_info(code,moduleName,userAccount,createDate) VALUES(#{code},#{moduleName},#{userAccount},#{createDate})
 </insert>
-
-<insert id="insertUser" parameterType="com.bbs.domain.Module">
+    <insert id="insertUser" parameterType="com.bbs.domain.Module">
 INSERT INTO bbs.bbs_user_info(userName) VALUES(user1.userName) where id=#{userAccount}
 </insert>
-
-<select id="selectALlClass" parameterType="String" resultType="com.bbs.domain.PostClass">
-SELECT * FROM bbs.bbs_post_class WHERE 1=1
-<if test="value!=null and value !=''">
-AND moduleCode=#{value}
-</if>
-</select>
-
-<select id="selectByIdPostClass" parameterType="String" resultType="com.bbs.domain.PostClass">
+    <select id="selectALlClass" parameterType="String" resultType="com.bbs.domain.PostClass">
+        SELECT * FROM bbs.bbs_post_class WHERE 1=1
+        <if test="value!=null and value !=''">
+            AND moduleCode=#{value}
+        </if>
+    </select>
+    <select id="selectByIdPostClass" parameterType="String" resultType="com.bbs.domain.PostClass">
 SELECT * FROM bbs.bbs_post_class WHERE CODE = #{code}
 </select>
-
-<update id="updatePostClass" parameterType="com.bbs.domain.PostClass">
+    <update id="updatePostClass" parameterType="com.bbs.domain.PostClass">
 update bbs.bbs_post_class set className = #{className} where code =#{code}
 </update>
-
-<insert id="insertPostClasss" parameterType="com.bbs.domain.PostClass">
+    <insert id="insertPostClasss" parameterType="com.bbs.domain.PostClass">
 INSERT INTO bbs.bbs_post_class(code,moduleCode,className,createBy,createDate) VALUES(#{code},#{moduleCode},#{className},#{createBy},#{createDate}) 
 </insert>
-
-<select id="getAllModule" resultType="com.bbs.domain.Module">
+    <select id="getAllModule" resultType="com.bbs.domain.Module">
  SELECT * FROM bbs.bbs_module_info
 </select>
-
-<select id="selectPostClassByCode" parameterType="String" resultType="com.bbs.domain.PostVo">
+    <select id="selectPostClassByCode" parameterType="String" resultType="com.bbs.domain.PostVo">
 SELECT tid,code,title,bbs.bbs_user_info.userName,bbs.bbs_post_info.publishDate FROM bbs.bbs_post_info,bbs.bbs_user_info WHERE bbs.bbs_post_info.hostAccount = bbs.bbs_user_info.account AND postClassCode = #{value};
 </select>
-
-<select id="selectAllPostClassByCode" parameterType="String" resultType="com.bbs.domain.PostVo">
-SELECT a.*,b.userName,d.className FROM (bbs.bbs_post_info a LEFT JOIN bbs.bbs_user_info b ON a.hostAccount=b.account) LEFT JOIN bbs.bbs_post_class d ON a.postClassCode = d.code where a.postClassCode = #{value}
+    <select id="selectAllPostClassByCode" parameterType="String" resultType="com.bbs.domain.PostVo">
+SELECT a.*,b.userName,d.className FROM (bbs.bbs_post_info a LEFT JOIN bbs.bbs_user_info b ON a.hostAccount=b.account) LEFT JOIN bbs.bbs_post_class d ON a.postClassCode = d.code where a.postClassCode = #{value} ORDER BY createDate DESC
 </select>
-<delete id="deletePostClassByCode" parameterType="String">
+    <delete id="deletePostClassByCode" parameterType="String">
 DELETE FROM bbs.bbs_post_info WHERE CODE = #{value}
 </delete>
 </mapper>

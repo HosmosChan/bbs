@@ -3,2575 +3,2699 @@
  * version: 1.2.2
  * build: Wed Mar 19 2014 17:14:25 GMT+0800 (中国标准时间)
  */
-
-(function($){
-
-UMEDITOR_CONFIG = window.UMEDITOR_CONFIG || {};
-
-window.UM = {
-    plugins : {},
-
-    commands : {},
-
-    I18N : {},
-
-    version : "1.2.2"
-};
-
-var dom = UM.dom = {};
-/**
- * 浏览器判断模块
- * @file
- * @module UE.browser
- * @since 1.2.6.1
- */
-
-/**
- * 提供浏览器检测的模块
- * @unfile
- * @module UE.browser
- */
-var browser = UM.browser = function(){
-    var agent = navigator.userAgent.toLowerCase(),
-        opera = window.opera,
-        browser = {
-            /**
-             * @property {boolean} ie 检测当前浏览器是否为IE
-             * @example
-             * ```javascript
-             * if ( UE.browser.ie ) {
-         *     console.log( '当前浏览器是IE' );
-         * }
-             * ```
-             */
-            ie		:  /(msie\s|trident.*rv:)([\w.]+)/.test(agent),
-
-            /**
-             * @property {boolean} opera 检测当前浏览器是否为Opera
-             * @example
-             * ```javascript
-             * if ( UE.browser.opera ) {
-         *     console.log( '当前浏览器是Opera' );
-         * }
-             * ```
-             */
-            opera	: ( !!opera && opera.version ),
-
-            /**
-             * @property {boolean} webkit 检测当前浏览器是否是webkit内核的浏览器
-             * @example
-             * ```javascript
-             * if ( UE.browser.webkit ) {
-         *     console.log( '当前浏览器是webkit内核浏览器' );
-         * }
-             * ```
-             */
-            webkit	: ( agent.indexOf( ' applewebkit/' ) > -1 ),
-
-            /**
-             * @property {boolean} mac 检测当前浏览器是否是运行在mac平台下
-             * @example
-             * ```javascript
-             * if ( UE.browser.mac ) {
-         *     console.log( '当前浏览器运行在mac平台下' );
-         * }
-             * ```
-             */
-            mac	: ( agent.indexOf( 'macintosh' ) > -1 ),
-
-            /**
-             * @property {boolean} quirks 检测当前浏览器是否处于“怪异模式”下
-             * @example
-             * ```javascript
-             * if ( UE.browser.quirks ) {
-         *     console.log( '当前浏览器运行处于“怪异模式”' );
-         * }
-             * ```
-             */
-            quirks : ( document.compatMode == 'BackCompat' )
-        };
-
+(function ($) {
+    UMEDITOR_CONFIG = window.UMEDITOR_CONFIG || {};
+    window.UM = {
+        plugins: {},
+        commands: {},
+        I18N: {},
+        version: "1.2.2"
+    };
+    var dom = UM.dom = {};
     /**
-     * @property {boolean} gecko 检测当前浏览器内核是否是gecko内核
-     * @example
-     * ```javascript
-     * if ( UE.browser.gecko ) {
-    *     console.log( '当前浏览器内核是gecko内核' );
-    * }
-     * ```
+     * 浏览器判断模块
+     * @file
+     * @module UE.browser
+     * @since 1.2.6.1
      */
-    browser.gecko =( navigator.product == 'Gecko' && !browser.webkit && !browser.opera && !browser.ie);
-
-    var version = 0;
-
-    // Internet Explorer 6.0+
-    if ( browser.ie ){
-
-
-        var v1 =  agent.match(/(?:msie\s([\w.]+))/);
-        var v2 = agent.match(/(?:trident.*rv:([\w.]+))/);
-        if(v1 && v2 && v1[1] && v2[1]){
-            version = Math.max(v1[1]*1,v2[1]*1);
-        }else if(v1 && v1[1]){
-            version = v1[1]*1;
-        }else if(v2 && v2[1]){
-            version = v2[1]*1;
-        }else{
-            version = 0;
-        }
-
-        browser.ie11Compat = document.documentMode == 11;
+    /**
+     * 提供浏览器检测的模块
+     * @unfile
+     * @module UE.browser
+     */
+    var browser = UM.browser = function () {
+        var agent = navigator.userAgent.toLowerCase(),
+            opera = window.opera,
+            browser = {
+                /**
+                 * @property {boolean} ie 检测当前浏览器是否为IE
+                 * @example
+                 * ```javascript
+                 * if ( UE.browser.ie ) {
+                 *     console.log( '当前浏览器是IE' );
+                 * }
+                 * ```
+                 */
+                ie: /(msie\s|trident.*rv:)([\w.]+)/.test(agent),
+                /**
+                 * @property {boolean} opera 检测当前浏览器是否为Opera
+                 * @example
+                 * ```javascript
+                 * if ( UE.browser.opera ) {
+                 *     console.log( '当前浏览器是Opera' );
+                 * }
+                 * ```
+                 */
+                opera: (!!opera && opera.version),
+                /**
+                 * @property {boolean} webkit 检测当前浏览器是否是webkit内核的浏览器
+                 * @example
+                 * ```javascript
+                 * if ( UE.browser.webkit ) {
+                 *     console.log( '当前浏览器是webkit内核浏览器' );
+                 * }
+                 * ```
+                 */
+                webkit: (agent.indexOf(' applewebkit/') > -1),
+                /**
+                 * @property {boolean} mac 检测当前浏览器是否是运行在mac平台下
+                 * @example
+                 * ```javascript
+                 * if ( UE.browser.mac ) {
+                 *     console.log( '当前浏览器运行在mac平台下' );
+                 * }
+                 * ```
+                 */
+                mac: (agent.indexOf('macintosh') > -1),
+                /**
+                 * @property {boolean} quirks 检测当前浏览器是否处于“怪异模式”下
+                 * @example
+                 * ```javascript
+                 * if ( UE.browser.quirks ) {
+                 *     console.log( '当前浏览器运行处于“怪异模式”' );
+                 * }
+                 * ```
+                 */
+                quirks: (document.compatMode == 'BackCompat')
+            };
         /**
-         * @property { boolean } ie9Compat 检测浏览器模式是否为 IE9 兼容模式
-         * @warning 如果浏览器不是IE， 则该值为undefined
+         * @property {boolean} gecko 检测当前浏览器内核是否是gecko内核
          * @example
          * ```javascript
-         * if ( UE.browser.ie9Compat ) {
-         *     console.log( '当前浏览器运行在IE9兼容模式下' );
+         * if ( UE.browser.gecko ) {
+         *     console.log( '当前浏览器内核是gecko内核' );
          * }
          * ```
          */
-        browser.ie9Compat = document.documentMode == 9;
-
-        /**
-         * @property { boolean } ie8 检测浏览器是否是IE8浏览器
-         * @warning 如果浏览器不是IE， 则该值为undefined
-         * @example
-         * ```javascript
-         * if ( UE.browser.ie8 ) {
-         *     console.log( '当前浏览器是IE8浏览器' );
-         * }
-         * ```
-         */
-        browser.ie8 = !!document.documentMode;
-
-        /**
-         * @property { boolean } ie8Compat 检测浏览器模式是否为 IE8 兼容模式
-         * @warning 如果浏览器不是IE， 则该值为undefined
-         * @example
-         * ```javascript
-         * if ( UE.browser.ie8Compat ) {
-         *     console.log( '当前浏览器运行在IE8兼容模式下' );
-         * }
-         * ```
-         */
-        browser.ie8Compat = document.documentMode == 8;
-
-        /**
-         * @property { boolean } ie7Compat 检测浏览器模式是否为 IE7 兼容模式
-         * @warning 如果浏览器不是IE， 则该值为undefined
-         * @example
-         * ```javascript
-         * if ( UE.browser.ie7Compat ) {
-         *     console.log( '当前浏览器运行在IE7兼容模式下' );
-         * }
-         * ```
-         */
-        browser.ie7Compat = ( ( version == 7 && !document.documentMode )
-            || document.documentMode == 7 );
-
-        /**
-         * @property { boolean } ie6Compat 检测浏览器模式是否为 IE6 模式 或者怪异模式
-         * @warning 如果浏览器不是IE， 则该值为undefined
-         * @example
-         * ```javascript
-         * if ( UE.browser.ie6Compat ) {
-         *     console.log( '当前浏览器运行在IE6模式或者怪异模式下' );
-         * }
-         * ```
-         */
-        browser.ie6Compat = ( version < 7 || browser.quirks );
-
-        browser.ie9above = version > 8;
-
-        browser.ie9below = version < 9;
-
-    }
-
-    // Gecko.
-    if ( browser.gecko ){
-        var geckoRelease = agent.match( /rv:([\d\.]+)/ );
-        if ( geckoRelease )
-        {
-            geckoRelease = geckoRelease[1].split( '.' );
-            version = geckoRelease[0] * 10000 + ( geckoRelease[1] || 0 ) * 100 + ( geckoRelease[2] || 0 ) * 1;
-        }
-    }
-
-    /**
-     * @property { Number } chrome 检测当前浏览器是否为Chrome, 如果是，则返回Chrome的大版本号
-     * @warning 如果浏览器不是chrome， 则该值为undefined
-     * @example
-     * ```javascript
-     * if ( UE.browser.chrome ) {
-     *     console.log( '当前浏览器是Chrome' );
-     * }
-     * ```
-     */
-    if (/chrome\/(\d+\.\d)/i.test(agent)) {
-        browser.chrome = + RegExp['\x241'];
-    }
-
-    /**
-     * @property { Number } safari 检测当前浏览器是否为Safari, 如果是，则返回Safari的大版本号
-     * @warning 如果浏览器不是safari， 则该值为undefined
-     * @example
-     * ```javascript
-     * if ( UE.browser.safari ) {
-     *     console.log( '当前浏览器是Safari' );
-     * }
-     * ```
-     */
-    if(/(\d+\.\d)?(?:\.\d)?\s+safari\/?(\d+\.\d+)?/i.test(agent) && !/chrome/i.test(agent)){
-        browser.safari = + (RegExp['\x241'] || RegExp['\x242']);
-    }
-
-
-    // Opera 9.50+
-    if ( browser.opera )
-        version = parseFloat( opera.version() );
-
-    // WebKit 522+ (Safari 3+)
-    if ( browser.webkit )
-        version = parseFloat( agent.match( / applewebkit\/(\d+)/ )[1] );
-
-    /**
-     * @property { Number } version 检测当前浏览器版本号
-     * @remind
-     * <ul>
-     *     <li>IE系列返回值为5,6,7,8,9,10等</li>
-     *     <li>gecko系列会返回10900，158900等</li>
-     *     <li>webkit系列会返回其build号 (如 522等)</li>
-     * </ul>
-     * @example
-     * ```javascript
-     * console.log( '当前浏览器版本号是： ' + UE.browser.version );
-     * ```
-     */
-    browser.version = version;
-
-    /**
-     * @property { boolean } isCompatible 检测当前浏览器是否能够与UEditor良好兼容
-     * @example
-     * ```javascript
-     * if ( UE.browser.isCompatible ) {
-     *     console.log( '浏览器与UEditor能够良好兼容' );
-     * }
-     * ```
-     */
-    browser.isCompatible =
-        !browser.mobile && (
-            ( browser.ie && version >= 6 ) ||
-                ( browser.gecko && version >= 10801 ) ||
-                ( browser.opera && version >= 9.5 ) ||
-                ( browser.air && version >= 1 ) ||
-                ( browser.webkit && version >= 522 ) ||
-                false );
-    return browser;
-}();
-//快捷方式
-var ie = browser.ie,
-    webkit = browser.webkit,
-    gecko = browser.gecko,
-    opera = browser.opera;
-/**
- * @file
- * @name UM.Utils
- * @short Utils
- * @desc UEditor封装使用的静态工具函数
- * @import editor.js
- */
-var utils = UM.utils = {
-    /**
-     * 遍历数组，对象，nodeList
-     * @name each
-     * @grammar UM.utils.each(obj,iterator,[context])
-     * @since 1.2.4+
-     * @desc
-     * * obj 要遍历的对象
-     * * iterator 遍历的方法,方法的第一个是遍历的值，第二个是索引，第三个是obj
-     * * context  iterator的上下文
-     * @example
-     * UM.utils.each([1,2],function(v,i){
-     *     console.log(v)//值
-     *     console.log(i)//索引
-     * })
-     * UM.utils.each(document.getElementsByTagName('*'),function(n){
-     *     console.log(n.tagName)
-     * })
-     */
-    each : function(obj, iterator, context) {
-        if (obj == null) return;
-        if (obj.length === +obj.length) {
-            for (var i = 0, l = obj.length; i < l; i++) {
-                if(iterator.call(context, obj[i], i, obj) === false)
-                    return false;
+        browser.gecko = (navigator.product == 'Gecko' && !browser.webkit && !browser.opera && !browser.ie);
+        var version = 0;
+        // Internet Explorer 6.0+
+        if (browser.ie) {
+            var v1 = agent.match(/(?:msie\s([\w.]+))/);
+            var v2 = agent.match(/(?:trident.*rv:([\w.]+))/);
+            if (v1 && v2 && v1[1] && v2[1]) {
+                version = Math.max(v1[1] * 1, v2[1] * 1);
+            } else if (v1 && v1[1]) {
+                version = v1[1] * 1;
+            } else if (v2 && v2[1]) {
+                version = v2[1] * 1;
+            } else {
+                version = 0;
             }
-        } else {
-            for (var key in obj) {
-                if (obj.hasOwnProperty(key)) {
-                    if(iterator.call(context, obj[key], key, obj) === false)
+            browser.ie11Compat = document.documentMode == 11;
+            /**
+             * @property { boolean } ie9Compat 检测浏览器模式是否为 IE9 兼容模式
+             * @warning 如果浏览器不是IE， 则该值为undefined
+             * @example
+             * ```javascript
+             * if ( UE.browser.ie9Compat ) {
+             *     console.log( '当前浏览器运行在IE9兼容模式下' );
+             * }
+             * ```
+             */
+            browser.ie9Compat = document.documentMode == 9;
+            /**
+             * @property { boolean } ie8 检测浏览器是否是IE8浏览器
+             * @warning 如果浏览器不是IE， 则该值为undefined
+             * @example
+             * ```javascript
+             * if ( UE.browser.ie8 ) {
+             *     console.log( '当前浏览器是IE8浏览器' );
+             * }
+             * ```
+             */
+            browser.ie8 = !!document.documentMode;
+            /**
+             * @property { boolean } ie8Compat 检测浏览器模式是否为 IE8 兼容模式
+             * @warning 如果浏览器不是IE， 则该值为undefined
+             * @example
+             * ```javascript
+             * if ( UE.browser.ie8Compat ) {
+             *     console.log( '当前浏览器运行在IE8兼容模式下' );
+             * }
+             * ```
+             */
+            browser.ie8Compat = document.documentMode == 8;
+            /**
+             * @property { boolean } ie7Compat 检测浏览器模式是否为 IE7 兼容模式
+             * @warning 如果浏览器不是IE， 则该值为undefined
+             * @example
+             * ```javascript
+             * if ( UE.browser.ie7Compat ) {
+             *     console.log( '当前浏览器运行在IE7兼容模式下' );
+             * }
+             * ```
+             */
+            browser.ie7Compat = ((version == 7 && !document.documentMode)
+                || document.documentMode == 7);
+            /**
+             * @property { boolean } ie6Compat 检测浏览器模式是否为 IE6 模式 或者怪异模式
+             * @warning 如果浏览器不是IE， 则该值为undefined
+             * @example
+             * ```javascript
+             * if ( UE.browser.ie6Compat ) {
+             *     console.log( '当前浏览器运行在IE6模式或者怪异模式下' );
+             * }
+             * ```
+             */
+            browser.ie6Compat = (version < 7 || browser.quirks);
+            browser.ie9above = version > 8;
+            browser.ie9below = version < 9;
+        }
+        // Gecko.
+        if (browser.gecko) {
+            var geckoRelease = agent.match(/rv:([\d\.]+)/);
+            if (geckoRelease) {
+                geckoRelease = geckoRelease[1].split('.');
+                version = geckoRelease[0] * 10000 + (geckoRelease[1] || 0) * 100 + (geckoRelease[2] || 0) * 1;
+            }
+        }
+        /**
+         * @property { Number } chrome 检测当前浏览器是否为Chrome, 如果是，则返回Chrome的大版本号
+         * @warning 如果浏览器不是chrome， 则该值为undefined
+         * @example
+         * ```javascript
+         * if ( UE.browser.chrome ) {
+         *     console.log( '当前浏览器是Chrome' );
+         * }
+         * ```
+         */
+        if (/chrome\/(\d+\.\d)/i.test(agent)) {
+            browser.chrome = +RegExp['\x241'];
+        }
+        /**
+         * @property { Number } safari 检测当前浏览器是否为Safari, 如果是，则返回Safari的大版本号
+         * @warning 如果浏览器不是safari， 则该值为undefined
+         * @example
+         * ```javascript
+         * if ( UE.browser.safari ) {
+         *     console.log( '当前浏览器是Safari' );
+         * }
+         * ```
+         */
+        if (/(\d+\.\d)?(?:\.\d)?\s+safari\/?(\d+\.\d+)?/i.test(agent) && !/chrome/i.test(agent)) {
+            browser.safari = +(RegExp['\x241'] || RegExp['\x242']);
+        }
+        // Opera 9.50+
+        if (browser.opera)
+            version = parseFloat(opera.version());
+        // WebKit 522+ (Safari 3+)
+        if (browser.webkit)
+            version = parseFloat(agent.match(/ applewebkit\/(\d+)/)[1]);
+        /**
+         * @property { Number } version 检测当前浏览器版本号
+         * @remind
+         * <ul>
+         *     <li>IE系列返回值为5,6,7,8,9,10等</li>
+         *     <li>gecko系列会返回10900，158900等</li>
+         *     <li>webkit系列会返回其build号 (如 522等)</li>
+         * </ul>
+         * @example
+         * ```javascript
+         * console.log( '当前浏览器版本号是： ' + UE.browser.version );
+         * ```
+         */
+        browser.version = version;
+        /**
+         * @property { boolean } isCompatible 检测当前浏览器是否能够与UEditor良好兼容
+         * @example
+         * ```javascript
+         * if ( UE.browser.isCompatible ) {
+         *     console.log( '浏览器与UEditor能够良好兼容' );
+         * }
+         * ```
+         */
+        browser.isCompatible =
+            !browser.mobile && (
+            (browser.ie && version >= 6) ||
+            (browser.gecko && version >= 10801) ||
+            (browser.opera && version >= 9.5) ||
+            (browser.air && version >= 1) ||
+            (browser.webkit && version >= 522) ||
+            false);
+        return browser;
+    }();
+//快捷方式
+    var ie = browser.ie,
+        webkit = browser.webkit,
+        gecko = browser.gecko,
+        opera = browser.opera;
+    /**
+     * @file
+     * @name UM.Utils
+     * @short Utils
+     * @desc UEditor封装使用的静态工具函数
+     * @import editor.js
+     */
+    var utils = UM.utils = {
+        /**
+         * 遍历数组，对象，nodeList
+         * @name each
+         * @grammar UM.utils.each(obj,iterator,[context])
+         * @since 1.2.4+
+         * @desc
+         * * obj 要遍历的对象
+         * * iterator 遍历的方法,方法的第一个是遍历的值，第二个是索引，第三个是obj
+         * * context  iterator的上下文
+         * @example
+         * UM.utils.each([1,2],function(v,i){
+         *     console.log(v)//值
+         *     console.log(i)//索引
+         * })
+         * UM.utils.each(document.getElementsByTagName('*'),function(n){
+         *     console.log(n.tagName)
+         * })
+         */
+        each: function (obj, iterator, context) {
+            if (obj == null) return;
+            if (obj.length === +obj.length) {
+                for (var i = 0, l = obj.length; i < l; i++) {
+                    if (iterator.call(context, obj[i], i, obj) === false)
                         return false;
                 }
-            }
-        }
-    },
-
-    makeInstance:function (obj) {
-        var noop = new Function();
-        noop.prototype = obj;
-        obj = new noop;
-        noop.prototype = null;
-        return obj;
-    },
-    /**
-     * 将source对象中的属性扩展到target对象上
-     * @name extend
-     * @grammar UM.utils.extend(target,source)  => Object  //覆盖扩展
-     * @grammar UM.utils.extend(target,source,true)  ==> Object  //保留扩展
-     */
-    extend:function (t, s, b) {
-        if (s) {
-            for (var k in s) {
-                if (!b || !t.hasOwnProperty(k)) {
-                    t[k] = s[k];
-                }
-            }
-        }
-        return t;
-    },
-    extend2:function (t) {
-        var a = arguments;
-        for (var i = 1; i < a.length; i++) {
-            var x = a[i];
-            for (var k in x) {
-                if (!t.hasOwnProperty(k)) {
-                    t[k] = x[k];
-                }
-            }
-        }
-        return t;
-    },
-    /**
-     * 模拟继承机制，subClass继承superClass
-     * @name inherits
-     * @grammar UM.utils.inherits(subClass,superClass) => subClass
-     * @example
-     * function SuperClass(){
-     *     this.name = "小李";
-     * }
-     * SuperClass.prototype = {
-     *     hello:function(str){
-     *         console.log(this.name + str);
-     *     }
-     * }
-     * function SubClass(){
-     *     this.name = "小张";
-     * }
-     * UM.utils.inherits(SubClass,SuperClass);
-     * var sub = new SubClass();
-     * sub.hello("早上好!"); ==> "小张早上好！"
-     */
-    inherits:function (subClass, superClass) {
-        var oldP = subClass.prototype,
-            newP = utils.makeInstance(superClass.prototype);
-        utils.extend(newP, oldP, true);
-        subClass.prototype = newP;
-        return (newP.constructor = subClass);
-    },
-
-    /**
-     * 用指定的context作为fn上下文，也就是this
-     * @name bind
-     * @grammar UM.utils.bind(fn,context)  =>  fn
-     */
-    bind:function (fn, context) {
-        return function () {
-            return fn.apply(context, arguments);
-        };
-    },
-
-    /**
-     * 创建延迟delay执行的函数fn
-     * @name defer
-     * @grammar UM.utils.defer(fn,delay)  =>fn   //延迟delay毫秒执行fn，返回fn
-     * @grammar UM.utils.defer(fn,delay,exclusion)  =>fn   //延迟delay毫秒执行fn，若exclusion为真，则互斥执行fn
-     * @example
-     * function test(){
-     *     console.log("延迟输出！");
-     * }
-     * //非互斥延迟执行
-     * var testDefer = UM.utils.defer(test,1000);
-     * testDefer();   =>  "延迟输出！";
-     * testDefer();   =>  "延迟输出！";
-     * //互斥延迟执行
-     * var testDefer1 = UM.utils.defer(test,1000,true);
-     * testDefer1();   =>  //本次不执行
-     * testDefer1();   =>  "延迟输出！";
-     */
-    defer:function (fn, delay, exclusion) {
-        var timerID;
-        return function () {
-            if (exclusion) {
-                clearTimeout(timerID);
-            }
-            timerID = setTimeout(fn, delay);
-        };
-    },
-
-    /**
-     * 查找元素item在数组array中的索引, 若找不到返回-1
-     * @name indexOf
-     * @grammar UM.utils.indexOf(array,item)  => index|-1  //默认从数组开头部开始搜索
-     * @grammar UM.utils.indexOf(array,item,start)  => index|-1  //start指定开始查找的位置
-     */
-    indexOf:function (array, item, start) {
-        var index = -1;
-        start = this.isNumber(start) ? start : 0;
-        this.each(array, function (v, i) {
-            if (i >= start && v === item) {
-                index = i;
-                return false;
-            }
-        });
-        return index;
-    },
-
-    /**
-     * 移除数组array中的元素item
-     * @name removeItem
-     * @grammar UM.utils.removeItem(array,item)
-     */
-    removeItem:function (array, item) {
-        for (var i = 0, l = array.length; i < l; i++) {
-            if (array[i] === item) {
-                array.splice(i, 1);
-                i--;
-            }
-        }
-    },
-
-    /**
-     * 删除字符串str的首尾空格
-     * @name trim
-     * @grammar UM.utils.trim(str) => String
-     */
-    trim:function (str) {
-        return str.replace(/(^[ \t\n\r]+)|([ \t\n\r]+$)/g, '');
-    },
-
-    /**
-     * 将字符串list(以','分隔)或者数组list转成哈希对象
-     * @name listToMap
-     * @grammar UM.utils.listToMap(list)  => Object  //Object形如{test:1,br:1,textarea:1}
-     */
-    listToMap:function (list) {
-        if (!list)return {};
-        list = utils.isArray(list) ? list : list.split(',');
-        for (var i = 0, ci, obj = {}; ci = list[i++];) {
-            obj[ci.toUpperCase()] = obj[ci] = 1;
-        }
-        return obj;
-    },
-
-    /**
-     * 将str中的html符号转义,默认将转义''&<">''四个字符，可自定义reg来确定需要转义的字符
-     * @name unhtml
-     * @grammar UM.utils.unhtml(str);  => String
-     * @grammar UM.utils.unhtml(str,reg)  => String
-     * @example
-     * var html = '<body>You say:"你好！Baidu & UEditor!"</body>';
-     * UM.utils.unhtml(html);   ==>  &lt;body&gt;You say:&quot;你好！Baidu &amp; UEditor!&quot;&lt;/body&gt;
-     * UM.utils.unhtml(html,/[<>]/g)  ==>  &lt;body&gt;You say:"你好！Baidu & UEditor!"&lt;/body&gt;
-     */
-    unhtml:function (str, reg) {
-        return str ? str.replace(reg || /[&<">'](?:(amp|lt|quot|gt|#39|nbsp);)?/g, function (a, b) {
-            if (b) {
-                return a;
             } else {
-                return {
-                    '<':'&lt;',
-                    '&':'&amp;',
-                    '"':'&quot;',
-                    '>':'&gt;',
-                    "'":'&#39;'
-                }[a]
-            }
-
-        }) : '';
-    },
-    /**
-     * 将str中的转义字符还原成html字符
-     * @name html
-     * @grammar UM.utils.html(str)  => String   //详细参见<code><a href = '#unhtml'>unhtml</a></code>
-     */
-    html:function (str) {
-        return str ? str.replace(/&((g|l|quo)t|amp|#39);/g, function (m) {
-            return {
-                '&lt;':'<',
-                '&amp;':'&',
-                '&quot;':'"',
-                '&gt;':'>',
-                '&#39;':"'"
-            }[m]
-        }) : '';
-    },
-    /**
-     * 将css样式转换为驼峰的形式。如font-size => fontSize
-     * @name cssStyleToDomStyle
-     * @grammar UM.utils.cssStyleToDomStyle(cssName)  => String
-     */
-    cssStyleToDomStyle:function () {
-        var test = document.createElement('div').style,
-            cache = {
-                'float':test.cssFloat != undefined ? 'cssFloat' : test.styleFloat != undefined ? 'styleFloat' : 'float'
-            };
-
-        return function (cssName) {
-            return cache[cssName] || (cache[cssName] = cssName.toLowerCase().replace(/-./g, function (match) {
-                return match.charAt(1).toUpperCase();
-            }));
-        };
-    }(),
-    /**
-     * 动态加载文件到doc中，并依据obj来设置属性，加载成功后执行回调函数fn
-     * @name loadFile
-     * @grammar UM.utils.loadFile(doc,obj)
-     * @grammar UM.utils.loadFile(doc,obj,fn)
-     * @example
-     * //指定加载到当前document中一个script文件，加载成功后执行function
-     * utils.loadFile( document, {
-     *     src:"test.js",
-     *     tag:"script",
-     *     type:"text/javascript",
-     *     defer:"defer"
-     * }, function () {
-     *     console.log('加载成功！')
-     * });
-     */
-    loadFile:function () {
-        var tmpList = [];
-
-        function getItem(doc, obj) {
-            try {
-                for (var i = 0, ci; ci = tmpList[i++];) {
-                    if (ci.doc === doc && ci.url == (obj.src || obj.href)) {
-                        return ci;
+                for (var key in obj) {
+                    if (obj.hasOwnProperty(key)) {
+                        if (iterator.call(context, obj[key], key, obj) === false)
+                            return false;
                     }
                 }
-            } catch (e) {
-                return null;
             }
-
-        }
-
-        return function (doc, obj, fn) {
-            var item = getItem(doc, obj);
-            if (item) {
-                if (item.ready) {
-                    fn && fn();
-                } else {
-                    item.funs.push(fn)
+        },
+        makeInstance: function (obj) {
+            var noop = new Function();
+            noop.prototype = obj;
+            obj = new noop;
+            noop.prototype = null;
+            return obj;
+        },
+        /**
+         * 将source对象中的属性扩展到target对象上
+         * @name extend
+         * @grammar UM.utils.extend(target,source)  => Object  //覆盖扩展
+         * @grammar UM.utils.extend(target,source,true)  ==> Object  //保留扩展
+         */
+        extend: function (t, s, b) {
+            if (s) {
+                for (var k in s) {
+                    if (!b || !t.hasOwnProperty(k)) {
+                        t[k] = s[k];
+                    }
                 }
-                return;
             }
-            tmpList.push({
-                doc:doc,
-                url:obj.src || obj.href,
-                funs:[fn]
+            return t;
+        },
+        extend2: function (t) {
+            var a = arguments;
+            for (var i = 1; i < a.length; i++) {
+                var x = a[i];
+                for (var k in x) {
+                    if (!t.hasOwnProperty(k)) {
+                        t[k] = x[k];
+                    }
+                }
+            }
+            return t;
+        },
+        /**
+         * 模拟继承机制，subClass继承superClass
+         * @name inherits
+         * @grammar UM.utils.inherits(subClass,superClass) => subClass
+         * @example
+         * function SuperClass(){
+         *     this.name = "小李";
+         * }
+         * SuperClass.prototype = {
+         *     hello:function(str){
+         *         console.log(this.name + str);
+         *     }
+         * }
+         * function SubClass(){
+         *     this.name = "小张";
+         * }
+         * UM.utils.inherits(SubClass,SuperClass);
+         * var sub = new SubClass();
+         * sub.hello("早上好!"); ==> "小张早上好！"
+         */
+        inherits: function (subClass, superClass) {
+            var oldP = subClass.prototype,
+                newP = utils.makeInstance(superClass.prototype);
+            utils.extend(newP, oldP, true);
+            subClass.prototype = newP;
+            return (newP.constructor = subClass);
+        },
+        /**
+         * 用指定的context作为fn上下文，也就是this
+         * @name bind
+         * @grammar UM.utils.bind(fn,context)  =>  fn
+         */
+        bind: function (fn, context) {
+            return function () {
+                return fn.apply(context, arguments);
+            };
+        },
+        /**
+         * 创建延迟delay执行的函数fn
+         * @name defer
+         * @grammar UM.utils.defer(fn,delay)  =>fn   //延迟delay毫秒执行fn，返回fn
+         * @grammar UM.utils.defer(fn,delay,exclusion)  =>fn   //延迟delay毫秒执行fn，若exclusion为真，则互斥执行fn
+         * @example
+         * function test(){
+         *     console.log("延迟输出！");
+         * }
+         * //非互斥延迟执行
+         * var testDefer = UM.utils.defer(test,1000);
+         * testDefer();   =>  "延迟输出！";
+         * testDefer();   =>  "延迟输出！";
+         * //互斥延迟执行
+         * var testDefer1 = UM.utils.defer(test,1000,true);
+         * testDefer1();   =>  //本次不执行
+         * testDefer1();   =>  "延迟输出！";
+         */
+        defer: function (fn, delay, exclusion) {
+            var timerID;
+            return function () {
+                if (exclusion) {
+                    clearTimeout(timerID);
+                }
+                timerID = setTimeout(fn, delay);
+            };
+        },
+        /**
+         * 查找元素item在数组array中的索引, 若找不到返回-1
+         * @name indexOf
+         * @grammar UM.utils.indexOf(array,item)  => index|-1  //默认从数组开头部开始搜索
+         * @grammar UM.utils.indexOf(array,item,start)  => index|-1  //start指定开始查找的位置
+         */
+        indexOf: function (array, item, start) {
+            var index = -1;
+            start = this.isNumber(start) ? start : 0;
+            this.each(array, function (v, i) {
+                if (i >= start && v === item) {
+                    index = i;
+                    return false;
+                }
             });
-            if (!doc.body) {
-                var html = [];
-                for (var p in obj) {
-                    if (p == 'tag')continue;
-                    html.push(p + '="' + obj[p] + '"')
+            return index;
+        },
+        /**
+         * 移除数组array中的元素item
+         * @name removeItem
+         * @grammar UM.utils.removeItem(array,item)
+         */
+        removeItem: function (array, item) {
+            for (var i = 0, l = array.length; i < l; i++) {
+                if (array[i] === item) {
+                    array.splice(i, 1);
+                    i--;
                 }
-                doc.write('<' + obj.tag + ' ' + html.join(' ') + ' ></' + obj.tag + '>');
-                return;
             }
-            if (obj.id && doc.getElementById(obj.id)) {
-                return;
+        },
+        /**
+         * 删除字符串str的首尾空格
+         * @name trim
+         * @grammar UM.utils.trim(str) => String
+         */
+        trim: function (str) {
+            return str.replace(/(^[ \t\n\r]+)|([ \t\n\r]+$)/g, '');
+        },
+        /**
+         * 将字符串list(以','分隔)或者数组list转成哈希对象
+         * @name listToMap
+         * @grammar UM.utils.listToMap(list)  => Object  //Object形如{test:1,br:1,textarea:1}
+         */
+        listToMap: function (list) {
+            if (!list) return {};
+            list = utils.isArray(list) ? list : list.split(',');
+            for (var i = 0, ci, obj = {}; ci = list[i++];) {
+                obj[ci.toUpperCase()] = obj[ci] = 1;
             }
-            var element = doc.createElement(obj.tag);
-            delete obj.tag;
-            for (var p in obj) {
-                element.setAttribute(p, obj[p]);
-            }
-            element.onload = element.onreadystatechange = function () {
-                if (!this.readyState || /loaded|complete/.test(this.readyState)) {
-                    item = getItem(doc, obj);
-                    if (item.funs.length > 0) {
-                        item.ready = 1;
-                        for (var fi; fi = item.funs.pop();) {
-                            fi();
+            return obj;
+        },
+        /**
+         * 将str中的html符号转义,默认将转义''&<">''四个字符，可自定义reg来确定需要转义的字符
+         * @name unhtml
+         * @grammar UM.utils.unhtml(str);  => String
+         * @grammar UM.utils.unhtml(str,reg)  => String
+         * @example
+         * var html = '<body>You say:"你好！Baidu & UEditor!"</body>';
+         * UM.utils.unhtml(html);   ==>  &lt;body&gt;You say:&quot;你好！Baidu &amp; UEditor!&quot;&lt;/body&gt;
+         * UM.utils.unhtml(html,/[<>]/g)  ==>  &lt;body&gt;You say:"你好！Baidu & UEditor!"&lt;/body&gt;
+         */
+        unhtml: function (str, reg) {
+            return str ? str.replace(reg || /[&<">'](?:(amp|lt|quot|gt|#39|nbsp);)?/g, function (a, b) {
+                if (b) {
+                    return a;
+                } else {
+                    return {
+                        '<': '&lt;',
+                        '&': '&amp;',
+                        '"': '&quot;',
+                        '>': '&gt;',
+                        "'": '&#39;'
+                    }[a]
+                }
+            }) : '';
+        },
+        /**
+         * 将str中的转义字符还原成html字符
+         * @name html
+         * @grammar UM.utils.html(str)  => String   //详细参见<code><a href = '#unhtml'>unhtml</a></code>
+         */
+        html: function (str) {
+            return str ? str.replace(/&((g|l|quo)t|amp|#39);/g, function (m) {
+                return {
+                    '&lt;': '<',
+                    '&amp;': '&',
+                    '&quot;': '"',
+                    '&gt;': '>',
+                    '&#39;': "'"
+                }[m]
+            }) : '';
+        },
+        /**
+         * 将css样式转换为驼峰的形式。如font-size => fontSize
+         * @name cssStyleToDomStyle
+         * @grammar UM.utils.cssStyleToDomStyle(cssName)  => String
+         */
+        cssStyleToDomStyle: function () {
+            var test = document.createElement('div').style,
+                cache = {
+                    'float': test.cssFloat != undefined ? 'cssFloat' : test.styleFloat != undefined ? 'styleFloat' : 'float'
+                };
+            return function (cssName) {
+                return cache[cssName] || (cache[cssName] = cssName.toLowerCase().replace(/-./g, function (match) {
+                    return match.charAt(1).toUpperCase();
+                }));
+            };
+        }(),
+        /**
+         * 动态加载文件到doc中，并依据obj来设置属性，加载成功后执行回调函数fn
+         * @name loadFile
+         * @grammar UM.utils.loadFile(doc,obj)
+         * @grammar UM.utils.loadFile(doc,obj,fn)
+         * @example
+         * //指定加载到当前document中一个script文件，加载成功后执行function
+         * utils.loadFile( document, {
+         *     src:"test.js",
+         *     tag:"script",
+         *     type:"text/javascript",
+         *     defer:"defer"
+         * }, function () {
+         *     console.log('加载成功！')
+         * });
+         */
+        loadFile: function () {
+            var tmpList = [];
+
+            function getItem(doc, obj) {
+                try {
+                    for (var i = 0, ci; ci = tmpList[i++];) {
+                        if (ci.doc === doc && ci.url == (obj.src || obj.href)) {
+                            return ci;
                         }
                     }
-                    element.onload = element.onreadystatechange = null;
-                }
-            };
-            element.onerror = function () {
-                throw Error('The load ' + (obj.href || obj.src) + ' fails,check the url settings of file umeditor.config.js ')
-            };
-            doc.getElementsByTagName("head")[0].appendChild(element);
-        }
-    }(),
-    /**
-     * 判断obj对象是否为空
-     * @name isEmptyObject
-     * @grammar UM.utils.isEmptyObject(obj)  => true|false
-     * @example
-     * UM.utils.isEmptyObject({}) ==>true
-     * UM.utils.isEmptyObject([]) ==>true
-     * UM.utils.isEmptyObject("") ==>true
-     */
-    isEmptyObject:function (obj) {
-        if (obj == null) return true;
-        if (this.isArray(obj) || this.isString(obj)) return obj.length === 0;
-        for (var key in obj) if (obj.hasOwnProperty(key)) return false;
-        return true;
-    },
-
-    /**
-     * 统一将颜色值使用16进制形式表示
-     * @name fixColor
-     * @grammar UM.utils.fixColor(name,value) => value
-     * @example
-     * rgb(255,255,255)  => "#ffffff"
-     */
-    fixColor:function (name, value) {
-        if (/color/i.test(name) && /rgba?/.test(value)) {
-            var array = value.split(",");
-            if (array.length > 3)
-                return "";
-            value = "#";
-            for (var i = 0, color; color = array[i++];) {
-                color = parseInt(color.replace(/[^\d]/gi, ''), 10).toString(16);
-                value += color.length == 1 ? "0" + color : color;
-            }
-            value = value.toUpperCase();
-        }
-        return  value;
-    },
-
-    /**
-     * 深度克隆对象，从source到target
-     * @name clone
-     * @grammar UM.utils.clone(source) => anthorObj 新的对象是完整的source的副本
-     * @grammar UM.utils.clone(source,target) => target包含了source的所有内容，重名会覆盖
-     */
-    clone:function (source, target) {
-        var tmp;
-        target = target || {};
-        for (var i in source) {
-            if (source.hasOwnProperty(i)) {
-                tmp = source[i];
-                if (typeof tmp == 'object') {
-                    target[i] = utils.isArray(tmp) ? [] : {};
-                    utils.clone(source[i], target[i])
-                } else {
-                    target[i] = tmp;
+                } catch (e) {
+                    return null;
                 }
             }
-        }
-        return target;
-    },
-    /**
-     * 转换cm/pt到px
-     * @name transUnitToPx
-     * @grammar UM.utils.transUnitToPx('20pt') => '27px'
-     * @grammar UM.utils.transUnitToPx('0pt') => '0'
-     */
-    transUnitToPx:function (val) {
-        if (!/(pt|cm)/.test(val)) {
-            return val
-        }
-        var unit;
-        val.replace(/([\d.]+)(\w+)/, function (str, v, u) {
-            val = v;
-            unit = u;
-        });
-        switch (unit) {
-            case 'cm':
-                val = parseFloat(val) * 25;
-                break;
-            case 'pt':
-                val = Math.round(parseFloat(val) * 96 / 72);
-        }
-        return val + (val ? 'px' : '');
-    },
-    /**
-     * 动态添加css样式
-     * @name cssRule
-     * @grammar UM.utils.cssRule('添加的样式的节点名称',['样式'，'放到哪个document上'])
-     * @grammar UM.utils.cssRule('body','body{background:#ccc}') => null  //给body添加背景颜色
-     * @grammar UM.utils.cssRule('body') =>样式的字符串  //取得key值为body的样式的内容,如果没有找到key值先关的样式将返回空，例如刚才那个背景颜色，将返回 body{background:#ccc}
-     * @grammar UM.utils.cssRule('body','') =>null //清空给定的key值的背景颜色
-     */
-    cssRule:browser.ie && browser.version != 11 ? function (key, style, doc) {
-        var indexList, index;
-        doc = doc || document;
-        if (doc.indexList) {
-            indexList = doc.indexList;
-        } else {
-            indexList = doc.indexList = {};
-        }
-        var sheetStyle;
-        if (!indexList[key]) {
-            if (style === undefined) {
-                return ''
-            }
-            sheetStyle = doc.createStyleSheet('', index = doc.styleSheets.length);
-            indexList[key] = index;
-        } else {
-            sheetStyle = doc.styleSheets[indexList[key]];
-        }
-        if (style === undefined) {
-            return sheetStyle.cssText
-        }
-        sheetStyle.cssText = style || ''
-    } : function (key, style, doc) {
-        doc = doc || document;
-        var head = doc.getElementsByTagName('head')[0], node;
-        if (!(node = doc.getElementById(key))) {
-            if (style === undefined) {
-                return ''
-            }
-            node = doc.createElement('style');
-            node.id = key;
-            head.appendChild(node)
-        }
-        if (style === undefined) {
-            return node.innerHTML
-        }
-        if (style !== '') {
-            node.innerHTML = style;
-        } else {
-            head.removeChild(node)
-        }
-    }
 
-};
-/**
- * 判断str是否为字符串
- * @name isString
- * @grammar UM.utils.isString(str) => true|false
- */
-/**
- * 判断array是否为数组
- * @name isArray
- * @grammar UM.utils.isArray(obj) => true|false
- */
-/**
- * 判断obj对象是否为方法
- * @name isFunction
- * @grammar UM.utils.isFunction(obj)  => true|false
- */
-/**
- * 判断obj对象是否为数字
- * @name isNumber
- * @grammar UM.utils.isNumber(obj)  => true|false
- */
-utils.each(['String', 'Function', 'Array', 'Number', 'RegExp', 'Object'], function (v) {
-    UM.utils['is' + v] = function (obj) {
-        return Object.prototype.toString.apply(obj) == '[object ' + v + ']';
-    }
-});
-/**
- * @file
- * @name UM.EventBase
- * @short EventBase
- * @import editor.js,core/utils.js
- * @desc UE采用的事件基类，继承此类的对应类将获取addListener,removeListener,fireEvent方法。
- * 在UE中，Editor以及所有ui实例都继承了该类，故可以在对应的ui对象以及editor对象上使用上述方法。
- */
-var EventBase = UM.EventBase = function () {};
-
-EventBase.prototype = {
-    /**
-     * 注册事件监听器
-     * @name addListener
-     * @grammar editor.addListener(types,fn)  //types为事件名称，多个可用空格分隔
-     * @example
-     * editor.addListener('selectionchange',function(){
-     *      console.log("选区已经变化！");
-     * })
-     * editor.addListener('beforegetcontent aftergetcontent',function(type){
-     *         if(type == 'beforegetcontent'){
-     *             //do something
-     *         }else{
-     *             //do something
-     *         }
-     *         console.log(this.getContent) // this是注册的事件的编辑器实例
-     * })
-     */
-    addListener:function (types, listener) {
-        types = utils.trim(types).split(' ');
-        for (var i = 0, ti; ti = types[i++];) {
-            getListener(this, ti, true).push(listener);
-        }
-    },
-    /**
-     * 移除事件监听器
-     * @name removeListener
-     * @grammar editor.removeListener(types,fn)  //types为事件名称，多个可用空格分隔
-     * @example
-     * //changeCallback为方法体
-     * editor.removeListener("selectionchange",changeCallback);
-     */
-    removeListener:function (types, listener) {
-        types = utils.trim(types).split(' ');
-        for (var i = 0, ti; ti = types[i++];) {
-            utils.removeItem(getListener(this, ti) || [], listener);
-        }
-    },
-    /**
-     * 触发事件
-     * @name fireEvent
-     * @grammar editor.fireEvent(types)  //types为事件名称，多个可用空格分隔
-     * @example
-     * editor.fireEvent("selectionchange");
-     */
-    fireEvent:function () {
-        var types = arguments[0];
-        types = utils.trim(types).split(' ');
-        for (var i = 0, ti; ti = types[i++];) {
-            var listeners = getListener(this, ti),
-                r, t, k;
-            if (listeners) {
-                k = listeners.length;
-                while (k--) {
-                    if(!listeners[k])continue;
-                    t = listeners[k].apply(this, arguments);
-                    if(t === true){
-                        return t;
+            return function (doc, obj, fn) {
+                var item = getItem(doc, obj);
+                if (item) {
+                    if (item.ready) {
+                        fn && fn();
+                    } else {
+                        item.funs.push(fn)
                     }
-                    if (t !== undefined) {
-                        r = t;
+                    return;
+                }
+                tmpList.push({
+                    doc: doc,
+                    url: obj.src || obj.href,
+                    funs: [fn]
+                });
+                if (!doc.body) {
+                    var html = [];
+                    for (var p in obj) {
+                        if (p == 'tag') continue;
+                        html.push(p + '="' + obj[p] + '"')
+                    }
+                    doc.write('<' + obj.tag + ' ' + html.join(' ') + ' ></' + obj.tag + '>');
+                    return;
+                }
+                if (obj.id && doc.getElementById(obj.id)) {
+                    return;
+                }
+                var element = doc.createElement(obj.tag);
+                delete obj.tag;
+                for (var p in obj) {
+                    element.setAttribute(p, obj[p]);
+                }
+                element.onload = element.onreadystatechange = function () {
+                    if (!this.readyState || /loaded|complete/.test(this.readyState)) {
+                        item = getItem(doc, obj);
+                        if (item.funs.length > 0) {
+                            item.ready = 1;
+                            for (var fi; fi = item.funs.pop();) {
+                                fi();
+                            }
+                        }
+                        element.onload = element.onreadystatechange = null;
+                    }
+                };
+                element.onerror = function () {
+                    throw Error('The load ' + (obj.href || obj.src) + ' fails,check the url settings of file umeditor.config.js ')
+                };
+                doc.getElementsByTagName("head")[0].appendChild(element);
+            }
+        }(),
+        /**
+         * 判断obj对象是否为空
+         * @name isEmptyObject
+         * @grammar UM.utils.isEmptyObject(obj)  => true|false
+         * @example
+         * UM.utils.isEmptyObject({}) ==>true
+         * UM.utils.isEmptyObject([]) ==>true
+         * UM.utils.isEmptyObject("") ==>true
+         */
+        isEmptyObject: function (obj) {
+            if (obj == null) return true;
+            if (this.isArray(obj) || this.isString(obj)) return obj.length === 0;
+            for (var key in obj) if (obj.hasOwnProperty(key)) return false;
+            return true;
+        },
+        /**
+         * 统一将颜色值使用16进制形式表示
+         * @name fixColor
+         * @grammar UM.utils.fixColor(name,value) => value
+         * @example
+         * rgb(255,255,255)  => "#ffffff"
+         */
+        fixColor: function (name, value) {
+            if (/color/i.test(name) && /rgba?/.test(value)) {
+                var array = value.split(",");
+                if (array.length > 3)
+                    return "";
+                value = "#";
+                for (var i = 0, color; color = array[i++];) {
+                    color = parseInt(color.replace(/[^\d]/gi, ''), 10).toString(16);
+                    value += color.length == 1 ? "0" + color : color;
+                }
+                value = value.toUpperCase();
+            }
+            return value;
+        },
+        /**
+         * 深度克隆对象，从source到target
+         * @name clone
+         * @grammar UM.utils.clone(source) => anthorObj 新的对象是完整的source的副本
+         * @grammar UM.utils.clone(source,target) => target包含了source的所有内容，重名会覆盖
+         */
+        clone: function (source, target) {
+            var tmp;
+            target = target || {};
+            for (var i in source) {
+                if (source.hasOwnProperty(i)) {
+                    tmp = source[i];
+                    if (typeof tmp == 'object') {
+                        target[i] = utils.isArray(tmp) ? [] : {};
+                        utils.clone(source[i], target[i])
+                    } else {
+                        target[i] = tmp;
                     }
                 }
             }
-            if (t = this['on' + ti.toLowerCase()]) {
-                r = t.apply(this, arguments);
+            return target;
+        },
+        /**
+         * 转换cm/pt到px
+         * @name transUnitToPx
+         * @grammar UM.utils.transUnitToPx('20pt') => '27px'
+         * @grammar UM.utils.transUnitToPx('0pt') => '0'
+         */
+        transUnitToPx: function (val) {
+            if (!/(pt|cm)/.test(val)) {
+                return val
+            }
+            var unit;
+            val.replace(/([\d.]+)(\w+)/, function (str, v, u) {
+                val = v;
+                unit = u;
+            });
+            switch (unit) {
+                case 'cm':
+                    val = parseFloat(val) * 25;
+                    break;
+                case 'pt':
+                    val = Math.round(parseFloat(val) * 96 / 72);
+            }
+            return val + (val ? 'px' : '');
+        },
+        /**
+         * 动态添加css样式
+         * @name cssRule
+         * @grammar UM.utils.cssRule('添加的样式的节点名称',['样式'，'放到哪个document上'])
+         * @grammar UM.utils.cssRule('body','body{background:#ccc}') => null  //给body添加背景颜色
+         * @grammar UM.utils.cssRule('body') =>样式的字符串  //取得key值为body的样式的内容,如果没有找到key值先关的样式将返回空，例如刚才那个背景颜色，将返回 body{background:#ccc}
+         * @grammar UM.utils.cssRule('body','') =>null //清空给定的key值的背景颜色
+         */
+        cssRule: browser.ie && browser.version != 11 ? function (key, style, doc) {
+            var indexList, index;
+            doc = doc || document;
+            if (doc.indexList) {
+                indexList = doc.indexList;
+            } else {
+                indexList = doc.indexList = {};
+            }
+            var sheetStyle;
+            if (!indexList[key]) {
+                if (style === undefined) {
+                    return ''
+                }
+                sheetStyle = doc.createStyleSheet('', index = doc.styleSheets.length);
+                indexList[key] = index;
+            } else {
+                sheetStyle = doc.styleSheets[indexList[key]];
+            }
+            if (style === undefined) {
+                return sheetStyle.cssText
+            }
+            sheetStyle.cssText = style || ''
+        } : function (key, style, doc) {
+            doc = doc || document;
+            var head = doc.getElementsByTagName('head')[0], node;
+            if (!(node = doc.getElementById(key))) {
+                if (style === undefined) {
+                    return ''
+                }
+                node = doc.createElement('style');
+                node.id = key;
+                head.appendChild(node)
+            }
+            if (style === undefined) {
+                return node.innerHTML
+            }
+            if (style !== '') {
+                node.innerHTML = style;
+            } else {
+                head.removeChild(node)
             }
         }
-        return r;
-    }
-};
-/**
- * 获得对象所拥有监听类型的所有监听器
- * @public
- * @function
- * @param {Object} obj  查询监听器的对象
- * @param {String} type 事件类型
- * @param {Boolean} force  为true且当前所有type类型的侦听器不存在时，创建一个空监听器数组
- * @returns {Array} 监听器数组
- */
-function getListener(obj, type, force) {
-    var allListeners;
-    type = type.toLowerCase();
-    return ( ( allListeners = ( obj.__allListeners || force && ( obj.__allListeners = {} ) ) )
-        && ( allListeners[type] || force && ( allListeners[type] = [] ) ) );
-}
+    };
+    /**
+     * 判断str是否为字符串
+     * @name isString
+     * @grammar UM.utils.isString(str) => true|false
+     */
+    /**
+     * 判断array是否为数组
+     * @name isArray
+     * @grammar UM.utils.isArray(obj) => true|false
+     */
+    /**
+     * 判断obj对象是否为方法
+     * @name isFunction
+     * @grammar UM.utils.isFunction(obj)  => true|false
+     */
+    /**
+     * 判断obj对象是否为数字
+     * @name isNumber
+     * @grammar UM.utils.isNumber(obj)  => true|false
+     */
+    utils.each(['String', 'Function', 'Array', 'Number', 'RegExp', 'Object'], function (v) {
+        UM.utils['is' + v] = function (obj) {
+            return Object.prototype.toString.apply(obj) == '[object ' + v + ']';
+        }
+    });
+    /**
+     * @file
+     * @name UM.EventBase
+     * @short EventBase
+     * @import editor.js,core/utils.js
+     * @desc UE采用的事件基类，继承此类的对应类将获取addListener,removeListener,fireEvent方法。
+     * 在UE中，Editor以及所有ui实例都继承了该类，故可以在对应的ui对象以及editor对象上使用上述方法。
+     */
+    var EventBase = UM.EventBase = function () {
+    };
+    EventBase.prototype = {
+        /**
+         * 注册事件监听器
+         * @name addListener
+         * @grammar editor.addListener(types,fn)  //types为事件名称，多个可用空格分隔
+         * @example
+         * editor.addListener('selectionchange',function(){
+         *      console.log("选区已经变化！");
+         * })
+         * editor.addListener('beforegetcontent aftergetcontent',function(type){
+         *         if(type == 'beforegetcontent'){
+         *             //do something
+         *         }else{
+         *             //do something
+         *         }
+         *         console.log(this.getContent) // this是注册的事件的编辑器实例
+         * })
+         */
+        addListener: function (types, listener) {
+            types = utils.trim(types).split(' ');
+            for (var i = 0, ti; ti = types[i++];) {
+                getListener(this, ti, true).push(listener);
+            }
+        },
+        /**
+         * 移除事件监听器
+         * @name removeListener
+         * @grammar editor.removeListener(types,fn)  //types为事件名称，多个可用空格分隔
+         * @example
+         * //changeCallback为方法体
+         * editor.removeListener("selectionchange",changeCallback);
+         */
+        removeListener: function (types, listener) {
+            types = utils.trim(types).split(' ');
+            for (var i = 0, ti; ti = types[i++];) {
+                utils.removeItem(getListener(this, ti) || [], listener);
+            }
+        },
+        /**
+         * 触发事件
+         * @name fireEvent
+         * @grammar editor.fireEvent(types)  //types为事件名称，多个可用空格分隔
+         * @example
+         * editor.fireEvent("selectionchange");
+         */
+        fireEvent: function () {
+            var types = arguments[0];
+            types = utils.trim(types).split(' ');
+            for (var i = 0, ti; ti = types[i++];) {
+                var listeners = getListener(this, ti),
+                    r, t, k;
+                if (listeners) {
+                    k = listeners.length;
+                    while (k--) {
+                        if (!listeners[k]) continue;
+                        t = listeners[k].apply(this, arguments);
+                        if (t === true) {
+                            return t;
+                        }
+                        if (t !== undefined) {
+                            r = t;
+                        }
+                    }
+                }
+                if (t = this['on' + ti.toLowerCase()]) {
+                    r = t.apply(this, arguments);
+                }
+            }
+            return r;
+        }
+    };
 
+    /**
+     * 获得对象所拥有监听类型的所有监听器
+     * @public
+     * @function
+     * @param {Object} obj  查询监听器的对象
+     * @param {String} type 事件类型
+     * @param {Boolean} force  为true且当前所有type类型的侦听器不存在时，创建一个空监听器数组
+     * @returns {Array} 监听器数组
+     */
+    function getListener(obj, type, force) {
+        var allListeners;
+        type = type.toLowerCase();
+        return ((allListeners = (obj.__allListeners || force && (obj.__allListeners = {})))
+            && (allListeners[type] || force && (allListeners[type] = [])));
+    }
 
 ///import editor.js
 ///import core/dom/dom.js
 ///import core/utils.js
-/**
- * dtd html语义化的体现类
- * @constructor
- * @namespace dtd
- */
-var dtd = dom.dtd = (function() {
-    function _( s ) {
-        for (var k in s) {
-            s[k.toUpperCase()] = s[k];
-        }
-        return s;
-    }
-    var X = utils.extend2;
-    var A = _({isindex:1,fieldset:1}),
-        B = _({input:1,button:1,select:1,textarea:1,label:1}),
-        C = X( _({a:1}), B ),
-        D = X( {iframe:1}, C ),
-        E = _({hr:1,ul:1,menu:1,div:1,blockquote:1,noscript:1,table:1,center:1,address:1,dir:1,pre:1,h5:1,dl:1,h4:1,noframes:1,h6:1,ol:1,h1:1,h3:1,h2:1}),
-        F = _({ins:1,del:1,script:1,style:1}),
-        G = X( _({b:1,acronym:1,bdo:1,'var':1,'#':1,abbr:1,code:1,br:1,i:1,cite:1,kbd:1,u:1,strike:1,s:1,tt:1,strong:1,q:1,samp:1,em:1,dfn:1,span:1}), F ),
-        H = X( _({sub:1,img:1,embed:1,object:1,sup:1,basefont:1,map:1,applet:1,font:1,big:1,small:1}), G ),
-        I = X( _({p:1}), H ),
-        J = X( _({iframe:1}), H, B ),
-        K = _({img:1,embed:1,noscript:1,br:1,kbd:1,center:1,button:1,basefont:1,h5:1,h4:1,samp:1,h6:1,ol:1,h1:1,h3:1,h2:1,form:1,font:1,'#':1,select:1,menu:1,ins:1,abbr:1,label:1,code:1,table:1,script:1,cite:1,input:1,iframe:1,strong:1,textarea:1,noframes:1,big:1,small:1,span:1,hr:1,sub:1,bdo:1,'var':1,div:1,object:1,sup:1,strike:1,dir:1,map:1,dl:1,applet:1,del:1,isindex:1,fieldset:1,ul:1,b:1,acronym:1,a:1,blockquote:1,i:1,u:1,s:1,tt:1,address:1,q:1,pre:1,p:1,em:1,dfn:1}),
-
-        L = X( _({a:0}), J ),//a不能被切开，所以把他
-        M = _({tr:1}),
-        N = _({'#':1}),
-        O = X( _({param:1}), K ),
-        P = X( _({form:1}), A, D, E, I ),
-        Q = _({li:1,ol:1,ul:1}),
-        R = _({style:1,script:1}),
-        S = _({base:1,link:1,meta:1,title:1}),
-        T = X( S, R ),
-        U = _({head:1,body:1}),
-        V = _({html:1});
-
-    var block = _({address:1,blockquote:1,center:1,dir:1,div:1,dl:1,fieldset:1,form:1,h1:1,h2:1,h3:1,h4:1,h5:1,h6:1,hr:1,isindex:1,menu:1,noframes:1,ol:1,p:1,pre:1,table:1,ul:1}),
-
-        empty =  _({area:1,base:1,basefont:1,br:1,col:1,command:1,dialog:1,embed:1,hr:1,img:1,input:1,isindex:1,keygen:1,link:1,meta:1,param:1,source:1,track:1,wbr:1});
-
-    return  _({
-
-        // $ 表示自定的属性
-
-        // body外的元素列表.
-        $nonBodyContent: X( V, U, S ),
-
-        //块结构元素列表
-        $block : block,
-
-        //内联元素列表
-        $inline : L,
-
-        $inlineWithA : X(_({a:1}),L),
-
-        $body : X( _({script:1,style:1}), block ),
-
-        $cdata : _({script:1,style:1}),
-
-        //自闭和元素
-        $empty : empty,
-
-        //不是自闭合，但不能让range选中里边
-        $nonChild : _({iframe:1,textarea:1}),
-        //列表元素列表
-        $listItem : _({dd:1,dt:1,li:1}),
-
-        //列表根元素列表
-        $list: _({ul:1,ol:1,dl:1}),
-
-        //不能认为是空的元素
-        $isNotEmpty : _({table:1,ul:1,ol:1,dl:1,iframe:1,area:1,base:1,col:1,hr:1,img:1,embed:1,input:1,link:1,meta:1,param:1,h1:1,h2:1,h3:1,h4:1,h5:1,h6:1}),
-
-        //如果没有子节点就可以删除的元素列表，像span,a
-        $removeEmpty : _({a:1,abbr:1,acronym:1,address:1,b:1,bdo:1,big:1,cite:1,code:1,del:1,dfn:1,em:1,font:1,i:1,ins:1,label:1,kbd:1,q:1,s:1,samp:1,small:1,span:1,strike:1,strong:1,sub:1,sup:1,tt:1,u:1,'var':1}),
-
-        $removeEmptyBlock : _({'p':1,'div':1}),
-
-        //在table元素里的元素列表
-        $tableContent : _({caption:1,col:1,colgroup:1,tbody:1,td:1,tfoot:1,th:1,thead:1,tr:1,table:1}),
-        //不转换的标签
-        $notTransContent : _({pre:1,script:1,style:1,textarea:1}),
-        html: U,
-        head: T,
-        style: N,
-        script: N,
-        body: P,
-        base: {},
-        link: {},
-        meta: {},
-        title: N,
-        col : {},
-        tr : _({td:1,th:1}),
-        img : {},
-        embed: {},
-        colgroup : _({thead:1,col:1,tbody:1,tr:1,tfoot:1}),
-        noscript : P,
-        td : P,
-        br : {},
-        th : P,
-        center : P,
-        kbd : L,
-        button : X( I, E ),
-        basefont : {},
-        h5 : L,
-        h4 : L,
-        samp : L,
-        h6 : L,
-        ol : Q,
-        h1 : L,
-        h3 : L,
-        option : N,
-        h2 : L,
-        form : X( A, D, E, I ),
-        select : _({optgroup:1,option:1}),
-        font : L,
-        ins : L,
-        menu : Q,
-        abbr : L,
-        label : L,
-        table : _({thead:1,col:1,tbody:1,tr:1,colgroup:1,caption:1,tfoot:1}),
-        code : L,
-        tfoot : M,
-        cite : L,
-        li : P,
-        input : {},
-        iframe : P,
-        strong : L,
-        textarea : N,
-        noframes : P,
-        big : L,
-        small : L,
-        //trace:
-        span :_({'#':1,br:1,b:1,strong:1,u:1,i:1,em:1,sub:1,sup:1,strike:1,span:1}),
-        hr : L,
-        dt : L,
-        sub : L,
-        optgroup : _({option:1}),
-        param : {},
-        bdo : L,
-        'var' : L,
-        div : P,
-        object : O,
-        sup : L,
-        dd : P,
-        strike : L,
-        area : {},
-        dir : Q,
-        map : X( _({area:1,form:1,p:1}), A, F, E ),
-        applet : O,
-        dl : _({dt:1,dd:1}),
-        del : L,
-        isindex : {},
-        fieldset : X( _({legend:1}), K ),
-        thead : M,
-        ul : Q,
-        acronym : L,
-        b : L,
-        a : X( _({a:1}), J ),
-        blockquote :X(_({td:1,tr:1,tbody:1,li:1}),P),
-        caption : L,
-        i : L,
-        u : L,
-        tbody : M,
-        s : L,
-        address : X( D, I ),
-        tt : L,
-        legend : L,
-        q : L,
-        pre : X( G, C ),
-        p : X(_({'a':1}),L),
-        em :L,
-        dfn : L
-    });
-})();
-
-/**
- * @file
- * @name UM.dom.domUtils
- * @short DomUtils
- * @import editor.js, core/utils.js,core/browser.js,core/dom/dtd.js
- * @desc UEditor封装的底层dom操作库
- */
-
-function getDomNode(node, start, ltr, startFromChild, fn, guard) {
-    var tmpNode = startFromChild && node[start],
-        parent;
-    !tmpNode && (tmpNode = node[ltr]);
-    while (!tmpNode && (parent = (parent || node).parentNode)) {
-        if (parent.tagName == 'BODY' || guard && !guard(parent)) {
-            return null;
-        }
-        tmpNode = parent[ltr];
-    }
-    if (tmpNode && fn && !fn(tmpNode)) {
-        return  getDomNode(tmpNode, start, ltr, false, fn);
-    }
-    return tmpNode;
-}
-var attrFix = ie && browser.version < 9 ? {
-        tabindex: "tabIndex",
-        readonly: "readOnly",
-        "for": "htmlFor",
-        "class": "className",
-        maxlength: "maxLength",
-        cellspacing: "cellSpacing",
-        cellpadding: "cellPadding",
-        rowspan: "rowSpan",
-        colspan: "colSpan",
-        usemap: "useMap",
-        frameborder: "frameBorder"
-    } : {
-        tabindex: "tabIndex",
-        readonly: "readOnly"
-    },
-    styleBlock = utils.listToMap([
-        '-webkit-box', '-moz-box', 'block' ,
-        'list-item' , 'table' , 'table-row-group' ,
-        'table-header-group', 'table-footer-group' ,
-        'table-row' , 'table-column-group' , 'table-column' ,
-        'table-cell' , 'table-caption'
-    ]);
-var domUtils = dom.domUtils = {
-    //节点常量
-    NODE_ELEMENT: 1,
-    NODE_DOCUMENT: 9,
-    NODE_TEXT: 3,
-    NODE_COMMENT: 8,
-    NODE_DOCUMENT_FRAGMENT: 11,
-
-    //位置关系
-    POSITION_IDENTICAL: 0,
-    POSITION_DISCONNECTED: 1,
-    POSITION_FOLLOWING: 2,
-    POSITION_PRECEDING: 4,
-    POSITION_IS_CONTAINED: 8,
-    POSITION_CONTAINS: 16,
-    //ie6使用其他的会有一段空白出现
-    fillChar: ie && browser.version == '6' ? '\ufeff' : '\u200B',
-    //-------------------------Node部分--------------------------------
-    keys: {
-        /*Backspace*/ 8: 1, /*Delete*/ 46: 1,
-        /*Shift*/ 16: 1, /*Ctrl*/ 17: 1, /*Alt*/ 18: 1,
-        37: 1, 38: 1, 39: 1, 40: 1,
-        13: 1 /*enter*/
-    },
-    breakParent:function (node, parent) {
-        var tmpNode,
-            parentClone = node,
-            clone = node,
-            leftNodes,
-            rightNodes;
-        do {
-            parentClone = parentClone.parentNode;
-            if (leftNodes) {
-                tmpNode = parentClone.cloneNode(false);
-                tmpNode.appendChild(leftNodes);
-                leftNodes = tmpNode;
-                tmpNode = parentClone.cloneNode(false);
-                tmpNode.appendChild(rightNodes);
-                rightNodes = tmpNode;
-            } else {
-                leftNodes = parentClone.cloneNode(false);
-                rightNodes = leftNodes.cloneNode(false);
-            }
-            while (tmpNode = clone.previousSibling) {
-                leftNodes.insertBefore(tmpNode, leftNodes.firstChild);
-            }
-            while (tmpNode = clone.nextSibling) {
-                rightNodes.appendChild(tmpNode);
-            }
-            clone = parentClone;
-        } while (parent !== parentClone);
-        tmpNode = parent.parentNode;
-        tmpNode.insertBefore(leftNodes, parent);
-        tmpNode.insertBefore(rightNodes, parent);
-        tmpNode.insertBefore(node, rightNodes);
-        domUtils.remove(parent);
-        return node;
-    },
-    trimWhiteTextNode:function (node) {
-        function remove(dir) {
-            var child;
-            while ((child = node[dir]) && child.nodeType == 3 && domUtils.isWhitespace(child)) {
-                node.removeChild(child);
-            }
-        }
-        remove('firstChild');
-        remove('lastChild');
-    },
     /**
-     * 获取节点A相对于节点B的位置关系
-     * @name getPosition
-     * @grammar UM.dom.domUtils.getPosition(nodeA,nodeB)  =>  Number
-     * @example
-     *  switch (returnValue) {
-     *      case 0: //相等，同一节点
-     *      case 1: //无关，节点不相连
-     *      case 2: //跟随，即节点A头部位于节点B头部的后面
-     *      case 4: //前置，即节点A头部位于节点B头部的前面
-     *      case 8: //被包含，即节点A被节点B包含
-     *      case 10://组合类型，即节点A满足跟随节点B且被节点B包含。实际上，如果被包含，必定跟随，所以returnValue事实上不会存在8的情况。
-     *      case 16://包含，即节点A包含节点B
-     *      case 20://组合类型，即节点A满足前置节点A且包含节点B。同样，如果包含，必定前置，所以returnValue事实上也不会存在16的情况
-     *  }
+     * dtd html语义化的体现类
+     * @constructor
+     * @namespace dtd
      */
-    getPosition: function (nodeA, nodeB) {
-        // 如果两个节点是同一个节点
-        if (nodeA === nodeB) {
-            // domUtils.POSITION_IDENTICAL
-            return 0;
-        }
-        var node,
-            parentsA = [nodeA],
-            parentsB = [nodeB];
-        node = nodeA;
-        while (node = node.parentNode) {
-            // 如果nodeB是nodeA的祖先节点
-            if (node === nodeB) {
-                // domUtils.POSITION_IS_CONTAINED + domUtils.POSITION_FOLLOWING
-                return 10;
+    var dtd = dom.dtd = (function () {
+        function _(s) {
+            for (var k in s) {
+                s[k.toUpperCase()] = s[k];
             }
-            parentsA.push(node);
+            return s;
         }
-        node = nodeB;
-        while (node = node.parentNode) {
-            // 如果nodeA是nodeB的祖先节点
-            if (node === nodeA) {
-                // domUtils.POSITION_CONTAINS + domUtils.POSITION_PRECEDING
-                return 20;
+
+        var X = utils.extend2;
+        var A = _({isindex: 1, fieldset: 1}),
+            B = _({input: 1, button: 1, select: 1, textarea: 1, label: 1}),
+            C = X(_({a: 1}), B),
+            D = X({iframe: 1}, C),
+            E = _({
+                hr: 1,
+                ul: 1,
+                menu: 1,
+                div: 1,
+                blockquote: 1,
+                noscript: 1,
+                table: 1,
+                center: 1,
+                address: 1,
+                dir: 1,
+                pre: 1,
+                h5: 1,
+                dl: 1,
+                h4: 1,
+                noframes: 1,
+                h6: 1,
+                ol: 1,
+                h1: 1,
+                h3: 1,
+                h2: 1
+            }),
+            F = _({ins: 1, del: 1, script: 1, style: 1}),
+            G = X(_({
+                b: 1,
+                acronym: 1,
+                bdo: 1,
+                'var': 1,
+                '#': 1,
+                abbr: 1,
+                code: 1,
+                br: 1,
+                i: 1,
+                cite: 1,
+                kbd: 1,
+                u: 1,
+                strike: 1,
+                s: 1,
+                tt: 1,
+                strong: 1,
+                q: 1,
+                samp: 1,
+                em: 1,
+                dfn: 1,
+                span: 1
+            }), F),
+            H = X(_({
+                sub: 1,
+                img: 1,
+                embed: 1,
+                object: 1,
+                sup: 1,
+                basefont: 1,
+                map: 1,
+                applet: 1,
+                font: 1,
+                big: 1,
+                small: 1
+            }), G),
+            I = X(_({p: 1}), H),
+            J = X(_({iframe: 1}), H, B),
+            K = _({
+                img: 1,
+                embed: 1,
+                noscript: 1,
+                br: 1,
+                kbd: 1,
+                center: 1,
+                button: 1,
+                basefont: 1,
+                h5: 1,
+                h4: 1,
+                samp: 1,
+                h6: 1,
+                ol: 1,
+                h1: 1,
+                h3: 1,
+                h2: 1,
+                form: 1,
+                font: 1,
+                '#': 1,
+                select: 1,
+                menu: 1,
+                ins: 1,
+                abbr: 1,
+                label: 1,
+                code: 1,
+                table: 1,
+                script: 1,
+                cite: 1,
+                input: 1,
+                iframe: 1,
+                strong: 1,
+                textarea: 1,
+                noframes: 1,
+                big: 1,
+                small: 1,
+                span: 1,
+                hr: 1,
+                sub: 1,
+                bdo: 1,
+                'var': 1,
+                div: 1,
+                object: 1,
+                sup: 1,
+                strike: 1,
+                dir: 1,
+                map: 1,
+                dl: 1,
+                applet: 1,
+                del: 1,
+                isindex: 1,
+                fieldset: 1,
+                ul: 1,
+                b: 1,
+                acronym: 1,
+                a: 1,
+                blockquote: 1,
+                i: 1,
+                u: 1,
+                s: 1,
+                tt: 1,
+                address: 1,
+                q: 1,
+                pre: 1,
+                p: 1,
+                em: 1,
+                dfn: 1
+            }),
+
+            L = X(_({a: 0}), J),//a不能被切开，所以把他
+            M = _({tr: 1}),
+            N = _({'#': 1}),
+            O = X(_({param: 1}), K),
+            P = X(_({form: 1}), A, D, E, I),
+            Q = _({li: 1, ol: 1, ul: 1}),
+            R = _({style: 1, script: 1}),
+            S = _({base: 1, link: 1, meta: 1, title: 1}),
+            T = X(S, R),
+            U = _({head: 1, body: 1}),
+            V = _({html: 1});
+        var block = _({
+                address: 1,
+                blockquote: 1,
+                center: 1,
+                dir: 1,
+                div: 1,
+                dl: 1,
+                fieldset: 1,
+                form: 1,
+                h1: 1,
+                h2: 1,
+                h3: 1,
+                h4: 1,
+                h5: 1,
+                h6: 1,
+                hr: 1,
+                isindex: 1,
+                menu: 1,
+                noframes: 1,
+                ol: 1,
+                p: 1,
+                pre: 1,
+                table: 1,
+                ul: 1
+            }),
+            empty = _({
+                area: 1,
+                base: 1,
+                basefont: 1,
+                br: 1,
+                col: 1,
+                command: 1,
+                dialog: 1,
+                embed: 1,
+                hr: 1,
+                img: 1,
+                input: 1,
+                isindex: 1,
+                keygen: 1,
+                link: 1,
+                meta: 1,
+                param: 1,
+                source: 1,
+                track: 1,
+                wbr: 1
+            });
+        return _({
+            // $ 表示自定的属性
+            // body外的元素列表.
+            $nonBodyContent: X(V, U, S),
+            //块结构元素列表
+            $block: block,
+            //内联元素列表
+            $inline: L,
+            $inlineWithA: X(_({a: 1}), L),
+            $body: X(_({script: 1, style: 1}), block),
+            $cdata: _({script: 1, style: 1}),
+            //自闭和元素
+            $empty: empty,
+            //不是自闭合，但不能让range选中里边
+            $nonChild: _({iframe: 1, textarea: 1}),
+            //列表元素列表
+            $listItem: _({dd: 1, dt: 1, li: 1}),
+            //列表根元素列表
+            $list: _({ul: 1, ol: 1, dl: 1}),
+            //不能认为是空的元素
+            $isNotEmpty: _({
+                table: 1,
+                ul: 1,
+                ol: 1,
+                dl: 1,
+                iframe: 1,
+                area: 1,
+                base: 1,
+                col: 1,
+                hr: 1,
+                img: 1,
+                embed: 1,
+                input: 1,
+                link: 1,
+                meta: 1,
+                param: 1,
+                h1: 1,
+                h2: 1,
+                h3: 1,
+                h4: 1,
+                h5: 1,
+                h6: 1
+            }),
+            //如果没有子节点就可以删除的元素列表，像span,a
+            $removeEmpty: _({
+                a: 1,
+                abbr: 1,
+                acronym: 1,
+                address: 1,
+                b: 1,
+                bdo: 1,
+                big: 1,
+                cite: 1,
+                code: 1,
+                del: 1,
+                dfn: 1,
+                em: 1,
+                font: 1,
+                i: 1,
+                ins: 1,
+                label: 1,
+                kbd: 1,
+                q: 1,
+                s: 1,
+                samp: 1,
+                small: 1,
+                span: 1,
+                strike: 1,
+                strong: 1,
+                sub: 1,
+                sup: 1,
+                tt: 1,
+                u: 1,
+                'var': 1
+            }),
+            $removeEmptyBlock: _({'p': 1, 'div': 1}),
+            //在table元素里的元素列表
+            $tableContent: _({
+                caption: 1,
+                col: 1,
+                colgroup: 1,
+                tbody: 1,
+                td: 1,
+                tfoot: 1,
+                th: 1,
+                thead: 1,
+                tr: 1,
+                table: 1
+            }),
+            //不转换的标签
+            $notTransContent: _({pre: 1, script: 1, style: 1, textarea: 1}),
+            html: U,
+            head: T,
+            style: N,
+            script: N,
+            body: P,
+            base: {},
+            link: {},
+            meta: {},
+            title: N,
+            col: {},
+            tr: _({td: 1, th: 1}),
+            img: {},
+            embed: {},
+            colgroup: _({thead: 1, col: 1, tbody: 1, tr: 1, tfoot: 1}),
+            noscript: P,
+            td: P,
+            br: {},
+            th: P,
+            center: P,
+            kbd: L,
+            button: X(I, E),
+            basefont: {},
+            h5: L,
+            h4: L,
+            samp: L,
+            h6: L,
+            ol: Q,
+            h1: L,
+            h3: L,
+            option: N,
+            h2: L,
+            form: X(A, D, E, I),
+            select: _({optgroup: 1, option: 1}),
+            font: L,
+            ins: L,
+            menu: Q,
+            abbr: L,
+            label: L,
+            table: _({thead: 1, col: 1, tbody: 1, tr: 1, colgroup: 1, caption: 1, tfoot: 1}),
+            code: L,
+            tfoot: M,
+            cite: L,
+            li: P,
+            input: {},
+            iframe: P,
+            strong: L,
+            textarea: N,
+            noframes: P,
+            big: L,
+            small: L,
+            //trace:
+            span: _({'#': 1, br: 1, b: 1, strong: 1, u: 1, i: 1, em: 1, sub: 1, sup: 1, strike: 1, span: 1}),
+            hr: L,
+            dt: L,
+            sub: L,
+            optgroup: _({option: 1}),
+            param: {},
+            bdo: L,
+            'var': L,
+            div: P,
+            object: O,
+            sup: L,
+            dd: P,
+            strike: L,
+            area: {},
+            dir: Q,
+            map: X(_({area: 1, form: 1, p: 1}), A, F, E),
+            applet: O,
+            dl: _({dt: 1, dd: 1}),
+            del: L,
+            isindex: {},
+            fieldset: X(_({legend: 1}), K),
+            thead: M,
+            ul: Q,
+            acronym: L,
+            b: L,
+            a: X(_({a: 1}), J),
+            blockquote: X(_({td: 1, tr: 1, tbody: 1, li: 1}), P),
+            caption: L,
+            i: L,
+            u: L,
+            tbody: M,
+            s: L,
+            address: X(D, I),
+            tt: L,
+            legend: L,
+            q: L,
+            pre: X(G, C),
+            p: X(_({'a': 1}), L),
+            em: L,
+            dfn: L
+        });
+    })();
+
+    /**
+     * @file
+     * @name UM.dom.domUtils
+     * @short DomUtils
+     * @import editor.js, core/utils.js,core/browser.js,core/dom/dtd.js
+     * @desc UEditor封装的底层dom操作库
+     */
+    function getDomNode(node, start, ltr, startFromChild, fn, guard) {
+        var tmpNode = startFromChild && node[start],
+            parent;
+        !tmpNode && (tmpNode = node[ltr]);
+        while (!tmpNode && (parent = (parent || node).parentNode)) {
+            if (parent.tagName == 'BODY' || guard && !guard(parent)) {
+                return null;
             }
-            parentsB.push(node);
+            tmpNode = parent[ltr];
         }
-        parentsA.reverse();
-        parentsB.reverse();
-        if (parentsA[0] !== parentsB[0]) {
-            // domUtils.POSITION_DISCONNECTED
-            return 1;
+        if (tmpNode && fn && !fn(tmpNode)) {
+            return getDomNode(tmpNode, start, ltr, false, fn);
         }
-        var i = -1;
-        while (i++, parentsA[i] === parentsB[i]) {
-        }
-        nodeA = parentsA[i];
-        nodeB = parentsB[i];
-        while (nodeA = nodeA.nextSibling) {
+        return tmpNode;
+    }
+
+    var attrFix = ie && browser.version < 9 ? {
+            tabindex: "tabIndex",
+            readonly: "readOnly",
+            "for": "htmlFor",
+            "class": "className",
+            maxlength: "maxLength",
+            cellspacing: "cellSpacing",
+            cellpadding: "cellPadding",
+            rowspan: "rowSpan",
+            colspan: "colSpan",
+            usemap: "useMap",
+            frameborder: "frameBorder"
+        } : {
+            tabindex: "tabIndex",
+            readonly: "readOnly"
+        },
+        styleBlock = utils.listToMap([
+            '-webkit-box', '-moz-box', 'block',
+            'list-item', 'table', 'table-row-group',
+            'table-header-group', 'table-footer-group',
+            'table-row', 'table-column-group', 'table-column',
+            'table-cell', 'table-caption'
+        ]);
+    var domUtils = dom.domUtils = {
+        //节点常量
+        NODE_ELEMENT: 1,
+        NODE_DOCUMENT: 9,
+        NODE_TEXT: 3,
+        NODE_COMMENT: 8,
+        NODE_DOCUMENT_FRAGMENT: 11,
+
+        //位置关系
+        POSITION_IDENTICAL: 0,
+        POSITION_DISCONNECTED: 1,
+        POSITION_FOLLOWING: 2,
+        POSITION_PRECEDING: 4,
+        POSITION_IS_CONTAINED: 8,
+        POSITION_CONTAINS: 16,
+        //ie6使用其他的会有一段空白出现
+        fillChar: ie && browser.version == '6' ? '\ufeff' : '\u200B',
+        //-------------------------Node部分--------------------------------
+        keys: {
+            /*Backspace*/ 8: 1, /*Delete*/ 46: 1,
+            /*Shift*/ 16: 1, /*Ctrl*/ 17: 1, /*Alt*/ 18: 1,
+            37: 1, 38: 1, 39: 1, 40: 1,
+            13: 1 /*enter*/
+        },
+        breakParent: function (node, parent) {
+            var tmpNode,
+                parentClone = node,
+                clone = node,
+                leftNodes,
+                rightNodes;
+            do {
+                parentClone = parentClone.parentNode;
+                if (leftNodes) {
+                    tmpNode = parentClone.cloneNode(false);
+                    tmpNode.appendChild(leftNodes);
+                    leftNodes = tmpNode;
+                    tmpNode = parentClone.cloneNode(false);
+                    tmpNode.appendChild(rightNodes);
+                    rightNodes = tmpNode;
+                } else {
+                    leftNodes = parentClone.cloneNode(false);
+                    rightNodes = leftNodes.cloneNode(false);
+                }
+                while (tmpNode = clone.previousSibling) {
+                    leftNodes.insertBefore(tmpNode, leftNodes.firstChild);
+                }
+                while (tmpNode = clone.nextSibling) {
+                    rightNodes.appendChild(tmpNode);
+                }
+                clone = parentClone;
+            } while (parent !== parentClone);
+            tmpNode = parent.parentNode;
+            tmpNode.insertBefore(leftNodes, parent);
+            tmpNode.insertBefore(rightNodes, parent);
+            tmpNode.insertBefore(node, rightNodes);
+            domUtils.remove(parent);
+            return node;
+        },
+        trimWhiteTextNode: function (node) {
+            function remove(dir) {
+                var child;
+                while ((child = node[dir]) && child.nodeType == 3 && domUtils.isWhitespace(child)) {
+                    node.removeChild(child);
+                }
+            }
+
+            remove('firstChild');
+            remove('lastChild');
+        },
+        /**
+         * 获取节点A相对于节点B的位置关系
+         * @name getPosition
+         * @grammar UM.dom.domUtils.getPosition(nodeA,nodeB)  =>  Number
+         * @example
+         *  switch (returnValue) {
+         *      case 0: //相等，同一节点
+         *      case 1: //无关，节点不相连
+         *      case 2: //跟随，即节点A头部位于节点B头部的后面
+         *      case 4: //前置，即节点A头部位于节点B头部的前面
+         *      case 8: //被包含，即节点A被节点B包含
+         *      case 10://组合类型，即节点A满足跟随节点B且被节点B包含。实际上，如果被包含，必定跟随，所以returnValue事实上不会存在8的情况。
+         *      case 16://包含，即节点A包含节点B
+         *      case 20://组合类型，即节点A满足前置节点A且包含节点B。同样，如果包含，必定前置，所以returnValue事实上也不会存在16的情况
+         *  }
+         */
+        getPosition: function (nodeA, nodeB) {
+            // 如果两个节点是同一个节点
             if (nodeA === nodeB) {
-                // domUtils.POSITION_PRECEDING
-                return 4
-            }
-        }
-        // domUtils.POSITION_FOLLOWING
-        return  2;
-    },
-
-    /**
-     * 返回节点node在父节点中的索引位置
-     * @name getNodeIndex
-     * @grammar UM.dom.domUtils.getNodeIndex(node)  => Number  //索引值从0开始
-     */
-    getNodeIndex: function (node, ignoreTextNode) {
-        var preNode = node,
-            i = 0;
-        while (preNode = preNode.previousSibling) {
-            if (ignoreTextNode && preNode.nodeType == 3) {
-                if (preNode.nodeType != preNode.nextSibling.nodeType) {
-                    i++;
-                }
-                continue;
-            }
-            i++;
-        }
-        return i;
-    },
-
-    /**
-     * 检测节点node是否在节点doc的树上，实质上是检测是否被doc包含
-     * @name inDoc
-     * @grammar UM.dom.domUtils.inDoc(node,doc)   =>  true|false
-     */
-    inDoc: function (node, doc) {
-        return domUtils.getPosition(node, doc) == 10;
-    },
-    /**
-     * 查找node节点的祖先节点
-     * @name findParent
-     * @grammar UM.dom.domUtils.findParent(node)  => Element  // 直接返回node节点的父节点
-     * @grammar UM.dom.domUtils.findParent(node,filterFn)  => Element  //filterFn为过滤函数，node作为参数，返回true时才会将node作为符合要求的节点返回
-     * @grammar UM.dom.domUtils.findParent(node,filterFn,includeSelf)  => Element  //includeSelf指定是否包含自身
-     */
-    findParent: function (node, filterFn, includeSelf) {
-        if (node && !domUtils.isBody(node)) {
-            node = includeSelf ? node : node.parentNode;
-            while (node) {
-                if (!filterFn || filterFn(node) || domUtils.isBody(node)) {
-                    return filterFn && !filterFn(node) && domUtils.isBody(node) ? null : node;
-                }
-                node = node.parentNode;
-            }
-        }
-        return null;
-    },
-    /**
-     * 通过tagName查找node节点的祖先节点
-     * @name findParentByTagName
-     * @grammar UM.dom.domUtils.findParentByTagName(node,tagNames)   =>  Element  //tagNames支持数组，区分大小写
-     * @grammar UM.dom.domUtils.findParentByTagName(node,tagNames,includeSelf)   =>  Element  //includeSelf指定是否包含自身
-     * @grammar UM.dom.domUtils.findParentByTagName(node,tagNames,includeSelf,excludeFn)   =>  Element  //excludeFn指定例外过滤条件，返回true时忽略该节点
-     */
-    findParentByTagName: function (node, tagNames, includeSelf, excludeFn) {
-        tagNames = utils.listToMap(utils.isArray(tagNames) ? tagNames : [tagNames]);
-        return domUtils.findParent(node, function (node) {
-            return tagNames[node.tagName] && !(excludeFn && excludeFn(node));
-        }, includeSelf);
-    },
-    /**
-     * 查找节点node的祖先节点集合
-     * @name findParents
-     * @grammar UM.dom.domUtils.findParents(node)  => Array  //返回一个祖先节点数组集合，不包含自身
-     * @grammar UM.dom.domUtils.findParents(node,includeSelf)  => Array  //返回一个祖先节点数组集合，includeSelf指定是否包含自身
-     * @grammar UM.dom.domUtils.findParents(node,includeSelf,filterFn)  => Array  //返回一个祖先节点数组集合，filterFn指定过滤条件，返回true的node将被选取
-     * @grammar UM.dom.domUtils.findParents(node,includeSelf,filterFn,closerFirst)  => Array  //返回一个祖先节点数组集合，closerFirst为true的话，node的直接父亲节点是数组的第0个
-     */
-    findParents: function (node, includeSelf, filterFn, closerFirst) {
-        var parents = includeSelf && ( filterFn && filterFn(node) || !filterFn ) ? [node] : [];
-        while (node = domUtils.findParent(node, filterFn)) {
-            parents.push(node);
-        }
-        return closerFirst ? parents : parents.reverse();
-    },
-
-    /**
-     * 在节点node后面插入新节点newNode
-     * @name insertAfter
-     * @grammar UM.dom.domUtils.insertAfter(node,newNode)  => newNode
-     */
-    insertAfter: function (node, newNode) {
-        return node.parentNode.insertBefore(newNode, node.nextSibling);
-    },
-
-    /**
-     * 删除节点node，并根据keepChildren指定是否保留子节点
-     * @name remove
-     * @grammar UM.dom.domUtils.remove(node)  =>  node
-     * @grammar UM.dom.domUtils.remove(node,keepChildren)  =>  node
-     */
-    remove: function (node, keepChildren) {
-
-        var parent = node.parentNode,
-            child;
-        if (parent) {
-            if (keepChildren && node.hasChildNodes()) {
-                while (child = node.firstChild) {
-                    parent.insertBefore(child, node);
-                }
-            }
-            parent.removeChild(node);
-        }
-        return node;
-    },
-
-
-    /**
-     * 取得node节点的下一个兄弟节点， 如果该节点其后没有兄弟节点， 则递归查找其父节点之后的第一个兄弟节点，
-     * 直到找到满足条件的节点或者递归到BODY节点之后才会结束。
-     * @method getNextDomNode
-     * @param { Node } node 需要获取其后的兄弟节点的节点对象
-     * @return { Node | NULL } 如果找满足条件的节点， 则返回该节点， 否则返回NULL
-     * @example
-     * ```html
-     *     <body>
-     *      <div id="test">
-     *          <span></span>
-     *      </div>
-     *      <i>xxx</i>
-     * </body>
-     * <script>
-     *
-     *     //output: i节点
-     *     console.log( UE.dom.domUtils.getNextDomNode( document.getElementById( "test" ) ) );
-     *
-     * </script>
-     * ```
-     * @example
-     * ```html
-     * <body>
-     *      <div>
-     *          <span></span>
-     *          <i id="test">xxx</i>
-     *      </div>
-     *      <b>xxx</b>
-     * </body>
-     * <script>
-     *
-     *     //由于id为test的i节点之后没有兄弟节点， 则查找其父节点（div）后面的兄弟节点
-     *     //output: b节点
-     *     console.log( UE.dom.domUtils.getNextDomNode( document.getElementById( "test" ) ) );
-     *
-     * </script>
-     * ```
-     */
-
-    /**
-     * 取得node节点的下一个兄弟节点， 如果startFromChild的值为ture，则先获取其子节点，
-     * 如果有子节点则直接返回第一个子节点；如果没有子节点或者startFromChild的值为false，
-     * 则执行<a href="#UE.dom.domUtils.getNextDomNode(Node)">getNextDomNode(Node node)</a>的查找过程。
-     * @method getNextDomNode
-     * @param { Node } node 需要获取其后的兄弟节点的节点对象
-     * @param { Boolean } startFromChild 查找过程是否从其子节点开始
-     * @return { Node | NULL } 如果找满足条件的节点， 则返回该节点， 否则返回NULL
-     * @see UE.dom.domUtils.getNextDomNode(Node)
-     */
-    getNextDomNode:function (node, startFromChild, filterFn, guard) {
-        return getDomNode(node, 'firstChild', 'nextSibling', startFromChild, filterFn, guard);
-    },
-    getPreDomNode:function (node, startFromChild, filterFn, guard) {
-        return getDomNode(node, 'lastChild', 'previousSibling', startFromChild, filterFn, guard);
-    },
-
-    /**
-     * 检测节点node是否属于bookmark节点
-     * @name isBookmarkNode
-     * @grammar UM.dom.domUtils.isBookmarkNode(node)  => true|false
-     */
-    isBookmarkNode: function (node) {
-        return node.nodeType == 1 && node.id && /^_baidu_bookmark_/i.test(node.id);
-    },
-    /**
-     * 获取节点node所在的window对象
-     * @name  getWindow
-     * @grammar UM.dom.domUtils.getWindow(node)  => window对象
-     */
-    getWindow: function (node) {
-        var doc = node.ownerDocument || node;
-        return doc.defaultView || doc.parentWindow;
-    },
-
-    /**
-     * 获取离nodeA与nodeB最近的公共的祖先节点
-     * @method  getCommonAncestor
-     * @param { Node } nodeA 第一个节点
-     * @param { Node } nodeB 第二个节点
-     * @remind 如果给定的两个节点是同一个节点， 将直接返回该节点。
-     * @return { Node | NULL } 如果未找到公共节点， 返回NULL， 否则返回最近的公共祖先节点。
-     * @example
-     * ```javascript
-     * var commonAncestor = UE.dom.domUtils.getCommonAncestor( document.body, document.body.firstChild );
-     * //output: true
-     * console.log( commonAncestor.tagName.toLowerCase() === 'body' );
-     * ```
-     */
-    getCommonAncestor:function (nodeA, nodeB) {
-        if (nodeA === nodeB)
-            return nodeA;
-        var parentsA = [nodeA] , parentsB = [nodeB], parent = nodeA, i = -1;
-        while (parent = parent.parentNode) {
-            if (parent === nodeB) {
-                return parent;
-            }
-            parentsA.push(parent);
-        }
-        parent = nodeB;
-        while (parent = parent.parentNode) {
-            if (parent === nodeA)
-                return parent;
-            parentsB.push(parent);
-        }
-        parentsA.reverse();
-        parentsB.reverse();
-        while (i++, parentsA[i] === parentsB[i]) {
-        }
-        return i == 0 ? null : parentsA[i - 1];
-
-    },
-    /**
-     * 清除node节点左右连续为空的兄弟inline节点
-     * @method clearEmptySibling
-     * @param { Node } node 执行的节点对象， 如果该节点的左右连续的兄弟节点是空的inline节点，
-     * 则这些兄弟节点将被删除
-     * @grammar UE.dom.domUtils.clearEmptySibling(node,ignoreNext)  //ignoreNext指定是否忽略右边空节点
-     * @grammar UE.dom.domUtils.clearEmptySibling(node,ignoreNext,ignorePre)  //ignorePre指定是否忽略左边空节点
-     * @example
-     * ```html
-     * <body>
-     *     <div></div>
-     *     <span id="test"></span>
-     *     <i></i>
-     *     <b></b>
-     *     <em>xxx</em>
-     *     <span></span>
-     * </body>
-     * <script>
-     *
-     *      UE.dom.domUtils.clearEmptySibling( document.getElementById( "test" ) );
-     *
-     *      //output: <div></div><span id="test"></span><em>xxx</em><span></span>
-     *      console.log( document.body.innerHTML );
-     *
-     * </script>
-     * ```
-     */
-
-    /**
-     * 清除node节点左右连续为空的兄弟inline节点， 如果ignoreNext的值为true，
-     * 则忽略对右边兄弟节点的操作。
-     * @method clearEmptySibling
-     * @param { Node } node 执行的节点对象， 如果该节点的左右连续的兄弟节点是空的inline节点，
-     * @param { Boolean } ignoreNext 是否忽略忽略对右边的兄弟节点的操作
-     * 则这些兄弟节点将被删除
-     * @see UE.dom.domUtils.clearEmptySibling(Node)
-     */
-
-    /**
-     * 清除node节点左右连续为空的兄弟inline节点， 如果ignoreNext的值为true，
-     * 则忽略对右边兄弟节点的操作， 如果ignorePre的值为true，则忽略对左边兄弟节点的操作。
-     * @method clearEmptySibling
-     * @param { Node } node 执行的节点对象， 如果该节点的左右连续的兄弟节点是空的inline节点，
-     * @param { Boolean } ignoreNext 是否忽略忽略对右边的兄弟节点的操作
-     * @param { Boolean } ignorePre 是否忽略忽略对左边的兄弟节点的操作
-     * 则这些兄弟节点将被删除
-     * @see UE.dom.domUtils.clearEmptySibling(Node)
-     */
-    clearEmptySibling:function (node, ignoreNext, ignorePre) {
-        function clear(next, dir) {
-            var tmpNode;
-            while (next && !domUtils.isBookmarkNode(next) && (domUtils.isEmptyInlineElement(next)
-                //这里不能把空格算进来会吧空格干掉，出现文字间的空格丢掉了
-                || !new RegExp('[^\t\n\r' + domUtils.fillChar + ']').test(next.nodeValue) )) {
-                tmpNode = next[dir];
-                domUtils.remove(next);
-                next = tmpNode;
-            }
-        }
-        !ignoreNext && clear(node.nextSibling, 'nextSibling');
-        !ignorePre && clear(node.previousSibling, 'previousSibling');
-    },
-
-    /**
-     * 将一个文本节点node拆分成两个文本节点，offset指定拆分位置
-     * @name split
-     * @grammar UM.dom.domUtils.split(node,offset)  =>  TextNode  //返回从切分位置开始的后一个文本节点
-     */
-    split: function (node, offset) {
-        var doc = node.ownerDocument;
-        if (browser.ie && offset == node.nodeValue.length) {
-            var next = doc.createTextNode('');
-            return domUtils.insertAfter(node, next);
-        }
-        var retval = node.splitText(offset);
-        //ie8下splitText不会跟新childNodes,我们手动触发他的更新
-        if (browser.ie8) {
-            var tmpNode = doc.createTextNode('');
-            domUtils.insertAfter(retval, tmpNode);
-            domUtils.remove(tmpNode);
-        }
-        return retval;
-    },
-
-    /**
-     * 检测节点node是否为空节点（包括空格、换行、占位符等字符）
-     * @name  isWhitespace
-     * @grammar  UM.dom.domUtils.isWhitespace(node)  => true|false
-     */
-    isWhitespace: function (node) {
-        return !new RegExp('[^ \t\n\r' + domUtils.fillChar + ']').test(node.nodeValue);
-    },
-    /**
-     * 获取元素element相对于viewport的位置坐标
-     * @name getXY
-     * @grammar UM.dom.domUtils.getXY(element)  => Object //返回坐标对象{x:left,y:top}
-     */
-    getXY: function (element) {
-        var x = 0, y = 0;
-        while (element.offsetParent) {
-            y += element.offsetTop;
-            x += element.offsetLeft;
-            element = element.offsetParent;
-        }
-        return { 'x': x, 'y': y};
-    },
-    /**
-     * 检查节点node是否是空inline节点
-     * @name  isEmptyInlineElement
-     * @grammar   UM.dom.domUtils.isEmptyInlineElement(node)  => 1|0
-     * @example
-     * <b><i></i></b> => 1
-     * <b><i></i><u></u></b> => 1
-     * <b></b> => 1
-     * <b>xx<i></i></b> => 0
-     */
-    isEmptyInlineElement: function (node) {
-        if (node.nodeType != 1 || !dtd.$removeEmpty[ node.tagName ]) {
-            return 0;
-        }
-        node = node.firstChild;
-        while (node) {
-            //如果是创建的bookmark就跳过
-            if (domUtils.isBookmarkNode(node)) {
+                // domUtils.POSITION_IDENTICAL
                 return 0;
             }
-            if (node.nodeType == 1 && !domUtils.isEmptyInlineElement(node) ||
-                node.nodeType == 3 && !domUtils.isWhitespace(node)
-                ) {
-                return 0;
+            var node,
+                parentsA = [nodeA],
+                parentsB = [nodeB];
+            node = nodeA;
+            while (node = node.parentNode) {
+                // 如果nodeB是nodeA的祖先节点
+                if (node === nodeB) {
+                    // domUtils.POSITION_IS_CONTAINED + domUtils.POSITION_FOLLOWING
+                    return 10;
+                }
+                parentsA.push(node);
             }
-            node = node.nextSibling;
-        }
-        return 1;
-
-    },
-
-
-    /**
-     * 检查节点node是否为块元素
-     * @name isBlockElm
-     * @grammar UM.dom.domUtils.isBlockElm(node)  => true|false
-     */
-    isBlockElm: function (node) {
-        return node.nodeType == 1 && (dtd.$block[node.tagName] || styleBlock[domUtils.getComputedStyle(node, 'display')]) && !dtd.$nonChild[node.tagName];
-    },
-
-
-    /**
-     * 原生方法getElementsByTagName的封装
-     * @name getElementsByTagName
-     * @grammar UM.dom.domUtils.getElementsByTagName(node,tagName)  => Array  //节点集合数组
-     */
-    getElementsByTagName: function (node, name, filter) {
-        if (filter && utils.isString(filter)) {
-            var className = filter;
-            filter = function (node) {
-                var result = false;
-                $.each(utils.trim(className).replace(/[ ]{2,}/g, ' ').split(' '), function (i, v) {
-                    if ($(node).hasClass(v)) {
-                        result = true;
-                        return false;
+            node = nodeB;
+            while (node = node.parentNode) {
+                // 如果nodeA是nodeB的祖先节点
+                if (node === nodeA) {
+                    // domUtils.POSITION_CONTAINS + domUtils.POSITION_PRECEDING
+                    return 20;
+                }
+                parentsB.push(node);
+            }
+            parentsA.reverse();
+            parentsB.reverse();
+            if (parentsA[0] !== parentsB[0]) {
+                // domUtils.POSITION_DISCONNECTED
+                return 1;
+            }
+            var i = -1;
+            while (i++, parentsA[i] === parentsB[i]) {
+            }
+            nodeA = parentsA[i];
+            nodeB = parentsB[i];
+            while (nodeA = nodeA.nextSibling) {
+                if (nodeA === nodeB) {
+                    // domUtils.POSITION_PRECEDING
+                    return 4
+                }
+            }
+            // domUtils.POSITION_FOLLOWING
+            return 2;
+        },
+        /**
+         * 返回节点node在父节点中的索引位置
+         * @name getNodeIndex
+         * @grammar UM.dom.domUtils.getNodeIndex(node)  => Number  //索引值从0开始
+         */
+        getNodeIndex: function (node, ignoreTextNode) {
+            var preNode = node,
+                i = 0;
+            while (preNode = preNode.previousSibling) {
+                if (ignoreTextNode && preNode.nodeType == 3) {
+                    if (preNode.nodeType != preNode.nextSibling.nodeType) {
+                        i++;
                     }
-                })
-                return result;
+                    continue;
+                }
+                i++;
             }
-        }
-        name = utils.trim(name).replace(/[ ]{2,}/g, ' ').split(' ');
-        var arr = [];
-        for (var n = 0, ni; ni = name[n++];) {
-            var list = node.getElementsByTagName(ni);
-            for (var i = 0, ci; ci = list[i++];) {
-                if (!filter || filter(ci))
-                    arr.push(ci);
-            }
-        }
-        return arr;
-    },
-
-
-    /**
-     * 设置节点node及其子节点不会被选中
-     * @name unSelectable
-     * @grammar UM.dom.domUtils.unSelectable(node)
-     */
-    unSelectable: ie && browser.ie9below || browser.opera ? function (node) {
-        //for ie9
-        node.onselectstart = function () {
-            return false;
-        };
-        node.onclick = node.onkeyup = node.onkeydown = function () {
-            return false;
-        };
-        node.unselectable = 'on';
-        node.setAttribute("unselectable", "on");
-        for (var i = 0, ci; ci = node.all[i++];) {
-            switch (ci.tagName.toLowerCase()) {
-                case 'iframe' :
-                case 'textarea' :
-                case 'input' :
-                case 'select' :
-                    break;
-                default :
-                    ci.unselectable = 'on';
-                    node.setAttribute("unselectable", "on");
-            }
-        }
-    } : function (node) {
-        node.style.MozUserSelect =
-            node.style.webkitUserSelect =
-                    node.style.msUserSelect =
-                        node.style.KhtmlUserSelect = 'none';
-    },
-    /**
-     * 删除节点node上的属性attrNames，attrNames为属性名称数组
-     * @name  removeAttributes
-     * @grammar UM.dom.domUtils.removeAttributes(node,attrNames)
-     * @example
-     * //Before remove
-     * <span style="font-size:14px;" id="test" name="followMe">xxxxx</span>
-     * //Remove
-     * UM.dom.domUtils.removeAttributes(node,["id","name"]);
-     * //After remove
-     * <span style="font-size:14px;">xxxxx</span>
-     */
-    removeAttributes: function (node, attrNames) {
-        attrNames = utils.isArray(attrNames) ? attrNames : utils.trim(attrNames).replace(/[ ]{2,}/g, ' ').split(' ');
-        for (var i = 0, ci; ci = attrNames[i++];) {
-            ci = attrFix[ci] || ci;
-            switch (ci) {
-                case 'className':
-                    node[ci] = '';
-                    break;
-                case 'style':
-                    node.style.cssText = '';
-                    !browser.ie && node.removeAttributeNode(node.getAttributeNode('style'))
-            }
-            node.removeAttribute(ci);
-        }
-    },
-    /**
-     * 在doc下创建一个标签名为tag，属性为attrs的元素
-     * @name createElement
-     * @grammar UM.dom.domUtils.createElement(doc,tag,attrs)  =>  Node  //返回创建的节点
-     */
-    createElement: function (doc, tag, attrs) {
-        return domUtils.setAttributes(doc.createElement(tag), attrs)
-    },
-    /**
-     * 为节点node添加属性attrs，attrs为属性键值对
-     * @name setAttributes
-     * @grammar UM.dom.domUtils.setAttributes(node,attrs)  => node
-     */
-    setAttributes: function (node, attrs) {
-        for (var attr in attrs) {
-            if (attrs.hasOwnProperty(attr)) {
-                var value = attrs[attr];
-                switch (attr) {
-                    case 'class':
-                        //ie下要这样赋值，setAttribute不起作用
-                        node.className = value;
-                        break;
-                    case 'style' :
-                        node.style.cssText = node.style.cssText + ";" + value;
-                        break;
-                    case 'innerHTML':
-                        node[attr] = value;
-                        break;
-                    case 'value':
-                        node.value = value;
-                        break;
-                    default:
-                        node.setAttribute(attrFix[attr] || attr, value);
+            return i;
+        },
+        /**
+         * 检测节点node是否在节点doc的树上，实质上是检测是否被doc包含
+         * @name inDoc
+         * @grammar UM.dom.domUtils.inDoc(node,doc)   =>  true|false
+         */
+        inDoc: function (node, doc) {
+            return domUtils.getPosition(node, doc) == 10;
+        },
+        /**
+         * 查找node节点的祖先节点
+         * @name findParent
+         * @grammar UM.dom.domUtils.findParent(node)  => Element  // 直接返回node节点的父节点
+         * @grammar UM.dom.domUtils.findParent(node,filterFn)  => Element  //filterFn为过滤函数，node作为参数，返回true时才会将node作为符合要求的节点返回
+         * @grammar UM.dom.domUtils.findParent(node,filterFn,includeSelf)  => Element  //includeSelf指定是否包含自身
+         */
+        findParent: function (node, filterFn, includeSelf) {
+            if (node && !domUtils.isBody(node)) {
+                node = includeSelf ? node : node.parentNode;
+                while (node) {
+                    if (!filterFn || filterFn(node) || domUtils.isBody(node)) {
+                        return filterFn && !filterFn(node) && domUtils.isBody(node) ? null : node;
+                    }
+                    node = node.parentNode;
                 }
             }
-        }
-        return node;
-    },
-
-    /**
-     * 获取元素element的计算样式
-     * @name getComputedStyle
-     * @grammar UM.dom.domUtils.getComputedStyle(element,styleName)  => String //返回对应样式名称的样式值
-     * @example
-     * getComputedStyle(document.body,"font-size")  =>  "15px"
-     * getComputedStyle(form,"color")  =>  "#ffccdd"
-     */
-    getComputedStyle: function (element, styleName) {
-        return utils.transUnitToPx(utils.fixColor(styleName, $(element).css(styleName)));
-    },
-
-    /**
-     * 阻止事件默认行为
-     * @param {Event} evt    需要组织的事件对象
-     */
-    preventDefault: function (evt) {
-        evt.preventDefault ? evt.preventDefault() : (evt.returnValue = false);
-    },
-
-    /**
-     * 删除元素element指定的样式
-     * @method removeStyle
-     * @param { Element } element 需要删除样式的元素
-     * @param { String } styleName 需要删除的样式名
-     * @example
-     * ```html
-     * <span id="test" style="color: red; background: blue;"></span>
-     *
-     * <script>
-     *
-     *     var testNode = document.getElementById("test");
-     *
-     *     UE.dom.domUtils.removeStyle( testNode, 'color' );
-     *
-     *     //output: background: blue;
-     *     console.log( testNode.style.cssText );
-     *
-     * </script>
-     * ```
-     */
-    removeStyle:function (element, name) {
-        if(browser.ie ){
-            //针对color先单独处理一下
-            if(name == 'color'){
-                name = '(^|;)' + name;
+            return null;
+        },
+        /**
+         * 通过tagName查找node节点的祖先节点
+         * @name findParentByTagName
+         * @grammar UM.dom.domUtils.findParentByTagName(node,tagNames)   =>  Element  //tagNames支持数组，区分大小写
+         * @grammar UM.dom.domUtils.findParentByTagName(node,tagNames,includeSelf)   =>  Element  //includeSelf指定是否包含自身
+         * @grammar UM.dom.domUtils.findParentByTagName(node,tagNames,includeSelf,excludeFn)   =>  Element  //excludeFn指定例外过滤条件，返回true时忽略该节点
+         */
+        findParentByTagName: function (node, tagNames, includeSelf, excludeFn) {
+            tagNames = utils.listToMap(utils.isArray(tagNames) ? tagNames : [tagNames]);
+            return domUtils.findParent(node, function (node) {
+                return tagNames[node.tagName] && !(excludeFn && excludeFn(node));
+            }, includeSelf);
+        },
+        /**
+         * 查找节点node的祖先节点集合
+         * @name findParents
+         * @grammar UM.dom.domUtils.findParents(node)  => Array  //返回一个祖先节点数组集合，不包含自身
+         * @grammar UM.dom.domUtils.findParents(node,includeSelf)  => Array  //返回一个祖先节点数组集合，includeSelf指定是否包含自身
+         * @grammar UM.dom.domUtils.findParents(node,includeSelf,filterFn)  => Array  //返回一个祖先节点数组集合，filterFn指定过滤条件，返回true的node将被选取
+         * @grammar UM.dom.domUtils.findParents(node,includeSelf,filterFn,closerFirst)  => Array  //返回一个祖先节点数组集合，closerFirst为true的话，node的直接父亲节点是数组的第0个
+         */
+        findParents: function (node, includeSelf, filterFn, closerFirst) {
+            var parents = includeSelf && (filterFn && filterFn(node) || !filterFn) ? [node] : [];
+            while (node = domUtils.findParent(node, filterFn)) {
+                parents.push(node);
             }
-            element.style.cssText = element.style.cssText.replace(new RegExp(name + '[^:]*:[^;]+;?','ig'),'')
-        }else{
-            if (element.style.removeProperty) {
-                element.style.removeProperty (name);
-            }else {
-                element.style.removeAttribute (utils.cssStyleToDomStyle(name));
+            return closerFirst ? parents : parents.reverse();
+        },
+        /**
+         * 在节点node后面插入新节点newNode
+         * @name insertAfter
+         * @grammar UM.dom.domUtils.insertAfter(node,newNode)  => newNode
+         */
+        insertAfter: function (node, newNode) {
+            return node.parentNode.insertBefore(newNode, node.nextSibling);
+        },
+        /**
+         * 删除节点node，并根据keepChildren指定是否保留子节点
+         * @name remove
+         * @grammar UM.dom.domUtils.remove(node)  =>  node
+         * @grammar UM.dom.domUtils.remove(node,keepChildren)  =>  node
+         */
+        remove: function (node, keepChildren) {
+            var parent = node.parentNode,
+                child;
+            if (parent) {
+                if (keepChildren && node.hasChildNodes()) {
+                    while (child = node.firstChild) {
+                        parent.insertBefore(child, node);
+                    }
+                }
+                parent.removeChild(node);
             }
-        }
-
-
-        if (!element.style.cssText) {
-            domUtils.removeAttributes(element, ['style']);
-        }
-    },
-
-    /**
-     * 获取元素element的某个样式值
-     * @name getStyle
-     * @grammar UM.dom.domUtils.getStyle(element,name)  => String
-     */
-    getStyle: function (element, name) {
-        var value = element.style[ utils.cssStyleToDomStyle(name) ];
-        return utils.fixColor(name, value);
-    },
-    /**
-     * 为元素element设置样式属性值
-     * @name setStyle
-     * @grammar UM.dom.domUtils.setStyle(element,name,value)
-     */
-    setStyle: function (element, name, value) {
-        element.style[utils.cssStyleToDomStyle(name)] = value;
-        if (!utils.trim(element.style.cssText)) {
-            this.removeAttributes(element, 'style')
-        }
-    },
-
-    /**
-     * 删除_moz_dirty属性
-     * @function
-     */
-    removeDirtyAttr: function (node) {
-        for (var i = 0, ci, nodes = node.getElementsByTagName('*'); ci = nodes[i++];) {
-            ci.removeAttribute('_moz_dirty');
-        }
-        node.removeAttribute('_moz_dirty');
-    },
-    /**
-     * 返回子节点的数量
-     * @function
-     * @param {Node}    node    父节点
-     * @param  {Function}    fn    过滤子节点的规则，若为空，则得到所有子节点的数量
-     * @return {Number}    符合条件子节点的数量
-     */
-    getChildCount: function (node, fn) {
-        var count = 0, first = node.firstChild;
-        fn = fn || function () {
-            return 1;
-        };
-        while (first) {
-            if (fn(first)) {
-                count++;
+            return node;
+        },
+        /**
+         * 取得node节点的下一个兄弟节点， 如果该节点其后没有兄弟节点， 则递归查找其父节点之后的第一个兄弟节点，
+         * 直到找到满足条件的节点或者递归到BODY节点之后才会结束。
+         * @method getNextDomNode
+         * @param { Node } node 需要获取其后的兄弟节点的节点对象
+         * @return { Node | NULL } 如果找满足条件的节点， 则返回该节点， 否则返回NULL
+         * @example
+         * ```html
+         *     <body>
+         *      <div id="test">
+         *          <span></span>
+         *      </div>
+         *      <i>xxx</i>
+         * </body>
+         * <script>
+         *
+         *     //output: i节点
+         *     console.log( UE.dom.domUtils.getNextDomNode( document.getElementById( "test" ) ) );
+         *
+         * </script>
+         * ```
+         * @example
+         * ```html
+         * <body>
+         *      <div>
+         *          <span></span>
+         *          <i id="test">xxx</i>
+         *      </div>
+         *      <b>xxx</b>
+         * </body>
+         * <script>
+         *
+         *     //由于id为test的i节点之后没有兄弟节点， 则查找其父节点（div）后面的兄弟节点
+         *     //output: b节点
+         *     console.log( UE.dom.domUtils.getNextDomNode( document.getElementById( "test" ) ) );
+         *
+         * </script>
+         * ```
+         */
+        /**
+         * 取得node节点的下一个兄弟节点， 如果startFromChild的值为ture，则先获取其子节点，
+         * 如果有子节点则直接返回第一个子节点；如果没有子节点或者startFromChild的值为false，
+         * 则执行<a href="#UE.dom.domUtils.getNextDomNode(Node)">getNextDomNode(Node node)</a>的查找过程。
+         * @method getNextDomNode
+         * @param { Node } node 需要获取其后的兄弟节点的节点对象
+         * @param { Boolean } startFromChild 查找过程是否从其子节点开始
+         * @return { Node | NULL } 如果找满足条件的节点， 则返回该节点， 否则返回NULL
+         * @see UE.dom.domUtils.getNextDomNode(Node)
+         */
+        getNextDomNode: function (node, startFromChild, filterFn, guard) {
+            return getDomNode(node, 'firstChild', 'nextSibling', startFromChild, filterFn, guard);
+        },
+        getPreDomNode: function (node, startFromChild, filterFn, guard) {
+            return getDomNode(node, 'lastChild', 'previousSibling', startFromChild, filterFn, guard);
+        },
+        /**
+         * 检测节点node是否属于bookmark节点
+         * @name isBookmarkNode
+         * @grammar UM.dom.domUtils.isBookmarkNode(node)  => true|false
+         */
+        isBookmarkNode: function (node) {
+            return node.nodeType == 1 && node.id && /^_baidu_bookmark_/i.test(node.id);
+        },
+        /**
+         * 获取节点node所在的window对象
+         * @name  getWindow
+         * @grammar UM.dom.domUtils.getWindow(node)  => window对象
+         */
+        getWindow: function (node) {
+            var doc = node.ownerDocument || node;
+            return doc.defaultView || doc.parentWindow;
+        },
+        /**
+         * 获取离nodeA与nodeB最近的公共的祖先节点
+         * @method  getCommonAncestor
+         * @param { Node } nodeA 第一个节点
+         * @param { Node } nodeB 第二个节点
+         * @remind 如果给定的两个节点是同一个节点， 将直接返回该节点。
+         * @return { Node | NULL } 如果未找到公共节点， 返回NULL， 否则返回最近的公共祖先节点。
+         * @example
+         * ```javascript
+         * var commonAncestor = UE.dom.domUtils.getCommonAncestor( document.body, document.body.firstChild );
+         * //output: true
+         * console.log( commonAncestor.tagName.toLowerCase() === 'body' );
+         * ```
+         */
+        getCommonAncestor: function (nodeA, nodeB) {
+            if (nodeA === nodeB)
+                return nodeA;
+            var parentsA = [nodeA], parentsB = [nodeB], parent = nodeA, i = -1;
+            while (parent = parent.parentNode) {
+                if (parent === nodeB) {
+                    return parent;
+                }
+                parentsA.push(parent);
             }
-            first = first.nextSibling;
-        }
-        return count;
-    },
+            parent = nodeB;
+            while (parent = parent.parentNode) {
+                if (parent === nodeA)
+                    return parent;
+                parentsB.push(parent);
+            }
+            parentsA.reverse();
+            parentsB.reverse();
+            while (i++, parentsA[i] === parentsB[i]) {
+            }
+            return i == 0 ? null : parentsA[i - 1];
+        },
+        /**
+         * 清除node节点左右连续为空的兄弟inline节点
+         * @method clearEmptySibling
+         * @param { Node } node 执行的节点对象， 如果该节点的左右连续的兄弟节点是空的inline节点，
+         * 则这些兄弟节点将被删除
+         * @grammar UE.dom.domUtils.clearEmptySibling(node,ignoreNext)  //ignoreNext指定是否忽略右边空节点
+         * @grammar UE.dom.domUtils.clearEmptySibling(node,ignoreNext,ignorePre)  //ignorePre指定是否忽略左边空节点
+         * @example
+         * ```html
+         * <body>
+         *     <div></div>
+         *     <span id="test"></span>
+         *     <i></i>
+         *     <b></b>
+         *     <em>xxx</em>
+         *     <span></span>
+         * </body>
+         * <script>
+         *
+         *      UE.dom.domUtils.clearEmptySibling( document.getElementById( "test" ) );
+         *
+         *      //output: <div></div><span id="test"></span><em>xxx</em><span></span>
+         *      console.log( document.body.innerHTML );
+         *
+         * </script>
+         * ```
+         */
+        /**
+         * 清除node节点左右连续为空的兄弟inline节点， 如果ignoreNext的值为true，
+         * 则忽略对右边兄弟节点的操作。
+         * @method clearEmptySibling
+         * @param { Node } node 执行的节点对象， 如果该节点的左右连续的兄弟节点是空的inline节点，
+         * @param { Boolean } ignoreNext 是否忽略忽略对右边的兄弟节点的操作
+         * 则这些兄弟节点将被删除
+         * @see UE.dom.domUtils.clearEmptySibling(Node)
+         */
+        /**
+         * 清除node节点左右连续为空的兄弟inline节点， 如果ignoreNext的值为true，
+         * 则忽略对右边兄弟节点的操作， 如果ignorePre的值为true，则忽略对左边兄弟节点的操作。
+         * @method clearEmptySibling
+         * @param { Node } node 执行的节点对象， 如果该节点的左右连续的兄弟节点是空的inline节点，
+         * @param { Boolean } ignoreNext 是否忽略忽略对右边的兄弟节点的操作
+         * @param { Boolean } ignorePre 是否忽略忽略对左边的兄弟节点的操作
+         * 则这些兄弟节点将被删除
+         * @see UE.dom.domUtils.clearEmptySibling(Node)
+         */
+        clearEmptySibling: function (node, ignoreNext, ignorePre) {
+            function clear(next, dir) {
+                var tmpNode;
+                while (next && !domUtils.isBookmarkNode(next) && (domUtils.isEmptyInlineElement(next)
+                    //这里不能把空格算进来会吧空格干掉，出现文字间的空格丢掉了
+                    || !new RegExp('[^\t\n\r' + domUtils.fillChar + ']').test(next.nodeValue))) {
+                    tmpNode = next[dir];
+                    domUtils.remove(next);
+                    next = tmpNode;
+                }
+            }
 
-    /**
-     * 判断是否为空节点
-     * @function
-     * @param {Node}    node    节点
-     * @return {Boolean}    是否为空节点
-     */
-    isEmptyNode: function (node) {
-        return !node.firstChild || domUtils.getChildCount(node, function (node) {
-            return  !domUtils.isBr(node) && !domUtils.isBookmarkNode(node) && !domUtils.isWhitespace(node)
-        }) == 0
-    },
-
-    /**
-     * 判断节点是否为br
-     * @function
-     * @param {Node}    node   节点
-     */
-    isBr: function (node) {
-        return node.nodeType == 1 && node.tagName == 'BR';
-    },
-    isFillChar: function (node, isInStart) {
-        return node.nodeType == 3 && !node.nodeValue.replace(new RegExp((isInStart ? '^' : '' ) + domUtils.fillChar), '').length
-    },
-
-    isEmptyBlock: function (node, reg) {
-        if (node.nodeType != 1)
-            return 0;
-        reg = reg || new RegExp('[ \t\r\n' + domUtils.fillChar + ']', 'g');
-        if (node[browser.ie ? 'innerText' : 'textContent'].replace(reg, '').length > 0) {
-            return 0;
-        }
-        for (var n in dtd.$isNotEmpty) {
-            if (node.getElementsByTagName(n).length) {
+            !ignoreNext && clear(node.nextSibling, 'nextSibling');
+            !ignorePre && clear(node.previousSibling, 'previousSibling');
+        },
+        /**
+         * 将一个文本节点node拆分成两个文本节点，offset指定拆分位置
+         * @name split
+         * @grammar UM.dom.domUtils.split(node,offset)  =>  TextNode  //返回从切分位置开始的后一个文本节点
+         */
+        split: function (node, offset) {
+            var doc = node.ownerDocument;
+            if (browser.ie && offset == node.nodeValue.length) {
+                var next = doc.createTextNode('');
+                return domUtils.insertAfter(node, next);
+            }
+            var retval = node.splitText(offset);
+            //ie8下splitText不会跟新childNodes,我们手动触发他的更新
+            if (browser.ie8) {
+                var tmpNode = doc.createTextNode('');
+                domUtils.insertAfter(retval, tmpNode);
+                domUtils.remove(tmpNode);
+            }
+            return retval;
+        },
+        /**
+         * 检测节点node是否为空节点（包括空格、换行、占位符等字符）
+         * @name  isWhitespace
+         * @grammar  UM.dom.domUtils.isWhitespace(node)  => true|false
+         */
+        isWhitespace: function (node) {
+            return !new RegExp('[^ \t\n\r' + domUtils.fillChar + ']').test(node.nodeValue);
+        },
+        /**
+         * 获取元素element相对于viewport的位置坐标
+         * @name getXY
+         * @grammar UM.dom.domUtils.getXY(element)  => Object //返回坐标对象{x:left,y:top}
+         */
+        getXY: function (element) {
+            var x = 0, y = 0;
+            while (element.offsetParent) {
+                y += element.offsetTop;
+                x += element.offsetLeft;
+                element = element.offsetParent;
+            }
+            return {'x': x, 'y': y};
+        },
+        /**
+         * 检查节点node是否是空inline节点
+         * @name  isEmptyInlineElement
+         * @grammar   UM.dom.domUtils.isEmptyInlineElement(node)  => 1|0
+         * @example
+         * <b><i></i></b> => 1
+         * <b><i></i><u></u></b> => 1
+         * <b></b> => 1
+         * <b>xx<i></i></b> => 0
+         */
+        isEmptyInlineElement: function (node) {
+            if (node.nodeType != 1 || !dtd.$removeEmpty[node.tagName]) {
                 return 0;
             }
-        }
-        return 1;
-    },
-
-    //判断是否是编辑器自定义的参数
-    isCustomeNode: function (node) {
-        return node.nodeType == 1 && node.getAttribute('_ue_custom_node_');
-    },
-    fillNode: function (doc, node) {
-        var tmpNode = browser.ie ? doc.createTextNode(domUtils.fillChar) : doc.createElement('br');
-        node.innerHTML = '';
-        node.appendChild(tmpNode);
-    },
-    isBoundaryNode: function (node, dir) {
-        var tmp;
-        while (!domUtils.isBody(node)) {
-            tmp = node;
-            node = node.parentNode;
-            if (tmp !== node[dir]) {
-                return false;
+            node = node.firstChild;
+            while (node) {
+                //如果是创建的bookmark就跳过
+                if (domUtils.isBookmarkNode(node)) {
+                    return 0;
+                }
+                if (node.nodeType == 1 && !domUtils.isEmptyInlineElement(node) ||
+                    node.nodeType == 3 && !domUtils.isWhitespace(node)
+                ) {
+                    return 0;
+                }
+                node = node.nextSibling;
             }
+            return 1;
+        },
+        /**
+         * 检查节点node是否为块元素
+         * @name isBlockElm
+         * @grammar UM.dom.domUtils.isBlockElm(node)  => true|false
+         */
+        isBlockElm: function (node) {
+            return node.nodeType == 1 && (dtd.$block[node.tagName] || styleBlock[domUtils.getComputedStyle(node, 'display')]) && !dtd.$nonChild[node.tagName];
+        },
+        /**
+         * 原生方法getElementsByTagName的封装
+         * @name getElementsByTagName
+         * @grammar UM.dom.domUtils.getElementsByTagName(node,tagName)  => Array  //节点集合数组
+         */
+        getElementsByTagName: function (node, name, filter) {
+            if (filter && utils.isString(filter)) {
+                var className = filter;
+                filter = function (node) {
+                    var result = false;
+                    $.each(utils.trim(className).replace(/[ ]{2,}/g, ' ').split(' '), function (i, v) {
+                        if ($(node).hasClass(v)) {
+                            result = true;
+                            return false;
+                        }
+                    })
+                    return result;
+                }
+            }
+            name = utils.trim(name).replace(/[ ]{2,}/g, ' ').split(' ');
+            var arr = [];
+            for (var n = 0, ni; ni = name[n++];) {
+                var list = node.getElementsByTagName(ni);
+                for (var i = 0, ci; ci = list[i++];) {
+                    if (!filter || filter(ci))
+                        arr.push(ci);
+                }
+            }
+            return arr;
+        },
+        /**
+         * 设置节点node及其子节点不会被选中
+         * @name unSelectable
+         * @grammar UM.dom.domUtils.unSelectable(node)
+         */
+        unSelectable: ie && browser.ie9below || browser.opera ? function (node) {
+            //for ie9
+            node.onselectstart = function () {
+                return false;
+            };
+            node.onclick = node.onkeyup = node.onkeydown = function () {
+                return false;
+            };
+            node.unselectable = 'on';
+            node.setAttribute("unselectable", "on");
+            for (var i = 0, ci; ci = node.all[i++];) {
+                switch (ci.tagName.toLowerCase()) {
+                    case 'iframe' :
+                    case 'textarea' :
+                    case 'input' :
+                    case 'select' :
+                        break;
+                    default :
+                        ci.unselectable = 'on';
+                        node.setAttribute("unselectable", "on");
+                }
+            }
+        } : function (node) {
+            node.style.MozUserSelect = node.style.webkitUserSelect = node.style.msUserSelect = node.style.KhtmlUserSelect = 'none';
+        },
+        /**
+         * 删除节点node上的属性attrNames，attrNames为属性名称数组
+         * @name  removeAttributes
+         * @grammar UM.dom.domUtils.removeAttributes(node,attrNames)
+         * @example
+         * //Before remove
+         * <span style="font-size:14px;" id="test" name="followMe">xxxxx</span>
+         * //Remove
+         * UM.dom.domUtils.removeAttributes(node,["id","name"]);
+         * //After remove
+         * <span style="font-size:14px;">xxxxx</span>
+         */
+        removeAttributes: function (node, attrNames) {
+            attrNames = utils.isArray(attrNames) ? attrNames : utils.trim(attrNames).replace(/[ ]{2,}/g, ' ').split(' ');
+            for (var i = 0, ci; ci = attrNames[i++];) {
+                ci = attrFix[ci] || ci;
+                switch (ci) {
+                    case 'className':
+                        node[ci] = '';
+                        break;
+                    case 'style':
+                        node.style.cssText = '';
+                        !browser.ie && node.removeAttributeNode(node.getAttributeNode('style'))
+                }
+                node.removeAttribute(ci);
+            }
+        },
+        /**
+         * 在doc下创建一个标签名为tag，属性为attrs的元素
+         * @name createElement
+         * @grammar UM.dom.domUtils.createElement(doc,tag,attrs)  =>  Node  //返回创建的节点
+         */
+        createElement: function (doc, tag, attrs) {
+            return domUtils.setAttributes(doc.createElement(tag), attrs)
+        },
+        /**
+         * 为节点node添加属性attrs，attrs为属性键值对
+         * @name setAttributes
+         * @grammar UM.dom.domUtils.setAttributes(node,attrs)  => node
+         */
+        setAttributes: function (node, attrs) {
+            for (var attr in attrs) {
+                if (attrs.hasOwnProperty(attr)) {
+                    var value = attrs[attr];
+                    switch (attr) {
+                        case 'class':
+                            //ie下要这样赋值，setAttribute不起作用
+                            node.className = value;
+                            break;
+                        case 'style' :
+                            node.style.cssText = node.style.cssText + ";" + value;
+                            break;
+                        case 'innerHTML':
+                            node[attr] = value;
+                            break;
+                        case 'value':
+                            node.value = value;
+                            break;
+                        default:
+                            node.setAttribute(attrFix[attr] || attr, value);
+                    }
+                }
+            }
+            return node;
+        },
+        /**
+         * 获取元素element的计算样式
+         * @name getComputedStyle
+         * @grammar UM.dom.domUtils.getComputedStyle(element,styleName)  => String //返回对应样式名称的样式值
+         * @example
+         * getComputedStyle(document.body,"font-size")  =>  "15px"
+         * getComputedStyle(form,"color")  =>  "#ffccdd"
+         */
+        getComputedStyle: function (element, styleName) {
+            return utils.transUnitToPx(utils.fixColor(styleName, $(element).css(styleName)));
+        },
+        /**
+         * 阻止事件默认行为
+         * @param {Event} evt    需要组织的事件对象
+         */
+        preventDefault: function (evt) {
+            evt.preventDefault ? evt.preventDefault() : (evt.returnValue = false);
+        },
+        /**
+         * 删除元素element指定的样式
+         * @method removeStyle
+         * @param { Element } element 需要删除样式的元素
+         * @param { String } styleName 需要删除的样式名
+         * @example
+         * ```html
+         * <span id="test" style="color: red; background: blue;"></span>
+         *
+         * <script>
+         *
+         *     var testNode = document.getElementById("test");
+         *
+         *     UE.dom.domUtils.removeStyle( testNode, 'color' );
+         *
+         *     //output: background: blue;
+         *     console.log( testNode.style.cssText );
+         *
+         * </script>
+         * ```
+         */
+        removeStyle: function (element, name) {
+            if (browser.ie) {
+                //针对color先单独处理一下
+                if (name == 'color') {
+                    name = '(^|;)' + name;
+                }
+                element.style.cssText = element.style.cssText.replace(new RegExp(name + '[^:]*:[^;]+;?', 'ig'), '')
+            } else {
+                if (element.style.removeProperty) {
+                    element.style.removeProperty(name);
+                } else {
+                    element.style.removeAttribute(utils.cssStyleToDomStyle(name));
+                }
+            }
+            if (!element.style.cssText) {
+                domUtils.removeAttributes(element, ['style']);
+            }
+        },
+        /**
+         * 获取元素element的某个样式值
+         * @name getStyle
+         * @grammar UM.dom.domUtils.getStyle(element,name)  => String
+         */
+        getStyle: function (element, name) {
+            var value = element.style[utils.cssStyleToDomStyle(name)];
+            return utils.fixColor(name, value);
+        },
+        /**
+         * 为元素element设置样式属性值
+         * @name setStyle
+         * @grammar UM.dom.domUtils.setStyle(element,name,value)
+         */
+        setStyle: function (element, name, value) {
+            element.style[utils.cssStyleToDomStyle(name)] = value;
+            if (!utils.trim(element.style.cssText)) {
+                this.removeAttributes(element, 'style')
+            }
+        },
+        /**
+         * 删除_moz_dirty属性
+         * @function
+         */
+        removeDirtyAttr: function (node) {
+            for (var i = 0, ci, nodes = node.getElementsByTagName('*'); ci = nodes[i++];) {
+                ci.removeAttribute('_moz_dirty');
+            }
+            node.removeAttribute('_moz_dirty');
+        },
+        /**
+         * 返回子节点的数量
+         * @function
+         * @param {Node}    node    父节点
+         * @param  {Function}    fn    过滤子节点的规则，若为空，则得到所有子节点的数量
+         * @return {Number}    符合条件子节点的数量
+         */
+        getChildCount: function (node, fn) {
+            var count = 0, first = node.firstChild;
+            fn = fn || function () {
+                return 1;
+            };
+            while (first) {
+                if (fn(first)) {
+                    count++;
+                }
+                first = first.nextSibling;
+            }
+            return count;
+        },
+        /**
+         * 判断是否为空节点
+         * @function
+         * @param {Node}    node    节点
+         * @return {Boolean}    是否为空节点
+         */
+        isEmptyNode: function (node) {
+            return !node.firstChild || domUtils.getChildCount(node, function (node) {
+                return !domUtils.isBr(node) && !domUtils.isBookmarkNode(node) && !domUtils.isWhitespace(node)
+            }) == 0
+        },
+        /**
+         * 判断节点是否为br
+         * @function
+         * @param {Node}    node   节点
+         */
+        isBr: function (node) {
+            return node.nodeType == 1 && node.tagName == 'BR';
+        },
+        isFillChar: function (node, isInStart) {
+            return node.nodeType == 3 && !node.nodeValue.replace(new RegExp((isInStart ? '^' : '') + domUtils.fillChar), '').length
+        },
+        isEmptyBlock: function (node, reg) {
+            if (node.nodeType != 1)
+                return 0;
+            reg = reg || new RegExp('[ \t\r\n' + domUtils.fillChar + ']', 'g');
+            if (node[browser.ie ? 'innerText' : 'textContent'].replace(reg, '').length > 0) {
+                return 0;
+            }
+            for (var n in dtd.$isNotEmpty) {
+                if (node.getElementsByTagName(n).length) {
+                    return 0;
+                }
+            }
+            return 1;
+        },
+        //判断是否是编辑器自定义的参数
+        isCustomeNode: function (node) {
+            return node.nodeType == 1 && node.getAttribute('_ue_custom_node_');
+        },
+        fillNode: function (doc, node) {
+            var tmpNode = browser.ie ? doc.createTextNode(domUtils.fillChar) : doc.createElement('br');
+            node.innerHTML = '';
+            node.appendChild(tmpNode);
+        },
+        isBoundaryNode: function (node, dir) {
+            var tmp;
+            while (!domUtils.isBody(node)) {
+                tmp = node;
+                node = node.parentNode;
+                if (tmp !== node[dir]) {
+                    return false;
+                }
+            }
+            return true;
+        },
+        isFillChar: function (node, isInStart) {
+            return node.nodeType == 3 && !node.nodeValue.replace(new RegExp((isInStart ? '^' : '') + domUtils.fillChar), '').length
+        },
+        isBody: function (node) {
+            return $(node).hasClass('edui-body-container');
         }
-        return true;
-    },
-    isFillChar: function (node, isInStart) {
-        return node.nodeType == 3 && !node.nodeValue.replace(new RegExp((isInStart ? '^' : '' ) + domUtils.fillChar), '').length
-    },
-    isBody: function(node){
-        return $(node).hasClass('edui-body-container');
-    }
-};
-var fillCharReg = new RegExp(domUtils.fillChar, 'g');
+    };
+    var fillCharReg = new RegExp(domUtils.fillChar, 'g');
 ///import editor.js
 ///import core/utils.js
 ///import core/browser.js
 ///import core/dom/dom.js
 ///import core/dom/dtd.js
 ///import core/dom/domUtils.js
-/**
- * @file
- * @name UM.dom.Range
- * @anthor zhanyi
- * @short Range
- * @import editor.js,core/utils.js,core/browser.js,core/dom/domUtils.js,core/dom/dtd.js
- * @desc Range范围实现类，本类是UEditor底层核心类，统一w3cRange和ieRange之间的差异，包括接口和属性
- */
-(function () {
-    var guid = 0,
-        fillChar = domUtils.fillChar,
-        fillData;
-
     /**
-     * 更新range的collapse状态
-     * @param  {Range}   range    range对象
+     * @file
+     * @name UM.dom.Range
+     * @anthor zhanyi
+     * @short Range
+     * @import editor.js,core/utils.js,core/browser.js,core/dom/domUtils.js,core/dom/dtd.js
+     * @desc Range范围实现类，本类是UEditor底层核心类，统一w3cRange和ieRange之间的差异，包括接口和属性
      */
-    function updateCollapse(range) {
-        range.collapsed =
-            range.startContainer && range.endContainer &&
+    (function () {
+        var guid = 0,
+            fillChar = domUtils.fillChar,
+            fillData;
+
+        /**
+         * 更新range的collapse状态
+         * @param  {Range}   range    range对象
+         */
+        function updateCollapse(range) {
+            range.collapsed =
+                range.startContainer && range.endContainer &&
                 range.startContainer === range.endContainer &&
                 range.startOffset == range.endOffset;
-    }
-
-    function selectOneNode(rng){
-        return !rng.collapsed && rng.startContainer.nodeType == 1 && rng.startContainer === rng.endContainer && rng.endOffset - rng.startOffset == 1
-    }
-    function setEndPoint(toStart, node, offset, range) {
-        //如果node是自闭合标签要处理
-        if (node.nodeType == 1 && (dtd.$empty[node.tagName] || dtd.$nonChild[node.tagName])) {
-            offset = domUtils.getNodeIndex(node) + (toStart ? 0 : 1);
-            node = node.parentNode;
         }
-        if (toStart) {
-            range.startContainer = node;
-            range.startOffset = offset;
-            if (!range.endContainer) {
-                range.collapse(true);
-            }
-        } else {
-            range.endContainer = node;
-            range.endOffset = offset;
-            if (!range.startContainer) {
-                range.collapse(false);
-            }
+
+        function selectOneNode(rng) {
+            return !rng.collapsed && rng.startContainer.nodeType == 1 && rng.startContainer === rng.endContainer && rng.endOffset - rng.startOffset == 1
         }
-        updateCollapse(range);
-        return range;
-    }
 
-
-    /**
-     * @name Range
-     * @grammar new UM.dom.Range(document)  => Range 实例
-     * @desc 创建一个跟document绑定的空的Range实例
-     * - ***startContainer*** 开始边界的容器节点,可以是elementNode或者是textNode
-     * - ***startOffset*** 容器节点中的偏移量，如果是elementNode就是childNodes中的第几个，如果是textNode就是nodeValue的第几个字符
-     * - ***endContainer*** 结束边界的容器节点,可以是elementNode或者是textNode
-     * - ***endOffset*** 容器节点中的偏移量，如果是elementNode就是childNodes中的第几个，如果是textNode就是nodeValue的第几个字符
-     * - ***document*** 跟range关联的document对象
-     * - ***collapsed*** 是否是闭合状态
-     */
-    var Range = dom.Range = function (document,body) {
-        var me = this;
-        me.startContainer =
-            me.startOffset =
-                me.endContainer =
-                    me.endOffset = null;
-        me.document = document;
-        me.collapsed = true;
-        me.body = body;
-    };
-
-    /**
-     * 删除fillData
-     * @param doc
-     * @param excludeNode
-     */
-    function removeFillData(doc, excludeNode) {
-        try {
-            if (fillData && domUtils.inDoc(fillData, doc)) {
-                if (!fillData.nodeValue.replace(fillCharReg, '').length) {
-                    var tmpNode = fillData.parentNode;
-                    domUtils.remove(fillData);
-                    while (tmpNode && domUtils.isEmptyInlineElement(tmpNode) &&
-                        //safari的contains有bug
-                        (browser.safari ? !(domUtils.getPosition(tmpNode,excludeNode) & domUtils.POSITION_CONTAINS) : !tmpNode.contains(excludeNode))
-                        ) {
-                        fillData = tmpNode.parentNode;
-                        domUtils.remove(tmpNode);
-                        tmpNode = fillData;
-                    }
-                } else {
-                    fillData.nodeValue = fillData.nodeValue.replace(fillCharReg, '');
+        function setEndPoint(toStart, node, offset, range) {
+            //如果node是自闭合标签要处理
+            if (node.nodeType == 1 && (dtd.$empty[node.tagName] || dtd.$nonChild[node.tagName])) {
+                offset = domUtils.getNodeIndex(node) + (toStart ? 0 : 1);
+                node = node.parentNode;
+            }
+            if (toStart) {
+                range.startContainer = node;
+                range.startOffset = offset;
+                if (!range.endContainer) {
+                    range.collapse(true);
+                }
+            } else {
+                range.endContainer = node;
+                range.endOffset = offset;
+                if (!range.startContainer) {
+                    range.collapse(false);
                 }
             }
-        } catch (e) {
+            updateCollapse(range);
+            return range;
         }
-    }
 
-    /**
-     *
-     * @param node
-     * @param dir
-     */
-    function mergeSibling(node, dir) {
-        var tmpNode;
-        node = node[dir];
-        while (node && domUtils.isFillChar(node)) {
-            tmpNode = node[dir];
-            domUtils.remove(node);
-            node = tmpNode;
-        }
-    }
+        /**
+         * @name Range
+         * @grammar new UM.dom.Range(document)  => Range 实例
+         * @desc 创建一个跟document绑定的空的Range实例
+         * - ***startContainer*** 开始边界的容器节点,可以是elementNode或者是textNode
+         * - ***startOffset*** 容器节点中的偏移量，如果是elementNode就是childNodes中的第几个，如果是textNode就是nodeValue的第几个字符
+         * - ***endContainer*** 结束边界的容器节点,可以是elementNode或者是textNode
+         * - ***endOffset*** 容器节点中的偏移量，如果是elementNode就是childNodes中的第几个，如果是textNode就是nodeValue的第几个字符
+         * - ***document*** 跟range关联的document对象
+         * - ***collapsed*** 是否是闭合状态
+         */
+        var Range = dom.Range = function (document, body) {
+            var me = this;
+            me.startContainer =
+                me.startOffset =
+                    me.endContainer =
+                        me.endOffset = null;
+            me.document = document;
+            me.collapsed = true;
+            me.body = body;
+        };
 
-    function execContentsAction(range, action) {
-        //调整边界
-        //range.includeBookmark();
-        var start = range.startContainer,
-            end = range.endContainer,
-            startOffset = range.startOffset,
-            endOffset = range.endOffset,
-            doc = range.document,
-            frag = doc.createDocumentFragment(),
-            tmpStart, tmpEnd;
-        if (start.nodeType == 1) {
-            start = start.childNodes[startOffset] || (tmpStart = start.appendChild(doc.createTextNode('')));
-        }
-        if (end.nodeType == 1) {
-            end = end.childNodes[endOffset] || (tmpEnd = end.appendChild(doc.createTextNode('')));
-        }
-        if (start === end && start.nodeType == 3) {
-            frag.appendChild(doc.createTextNode(start.substringData(startOffset, endOffset - startOffset)));
-            //is not clone
-            if (action) {
-                start.deleteData(startOffset, endOffset - startOffset);
-                range.collapse(true);
-            }
-            return frag;
-        }
-        var current, currentLevel, clone = frag,
-            startParents = domUtils.findParents(start, true), endParents = domUtils.findParents(end, true);
-        for (var i = 0; startParents[i] == endParents[i];) {
-            i++;
-        }
-        for (var j = i, si; si = startParents[j]; j++) {
-            current = si.nextSibling;
-            if (si == start) {
-                if (!tmpStart) {
-                    if (range.startContainer.nodeType == 3) {
-                        clone.appendChild(doc.createTextNode(start.nodeValue.slice(startOffset)));
-                        //is not clone
-                        if (action) {
-                            start.deleteData(startOffset, start.nodeValue.length - startOffset);
+        /**
+         * 删除fillData
+         * @param doc
+         * @param excludeNode
+         */
+        function removeFillData(doc, excludeNode) {
+            try {
+                if (fillData && domUtils.inDoc(fillData, doc)) {
+                    if (!fillData.nodeValue.replace(fillCharReg, '').length) {
+                        var tmpNode = fillData.parentNode;
+                        domUtils.remove(fillData);
+                        while (tmpNode && domUtils.isEmptyInlineElement(tmpNode) &&
+                            //safari的contains有bug
+                            (browser.safari ? !(domUtils.getPosition(tmpNode, excludeNode) & domUtils.POSITION_CONTAINS) : !tmpNode.contains(excludeNode))
+                            ) {
+                            fillData = tmpNode.parentNode;
+                            domUtils.remove(tmpNode);
+                            tmpNode = fillData;
                         }
                     } else {
-                        clone.appendChild(!action ? start.cloneNode(true) : start);
+                        fillData.nodeValue = fillData.nodeValue.replace(fillCharReg, '');
                     }
                 }
-            } else {
-                currentLevel = si.cloneNode(false);
-                clone.appendChild(currentLevel);
+            } catch (e) {
             }
-            while (current) {
-                if (current === end || current === endParents[j]) {
-                    break;
+        }
+
+        /**
+         *
+         * @param node
+         * @param dir
+         */
+        function mergeSibling(node, dir) {
+            var tmpNode;
+            node = node[dir];
+            while (node && domUtils.isFillChar(node)) {
+                tmpNode = node[dir];
+                domUtils.remove(node);
+                node = tmpNode;
+            }
+        }
+
+        function execContentsAction(range, action) {
+            //调整边界
+            //range.includeBookmark();
+            var start = range.startContainer,
+                end = range.endContainer,
+                startOffset = range.startOffset,
+                endOffset = range.endOffset,
+                doc = range.document,
+                frag = doc.createDocumentFragment(),
+                tmpStart, tmpEnd;
+            if (start.nodeType == 1) {
+                start = start.childNodes[startOffset] || (tmpStart = start.appendChild(doc.createTextNode('')));
+            }
+            if (end.nodeType == 1) {
+                end = end.childNodes[endOffset] || (tmpEnd = end.appendChild(doc.createTextNode('')));
+            }
+            if (start === end && start.nodeType == 3) {
+                frag.appendChild(doc.createTextNode(start.substringData(startOffset, endOffset - startOffset)));
+                //is not clone
+                if (action) {
+                    start.deleteData(startOffset, endOffset - startOffset);
+                    range.collapse(true);
                 }
-                si = current.nextSibling;
-                clone.appendChild(!action ? current.cloneNode(true) : current);
-                current = si;
+                return frag;
             }
-            clone = currentLevel;
-        }
-        clone = frag;
-        if (!startParents[i]) {
-            clone.appendChild(startParents[i - 1].cloneNode(false));
-            clone = clone.firstChild;
-        }
-        for (var j = i, ei; ei = endParents[j]; j++) {
-            current = ei.previousSibling;
-            if (ei == end) {
-                if (!tmpEnd && range.endContainer.nodeType == 3) {
-                    clone.appendChild(doc.createTextNode(end.substringData(0, endOffset)));
-                    //is not clone
-                    if (action) {
-                        end.deleteData(0, endOffset);
+            var current, currentLevel, clone = frag,
+                startParents = domUtils.findParents(start, true), endParents = domUtils.findParents(end, true);
+            for (var i = 0; startParents[i] == endParents[i];) {
+                i++;
+            }
+            for (var j = i, si; si = startParents[j]; j++) {
+                current = si.nextSibling;
+                if (si == start) {
+                    if (!tmpStart) {
+                        if (range.startContainer.nodeType == 3) {
+                            clone.appendChild(doc.createTextNode(start.nodeValue.slice(startOffset)));
+                            //is not clone
+                            if (action) {
+                                start.deleteData(startOffset, start.nodeValue.length - startOffset);
+                            }
+                        } else {
+                            clone.appendChild(!action ? start.cloneNode(true) : start);
+                        }
                     }
+                } else {
+                    currentLevel = si.cloneNode(false);
+                    clone.appendChild(currentLevel);
                 }
-            } else {
-                currentLevel = ei.cloneNode(false);
-                clone.appendChild(currentLevel);
-            }
-            //如果两端同级，右边第一次已经被开始做了
-            if (j != i || !startParents[i]) {
                 while (current) {
-                    if (current === start) {
+                    if (current === end || current === endParents[j]) {
                         break;
                     }
-                    ei = current.previousSibling;
-                    clone.insertBefore(!action ? current.cloneNode(true) : current, clone.firstChild);
-                    current = ei;
+                    si = current.nextSibling;
+                    clone.appendChild(!action ? current.cloneNode(true) : current);
+                    current = si;
                 }
+                clone = currentLevel;
             }
-            clone = currentLevel;
-        }
-        if (action) {
-            range.setStartBefore(!endParents[i] ? endParents[i - 1] : !startParents[i] ? startParents[i - 1] : endParents[i]).collapse(true);
-        }
-        tmpStart && domUtils.remove(tmpStart);
-        tmpEnd && domUtils.remove(tmpEnd);
-        return frag;
-    }
-    Range.prototype = {
-        /**
-         * @name deleteContents
-         * @grammar range.deleteContents()  => Range
-         * @desc 删除当前选区范围中的所有内容并返回range实例，这时的range已经变成了闭合状态
-         * @example
-         * DOM Element :
-         * <b>x<i>x[x<i>xx]x</b>
-         * //执行方法后
-         * <b>x<i>x<i>|x</b>
-         * 注意range改变了
-         * range.startContainer => b
-         * range.startOffset  => 2
-         * range.endContainer => b
-         * range.endOffset => 2
-         * range.collapsed => true
-         */
-        deleteContents:function () {
-            var txt;
-            if (!this.collapsed) {
-                execContentsAction(this, 1);
+            clone = frag;
+            if (!startParents[i]) {
+                clone.appendChild(startParents[i - 1].cloneNode(false));
+                clone = clone.firstChild;
             }
-            if (browser.webkit) {
-                txt = this.startContainer;
-                if (txt.nodeType == 3 && !txt.nodeValue.length) {
-                    this.setStartBefore(txt).collapse(true);
-                    domUtils.remove(txt);
+            for (var j = i, ei; ei = endParents[j]; j++) {
+                current = ei.previousSibling;
+                if (ei == end) {
+                    if (!tmpEnd && range.endContainer.nodeType == 3) {
+                        clone.appendChild(doc.createTextNode(end.substringData(0, endOffset)));
+                        //is not clone
+                        if (action) {
+                            end.deleteData(0, endOffset);
+                        }
+                    }
+                } else {
+                    currentLevel = ei.cloneNode(false);
+                    clone.appendChild(currentLevel);
                 }
+                //如果两端同级，右边第一次已经被开始做了
+                if (j != i || !startParents[i]) {
+                    while (current) {
+                        if (current === start) {
+                            break;
+                        }
+                        ei = current.previousSibling;
+                        clone.insertBefore(!action ? current.cloneNode(true) : current, clone.firstChild);
+                        current = ei;
+                    }
+                }
+                clone = currentLevel;
             }
-            return this;
-        },
-        inFillChar : function(){
-            var start = this.startContainer;
-            if(this.collapsed && start.nodeType == 3
-                && start.nodeValue.replace(new RegExp('^' + domUtils.fillChar),'').length + 1 == start.nodeValue.length
-                ){
-                return true;
+            if (action) {
+                range.setStartBefore(!endParents[i] ? endParents[i - 1] : !startParents[i] ? startParents[i - 1] : endParents[i]).collapse(true);
             }
-            return false;
-        },
-        /**
-         * @name  setStart
-         * @grammar range.setStart(node,offset)  => Range
-         * @desc    设置range的开始位置位于node节点内，偏移量为offset
-         * 如果node是elementNode那offset指的是childNodes中的第几个，如果是textNode那offset指的是nodeValue的第几个字符
-         */
-        setStart:function (node, offset) {
-            return setEndPoint(true, node, offset, this);
-        },
-        /**
-         * 设置range的结束位置位于node节点，偏移量为offset
-         * 如果node是elementNode那offset指的是childNodes中的第几个，如果是textNode那offset指的是nodeValue的第几个字符
-         * @name  setEnd
-         * @grammar range.setEnd(node,offset)  => Range
-         */
-        setEnd:function (node, offset) {
-            return setEndPoint(false, node, offset, this);
-        },
-        /**
-         * 将Range开始位置设置到node节点之后
-         * @name  setStartAfter
-         * @grammar range.setStartAfter(node)  => Range
-         * @example
-         * <b>xx<i>x|x</i>x</b>
-         * 执行setStartAfter(i)后
-         * range.startContainer =>b
-         * range.startOffset =>2
-         */
-        setStartAfter:function (node) {
-            return this.setStart(node.parentNode, domUtils.getNodeIndex(node) + 1);
-        },
-        /**
-         * 将Range开始位置设置到node节点之前
-         * @name  setStartBefore
-         * @grammar range.setStartBefore(node)  => Range
-         * @example
-         * <b>xx<i>x|x</i>x</b>
-         * 执行setStartBefore(i)后
-         * range.startContainer =>b
-         * range.startOffset =>1
-         */
-        setStartBefore:function (node) {
-            return this.setStart(node.parentNode, domUtils.getNodeIndex(node));
-        },
-        /**
-         * 将Range结束位置设置到node节点之后
-         * @name  setEndAfter
-         * @grammar range.setEndAfter(node)  => Range
-         * @example
-         * <b>xx<i>x|x</i>x</b>
-         * setEndAfter(i)后
-         * range.endContainer =>b
-         * range.endtOffset =>2
-         */
-        setEndAfter:function (node) {
-            return this.setEnd(node.parentNode, domUtils.getNodeIndex(node) + 1);
-        },
-        /**
-         * 将Range结束位置设置到node节点之前
-         * @name  setEndBefore
-         * @grammar range.setEndBefore(node)  => Range
-         * @example
-         * <b>xx<i>x|x</i>x</b>
-         * 执行setEndBefore(i)后
-         * range.endContainer =>b
-         * range.endtOffset =>1
-         */
-        setEndBefore:function (node) {
-            return this.setEnd(node.parentNode, domUtils.getNodeIndex(node));
-        },
-        /**
-         * 将Range开始位置设置到node节点内的开始位置
-         * @name  setStartAtFirst
-         * @grammar range.setStartAtFirst(node)  => Range
-         */
-        setStartAtFirst:function (node) {
-            return this.setStart(node, 0);
-        },
-        /**
-         * 将Range开始位置设置到node节点内的结束位置
-         * @name  setStartAtLast
-         * @grammar range.setStartAtLast(node)  => Range
-         */
-        setStartAtLast:function (node) {
-            return this.setStart(node, node.nodeType == 3 ? node.nodeValue.length : node.childNodes.length);
-        },
-        /**
-         * 将Range结束位置设置到node节点内的开始位置
-         * @name  setEndAtFirst
-         * @grammar range.setEndAtFirst(node)  => Range
-         */
-        setEndAtFirst:function (node) {
-            return this.setEnd(node, 0);
-        },
-        /**
-         * 将Range结束位置设置到node节点内的结束位置
-         * @name  setEndAtLast
-         * @grammar range.setEndAtLast(node)  => Range
-         */
-        setEndAtLast:function (node) {
-            return this.setEnd(node, node.nodeType == 3 ? node.nodeValue.length : node.childNodes.length);
-        },
+            tmpStart && domUtils.remove(tmpStart);
+            tmpEnd && domUtils.remove(tmpEnd);
+            return frag;
+        }
 
-        /**
-         * 选中完整的指定节点,并返回包含该节点的range
-         * @name  selectNode
-         * @grammar range.selectNode(node)  => Range
-         */
-        selectNode:function (node) {
-            return this.setStartBefore(node).setEndAfter(node);
-        },
-        /**
-         * 选中node内部的所有节点，并返回对应的range
-         * @name selectNodeContents
-         * @grammar range.selectNodeContents(node)  => Range
-         * @example
-         * <b>xx[x<i>xxx</i>]xxx</b>
-         * 执行后
-         * <b>[xxx<i>xxx</i>xxx]</b>
-         * range.startContainer =>b
-         * range.startOffset =>0
-         * range.endContainer =>b
-         * range.endOffset =>3
-         */
-        selectNodeContents:function (node) {
-            return this.setStart(node, 0).setEndAtLast(node);
-        },
+        Range.prototype = {
+            /**
+             * @name deleteContents
+             * @grammar range.deleteContents()  => Range
+             * @desc 删除当前选区范围中的所有内容并返回range实例，这时的range已经变成了闭合状态
+             * @example
+             * DOM Element :
+             * <b>x<i>x[x<i>xx]x</b>
+             * //执行方法后
+             * <b>x<i>x<i>|x</b>
+             * 注意range改变了
+             * range.startContainer => b
+             * range.startOffset  => 2
+             * range.endContainer => b
+             * range.endOffset => 2
+             * range.collapsed => true
+             */
+            deleteContents: function () {
+                var txt;
+                if (!this.collapsed) {
+                    execContentsAction(this, 1);
+                }
+                if (browser.webkit) {
+                    txt = this.startContainer;
+                    if (txt.nodeType == 3 && !txt.nodeValue.length) {
+                        this.setStartBefore(txt).collapse(true);
+                        domUtils.remove(txt);
+                    }
+                }
+                return this;
+            },
+            inFillChar: function () {
+                var start = this.startContainer;
+                if (this.collapsed && start.nodeType == 3
+                    && start.nodeValue.replace(new RegExp('^' + domUtils.fillChar), '').length + 1 == start.nodeValue.length
+                ) {
+                    return true;
+                }
+                return false;
+            },
+            /**
+             * @name  setStart
+             * @grammar range.setStart(node,offset)  => Range
+             * @desc    设置range的开始位置位于node节点内，偏移量为offset
+             * 如果node是elementNode那offset指的是childNodes中的第几个，如果是textNode那offset指的是nodeValue的第几个字符
+             */
+            setStart: function (node, offset) {
+                return setEndPoint(true, node, offset, this);
+            },
+            /**
+             * 设置range的结束位置位于node节点，偏移量为offset
+             * 如果node是elementNode那offset指的是childNodes中的第几个，如果是textNode那offset指的是nodeValue的第几个字符
+             * @name  setEnd
+             * @grammar range.setEnd(node,offset)  => Range
+             */
+            setEnd: function (node, offset) {
+                return setEndPoint(false, node, offset, this);
+            },
+            /**
+             * 将Range开始位置设置到node节点之后
+             * @name  setStartAfter
+             * @grammar range.setStartAfter(node)  => Range
+             * @example
+             * <b>xx<i>x|x</i>x</b>
+             * 执行setStartAfter(i)后
+             * range.startContainer =>b
+             * range.startOffset =>2
+             */
+            setStartAfter: function (node) {
+                return this.setStart(node.parentNode, domUtils.getNodeIndex(node) + 1);
+            },
+            /**
+             * 将Range开始位置设置到node节点之前
+             * @name  setStartBefore
+             * @grammar range.setStartBefore(node)  => Range
+             * @example
+             * <b>xx<i>x|x</i>x</b>
+             * 执行setStartBefore(i)后
+             * range.startContainer =>b
+             * range.startOffset =>1
+             */
+            setStartBefore: function (node) {
+                return this.setStart(node.parentNode, domUtils.getNodeIndex(node));
+            },
+            /**
+             * 将Range结束位置设置到node节点之后
+             * @name  setEndAfter
+             * @grammar range.setEndAfter(node)  => Range
+             * @example
+             * <b>xx<i>x|x</i>x</b>
+             * setEndAfter(i)后
+             * range.endContainer =>b
+             * range.endtOffset =>2
+             */
+            setEndAfter: function (node) {
+                return this.setEnd(node.parentNode, domUtils.getNodeIndex(node) + 1);
+            },
+            /**
+             * 将Range结束位置设置到node节点之前
+             * @name  setEndBefore
+             * @grammar range.setEndBefore(node)  => Range
+             * @example
+             * <b>xx<i>x|x</i>x</b>
+             * 执行setEndBefore(i)后
+             * range.endContainer =>b
+             * range.endtOffset =>1
+             */
+            setEndBefore: function (node) {
+                return this.setEnd(node.parentNode, domUtils.getNodeIndex(node));
+            },
+            /**
+             * 将Range开始位置设置到node节点内的开始位置
+             * @name  setStartAtFirst
+             * @grammar range.setStartAtFirst(node)  => Range
+             */
+            setStartAtFirst: function (node) {
+                return this.setStart(node, 0);
+            },
+            /**
+             * 将Range开始位置设置到node节点内的结束位置
+             * @name  setStartAtLast
+             * @grammar range.setStartAtLast(node)  => Range
+             */
+            setStartAtLast: function (node) {
+                return this.setStart(node, node.nodeType == 3 ? node.nodeValue.length : node.childNodes.length);
+            },
+            /**
+             * 将Range结束位置设置到node节点内的开始位置
+             * @name  setEndAtFirst
+             * @grammar range.setEndAtFirst(node)  => Range
+             */
+            setEndAtFirst: function (node) {
+                return this.setEnd(node, 0);
+            },
+            /**
+             * 将Range结束位置设置到node节点内的结束位置
+             * @name  setEndAtLast
+             * @grammar range.setEndAtLast(node)  => Range
+             */
+            setEndAtLast: function (node) {
+                return this.setEnd(node, node.nodeType == 3 ? node.nodeValue.length : node.childNodes.length);
+            },
 
-        /**
-         * 克隆一个新的range对象
-         * @name  cloneRange
-         * @grammar range.cloneRange() => Range
-         */
-        cloneRange:function () {
-            var me = this;
-            return new Range(me.document).setStart(me.startContainer, me.startOffset).setEnd(me.endContainer, me.endOffset);
+            /**
+             * 选中完整的指定节点,并返回包含该节点的range
+             * @name  selectNode
+             * @grammar range.selectNode(node)  => Range
+             */
+            selectNode: function (node) {
+                return this.setStartBefore(node).setEndAfter(node);
+            },
+            /**
+             * 选中node内部的所有节点，并返回对应的range
+             * @name selectNodeContents
+             * @grammar range.selectNodeContents(node)  => Range
+             * @example
+             * <b>xx[x<i>xxx</i>]xxx</b>
+             * 执行后
+             * <b>[xxx<i>xxx</i>xxx]</b>
+             * range.startContainer =>b
+             * range.startOffset =>0
+             * range.endContainer =>b
+             * range.endOffset =>3
+             */
+            selectNodeContents: function (node) {
+                return this.setStart(node, 0).setEndAtLast(node);
+            },
+            /**
+             * 克隆一个新的range对象
+             * @name  cloneRange
+             * @grammar range.cloneRange() => Range
+             */
+            cloneRange: function () {
+                var me = this;
+                return new Range(me.document).setStart(me.startContainer, me.startOffset).setEnd(me.endContainer, me.endOffset);
+            },
+            /**
+             * 让选区闭合到尾部，若toStart为真，则闭合到头部
+             * @name  collapse
+             * @grammar range.collapse() => Range
+             * @grammar range.collapse(true) => Range   //闭合选区到头部
+             */
+            collapse: function (toStart) {
+                var me = this;
+                if (toStart) {
+                    me.endContainer = me.startContainer;
+                    me.endOffset = me.startOffset;
+                } else {
+                    me.startContainer = me.endContainer;
+                    me.startOffset = me.endOffset;
+                }
+                me.collapsed = true;
+                return me;
+            },
+            /**
+             * 调整range的边界，使其"收缩"到最小的位置
+             * @name  shrinkBoundary
+             * @grammar range.shrinkBoundary()  => Range  //range开始位置和结束位置都调整，参见<code><a href="#adjustmentboundary">adjustmentBoundary</a></code>
+             * @grammar range.shrinkBoundary(true)  => Range  //仅调整开始位置，忽略结束位置
+             * @example
+             * <b>xx[</b>xxxxx] ==> <b>xx</b>[xxxxx]
+             * <b>x[xx</b><i>]xxx</i> ==> <b>x[xx]</b><i>xxx</i>
+             * [<b><i>xxxx</i>xxxxxxx</b>] ==> <b><i>[xxxx</i>xxxxxxx]</b>
+             */
+            shrinkBoundary: function (ignoreEnd) {
+                var me = this, child,
+                    collapsed = me.collapsed;
 
-        },
+                function check(node) {
+                    return node.nodeType == 1 && !domUtils.isBookmarkNode(node) && !dtd.$empty[node.tagName] && !dtd.$nonChild[node.tagName]
+                }
 
-        /**
-         * 让选区闭合到尾部，若toStart为真，则闭合到头部
-         * @name  collapse
-         * @grammar range.collapse() => Range
-         * @grammar range.collapse(true) => Range   //闭合选区到头部
-         */
-        collapse:function (toStart) {
-            var me = this;
-            if (toStart) {
-                me.endContainer = me.startContainer;
-                me.endOffset = me.startOffset;
-            } else {
-                me.startContainer = me.endContainer;
-                me.startOffset = me.endOffset;
-            }
-            me.collapsed = true;
-            return me;
-        },
-
-        /**
-         * 调整range的边界，使其"收缩"到最小的位置
-         * @name  shrinkBoundary
-         * @grammar range.shrinkBoundary()  => Range  //range开始位置和结束位置都调整，参见<code><a href="#adjustmentboundary">adjustmentBoundary</a></code>
-         * @grammar range.shrinkBoundary(true)  => Range  //仅调整开始位置，忽略结束位置
-         * @example
-         * <b>xx[</b>xxxxx] ==> <b>xx</b>[xxxxx]
-         * <b>x[xx</b><i>]xxx</i> ==> <b>x[xx]</b><i>xxx</i>
-         * [<b><i>xxxx</i>xxxxxxx</b>] ==> <b><i>[xxxx</i>xxxxxxx]</b>
-         */
-        shrinkBoundary:function (ignoreEnd) {
-            var me = this, child,
-                collapsed = me.collapsed;
-            function check(node){
-                return node.nodeType == 1 && !domUtils.isBookmarkNode(node) && !dtd.$empty[node.tagName] && !dtd.$nonChild[node.tagName]
-            }
-            while (me.startContainer.nodeType == 1 //是element
+                while (me.startContainer.nodeType == 1 //是element
                 && (child = me.startContainer.childNodes[me.startOffset]) //子节点也是element
                 && check(child)) {
-                me.setStart(child, 0);
-            }
-            if (collapsed) {
-                return me.collapse(true);
-            }
-            if (!ignoreEnd) {
-                while (me.endContainer.nodeType == 1//是element
+                    me.setStart(child, 0);
+                }
+                if (collapsed) {
+                    return me.collapse(true);
+                }
+                if (!ignoreEnd) {
+                    while (me.endContainer.nodeType == 1//是element
                     && me.endOffset > 0 //如果是空元素就退出 endOffset=0那么endOffst-1为负值，childNodes[endOffset]报错
                     && (child = me.endContainer.childNodes[me.endOffset - 1]) //子节点也是element
                     && check(child)) {
-                    me.setEnd(child, child.childNodes.length);
-                }
-            }
-            return me;
-        },
-
-        /**
-         * 调整边界容器，如果是textNode,就调整到elementNode上
-         * @name trimBoundary
-         * @grammar range.trimBoundary([ignoreEnd])  => Range //true忽略结束边界
-         * @example
-         * DOM Element :
-         * <b>|xxx</b>
-         * startContainer = xxx; startOffset = 0
-         * //执行后本方法后
-         * startContainer = <b>;  startOffset = 0
-         * @example
-         * Dom Element :
-         * <b>xx|x</b>
-         * startContainer = xxx;  startOffset = 2
-         * //执行本方法后，xxx被实实在在地切分成两个TextNode
-         * startContainer = <b>; startOffset = 1
-         */
-        trimBoundary:function (ignoreEnd) {
-            this.txtToElmBoundary();
-            var start = this.startContainer,
-                offset = this.startOffset,
-                collapsed = this.collapsed,
-                end = this.endContainer;
-            if (start.nodeType == 3) {
-                if (offset == 0) {
-                    this.setStartBefore(start);
-                } else {
-                    if (offset >= start.nodeValue.length) {
-                        this.setStartAfter(start);
-                    } else {
-                        var textNode = domUtils.split(start, offset);
-                        //跟新结束边界
-                        if (start === end) {
-                            this.setEnd(textNode, this.endOffset - offset);
-                        } else if (start.parentNode === end) {
-                            this.endOffset += 1;
-                        }
-                        this.setStartBefore(textNode);
+                        me.setEnd(child, child.childNodes.length);
                     }
                 }
-                if (collapsed) {
-                    return this.collapse(true);
-                }
-            }
-            if (!ignoreEnd) {
-                offset = this.endOffset;
-                end = this.endContainer;
-                if (end.nodeType == 3) {
+                return me;
+            },
+            /**
+             * 调整边界容器，如果是textNode,就调整到elementNode上
+             * @name trimBoundary
+             * @grammar range.trimBoundary([ignoreEnd])  => Range //true忽略结束边界
+             * @example
+             * DOM Element :
+             * <b>|xxx</b>
+             * startContainer = xxx; startOffset = 0
+             * //执行后本方法后
+             * startContainer = <b>;  startOffset = 0
+             * @example
+             * Dom Element :
+             * <b>xx|x</b>
+             * startContainer = xxx;  startOffset = 2
+             * //执行本方法后，xxx被实实在在地切分成两个TextNode
+             * startContainer = <b>; startOffset = 1
+             */
+            trimBoundary: function (ignoreEnd) {
+                this.txtToElmBoundary();
+                var start = this.startContainer,
+                    offset = this.startOffset,
+                    collapsed = this.collapsed,
+                    end = this.endContainer;
+                if (start.nodeType == 3) {
                     if (offset == 0) {
-                        this.setEndBefore(end);
+                        this.setStartBefore(start);
                     } else {
-                        offset < end.nodeValue.length && domUtils.split(end, offset);
-                        this.setEndAfter(end);
+                        if (offset >= start.nodeValue.length) {
+                            this.setStartAfter(start);
+                        } else {
+                            var textNode = domUtils.split(start, offset);
+                            //跟新结束边界
+                            if (start === end) {
+                                this.setEnd(textNode, this.endOffset - offset);
+                            } else if (start.parentNode === end) {
+                                this.endOffset += 1;
+                            }
+                            this.setStartBefore(textNode);
+                        }
+                    }
+                    if (collapsed) {
+                        return this.collapse(true);
                     }
                 }
-            }
-            return this;
-        },
-        /**
-         * 如果选区在文本的边界上，就扩展选区到文本的父节点上
-         * @name  txtToElmBoundary
-         * @example
-         * Dom Element :
-         * <b> |xxx</b>
-         * startContainer = xxx;  startOffset = 0
-         * //本方法执行后
-         * startContainer = <b>; startOffset = 0
-         * @example
-         * Dom Element :
-         * <b> xxx| </b>
-         * startContainer = xxx; startOffset = 3
-         * //本方法执行后
-         * startContainer = <b>; startOffset = 1
-         */
-        txtToElmBoundary:function (ignoreCollapsed) {
-            function adjust(r, c) {
-                var container = r[c + 'Container'],
-                    offset = r[c + 'Offset'];
-                if (container.nodeType == 3) {
-                    if (!offset) {
-                        r['set' + c.replace(/(\w)/, function (a) {
-                            return a.toUpperCase();
-                        }) + 'Before'](container);
-                    } else if (offset >= container.nodeValue.length) {
-                        r['set' + c.replace(/(\w)/, function (a) {
-                            return a.toUpperCase();
-                        }) + 'After' ](container);
+                if (!ignoreEnd) {
+                    offset = this.endOffset;
+                    end = this.endContainer;
+                    if (end.nodeType == 3) {
+                        if (offset == 0) {
+                            this.setEndBefore(end);
+                        } else {
+                            offset < end.nodeValue.length && domUtils.split(end, offset);
+                            this.setEndAfter(end);
+                        }
                     }
                 }
-            }
-
-            if (ignoreCollapsed || !this.collapsed) {
-                adjust(this, 'start');
-                adjust(this, 'end');
-            }
-            return this;
-        },
-
-        /**
-         * 在当前选区的开始位置前插入一个节点或者fragment，range的开始位置会在插入节点的前边
-         * @name  insertNode
-         * @grammar range.insertNode(node)  => Range //node可以是textNode,elementNode,fragment
-         * @example
-         * Range :
-         * xxx[x<p>xxxx</p>xxxx]x<p>sdfsdf</p>
-         * 待插入Node :
-         * <p>ssss</p>
-         * 执行本方法后的Range :
-         * xxx[<p>ssss</p>x<p>xxxx</p>xxxx]x<p>sdfsdf</p>
-         */
-        insertNode:function (node) {
-            var first = node, length = 1;
-            if (node.nodeType == 11) {
-                first = node.firstChild;
-                length = node.childNodes.length;
-            }
-            this.trimBoundary(true);
-            var start = this.startContainer,
-                offset = this.startOffset;
-            var nextNode = start.childNodes[ offset ];
-            if (nextNode) {
-                start.insertBefore(node, nextNode);
-            } else {
-                start.appendChild(node);
-            }
-            if (first.parentNode === this.endContainer) {
-                this.endOffset = this.endOffset + length;
-            }
-            return this.setStartBefore(first);
-        },
-        /**
-         * 设置光标闭合位置,toEnd设置为true时光标将闭合到选区的结尾
-         * @name  setCursor
-         * @grammar range.setCursor([toEnd])  =>  Range   //toEnd为true时，光标闭合到选区的末尾
-         */
-        setCursor:function (toEnd, noFillData) {
-            return this.collapse(!toEnd).select(noFillData);
-        },
-        /**
-         * 创建当前range的一个书签，记录下当前range的位置，方便当dom树改变时，还能找回原来的选区位置
-         * @name createBookmark
-         * @grammar range.createBookmark([serialize])  => Object  //{start:开始标记,end:结束标记,id:serialize} serialize为真时，开始结束标记是插入节点的id，否则是插入节点的引用
-         */
-        createBookmark:function (serialize, same) {
-            var endNode,
-                startNode = this.document.createElement('span');
-            startNode.style.cssText = 'display:none;line-height:0px;';
-            startNode.appendChild(this.document.createTextNode('\u200D'));
-            startNode.id = '_baidu_bookmark_start_' + (same ? '' : guid++);
-
-            if (!this.collapsed) {
-                endNode = startNode.cloneNode(true);
-                endNode.id = '_baidu_bookmark_end_' + (same ? '' : guid++);
-            }
-            this.insertNode(startNode);
-            if (endNode) {
-                this.collapse().insertNode(endNode).setEndBefore(endNode);
-            }
-            this.setStartAfter(startNode);
-            return {
-                start:serialize ? startNode.id : startNode,
-                end:endNode ? serialize ? endNode.id : endNode : null,
-                id:serialize
-            }
-        },
-        /**
-         *  移动边界到书签位置，并删除插入的书签节点
-         *  @name  moveToBookmark
-         *  @grammar range.moveToBookmark(bookmark)  => Range //让当前的range选到给定bookmark的位置,bookmark对象是由range.createBookmark创建的
-         */
-        moveToBookmark:function (bookmark) {
-            var start = bookmark.id ? this.document.getElementById(bookmark.start) : bookmark.start,
-                end = bookmark.end && bookmark.id ? this.document.getElementById(bookmark.end) : bookmark.end;
-            this.setStartBefore(start);
-            domUtils.remove(start);
-            if (end) {
-                this.setEndBefore(end);
-                domUtils.remove(end);
-            } else {
-                this.collapse(true);
-            }
-            return this;
-        },
-
-        /**
-         * 调整Range的边界，使其"缩小"到最合适的位置
-         * @name adjustmentBoundary
-         * @grammar range.adjustmentBoundary() => Range   //参见<code><a href="#shrinkboundary">shrinkBoundary</a></code>
-         * @example
-         * <b>xx[</b>xxxxx] ==> <b>xx</b>[xxxxx]
-         * <b>x[xx</b><i>]xxx</i> ==> <b>x[xx</b>]<i>xxx</i>
-         */
-        adjustmentBoundary:function () {
-            if (!this.collapsed) {
-                while (!domUtils.isBody(this.startContainer) &&
-                    this.startOffset == this.startContainer[this.startContainer.nodeType == 3 ? 'nodeValue' : 'childNodes'].length &&
-                    this.startContainer[this.startContainer.nodeType == 3 ? 'nodeValue' : 'childNodes'].length
-                    ) {
-
-                    this.setStartAfter(this.startContainer);
+                return this;
+            },
+            /**
+             * 如果选区在文本的边界上，就扩展选区到文本的父节点上
+             * @name  txtToElmBoundary
+             * @example
+             * Dom Element :
+             * <b> |xxx</b>
+             * startContainer = xxx;  startOffset = 0
+             * //本方法执行后
+             * startContainer = <b>; startOffset = 0
+             * @example
+             * Dom Element :
+             * <b> xxx| </b>
+             * startContainer = xxx; startOffset = 3
+             * //本方法执行后
+             * startContainer = <b>; startOffset = 1
+             */
+            txtToElmBoundary: function (ignoreCollapsed) {
+                function adjust(r, c) {
+                    var container = r[c + 'Container'],
+                        offset = r[c + 'Offset'];
+                    if (container.nodeType == 3) {
+                        if (!offset) {
+                            r['set' + c.replace(/(\w)/, function (a) {
+                                return a.toUpperCase();
+                            }) + 'Before'](container);
+                        } else if (offset >= container.nodeValue.length) {
+                            r['set' + c.replace(/(\w)/, function (a) {
+                                return a.toUpperCase();
+                            }) + 'After'](container);
+                        }
+                    }
                 }
-                while (!domUtils.isBody(this.endContainer) && !this.endOffset &&
-                    this.endContainer[this.endContainer.nodeType == 3 ? 'nodeValue' : 'childNodes'].length
-                    ) {
-                    this.setEndBefore(this.endContainer);
-                }
-            }
-            return this;
-        },
 
+                if (ignoreCollapsed || !this.collapsed) {
+                    adjust(this, 'start');
+                    adjust(this, 'end');
+                }
+                return this;
+            },
+            /**
+             * 在当前选区的开始位置前插入一个节点或者fragment，range的开始位置会在插入节点的前边
+             * @name  insertNode
+             * @grammar range.insertNode(node)  => Range //node可以是textNode,elementNode,fragment
+             * @example
+             * Range :
+             * xxx[x<p>xxxx</p>xxxx]x<p>sdfsdf</p>
+             * 待插入Node :
+             * <p>ssss</p>
+             * 执行本方法后的Range :
+             * xxx[<p>ssss</p>x<p>xxxx</p>xxxx]x<p>sdfsdf</p>
+             */
+            insertNode: function (node) {
+                var first = node, length = 1;
+                if (node.nodeType == 11) {
+                    first = node.firstChild;
+                    length = node.childNodes.length;
+                }
+                this.trimBoundary(true);
+                var start = this.startContainer,
+                    offset = this.startOffset;
+                var nextNode = start.childNodes[offset];
+                if (nextNode) {
+                    start.insertBefore(node, nextNode);
+                } else {
+                    start.appendChild(node);
+                }
+                if (first.parentNode === this.endContainer) {
+                    this.endOffset = this.endOffset + length;
+                }
+                return this.setStartBefore(first);
+            },
+            /**
+             * 设置光标闭合位置,toEnd设置为true时光标将闭合到选区的结尾
+             * @name  setCursor
+             * @grammar range.setCursor([toEnd])  =>  Range   //toEnd为true时，光标闭合到选区的末尾
+             */
+            setCursor: function (toEnd, noFillData) {
+                return this.collapse(!toEnd).select(noFillData);
+            },
+            /**
+             * 创建当前range的一个书签，记录下当前range的位置，方便当dom树改变时，还能找回原来的选区位置
+             * @name createBookmark
+             * @grammar range.createBookmark([serialize])  => Object  //{start:开始标记,end:结束标记,id:serialize} serialize为真时，开始结束标记是插入节点的id，否则是插入节点的引用
+             */
+            createBookmark: function (serialize, same) {
+                var endNode,
+                    startNode = this.document.createElement('span');
+                startNode.style.cssText = 'display:none;line-height:0px;';
+                startNode.appendChild(this.document.createTextNode('\u200D'));
+                startNode.id = '_baidu_bookmark_start_' + (same ? '' : guid++);
+                if (!this.collapsed) {
+                    endNode = startNode.cloneNode(true);
+                    endNode.id = '_baidu_bookmark_end_' + (same ? '' : guid++);
+                }
+                this.insertNode(startNode);
+                if (endNode) {
+                    this.collapse().insertNode(endNode).setEndBefore(endNode);
+                }
+                this.setStartAfter(startNode);
+                return {
+                    start: serialize ? startNode.id : startNode,
+                    end: endNode ? serialize ? endNode.id : endNode : null,
+                    id: serialize
+                }
+            },
+            /**
+             *  移动边界到书签位置，并删除插入的书签节点
+             *  @name  moveToBookmark
+             *  @grammar range.moveToBookmark(bookmark)  => Range //让当前的range选到给定bookmark的位置,bookmark对象是由range.createBookmark创建的
+             */
+            moveToBookmark: function (bookmark) {
+                var start = bookmark.id ? this.document.getElementById(bookmark.start) : bookmark.start,
+                    end = bookmark.end && bookmark.id ? this.document.getElementById(bookmark.end) : bookmark.end;
+                this.setStartBefore(start);
+                domUtils.remove(start);
+                if (end) {
+                    this.setEndBefore(end);
+                    domUtils.remove(end);
+                } else {
+                    this.collapse(true);
+                }
+                return this;
+            },
+            /**
+             * 调整Range的边界，使其"缩小"到最合适的位置
+             * @name adjustmentBoundary
+             * @grammar range.adjustmentBoundary() => Range   //参见<code><a href="#shrinkboundary">shrinkBoundary</a></code>
+             * @example
+             * <b>xx[</b>xxxxx] ==> <b>xx</b>[xxxxx]
+             * <b>x[xx</b><i>]xxx</i> ==> <b>x[xx</b>]<i>xxx</i>
+             */
+            adjustmentBoundary: function () {
+                if (!this.collapsed) {
+                    while (!domUtils.isBody(this.startContainer) &&
+                        this.startOffset == this.startContainer[this.startContainer.nodeType == 3 ? 'nodeValue' : 'childNodes'].length &&
+                        this.startContainer[this.startContainer.nodeType == 3 ? 'nodeValue' : 'childNodes'].length
+                        ) {
+                        this.setStartAfter(this.startContainer);
+                    }
+                    while (!domUtils.isBody(this.endContainer) && !this.endOffset &&
+                        this.endContainer[this.endContainer.nodeType == 3 ? 'nodeValue' : 'childNodes'].length
+                        ) {
+                        this.setEndBefore(this.endContainer);
+                    }
+                }
+                return this;
+            },
         /**
          * 得到一个自闭合的节点,常用于获取自闭和的节点，例如图片节点
          * @name  getClosedNode

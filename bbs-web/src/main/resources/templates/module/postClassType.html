@@ -1,65 +1,60 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>帖子分类</title>
-<script type="text/javascript" th:src="@{/js/jquery-3.3.1.min.js}"></script>
-<link href="/css/css.css" type="text/css" rel="stylesheet" />
-<link href="/css/classPost.css" type="text/css" rel="stylesheet" />
-<link href="/css/main.css" type="text/css" rel="stylesheet" />
-<link rel="shortcut icon" href="/images/main/favicon.ico" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>帖子分类</title>
+    <script type="text/javascript" th:src="@{/js/jquery-3.3.1.min.js}"></script>
+    <link href="/css/css.css" type="text/css" rel="stylesheet"/>
+    <link href="/css/classPost.css" type="text/css" rel="stylesheet"/>
+    <link href="/css/main.css" type="text/css" rel="stylesheet"/>
+    <link rel="shortcut icon" href="/images/main/favicon.ico"/>
 </head>
 <body>
-	<!--main_top-->
-	<table width="99%" border="0" cellspacing="0" cellpadding="0"
-		id="searchmain">
-		<tr>
-			<td width="99%" align="left" valign="top">您的位置：贴类管理</td>
-		</tr>
-		<tr>
-			<td align="left" valign="top">
-				<table width="100%" border="0" cellspacing="0" cellpadding="0"
-					id="search">
-					<tr>
-						<td width="10%" align="center" valign="middle"
-							style="text-align: right; width: 150px;"><a href="/module/addnewPostClass"
-							class="add">新增贴类</a></td>
-					</tr>
-				</table>
-			</td>
-		</tr>
-		<tr>
-			<td align="left" valign="top">
-				<table width="100%" border="0" cellspacing="0" cellpadding="0" id="main-tab">
-					<tr>
-						<th align="center" valign="middle" class="borderright">编号</th>
-						<th align="center" valign="middle" class="borderright">帖类名称</th>
-						<th align="center" valign="middle" class="borderright">历史发帖量</th>
-						<th align="center" valign="middle" class="borderright">创建日期</th>
-						<th align="center" valign="middle">操作</th>
-
-					</tr>
-					<tr th:each="postclasslist,listStat : ${postclasslist}"
-						onMouseOut="this.style.backgroundColor='#ffffff'"
-						onMouseOver="this.style.backgroundColor='#edf5ff'">
-						<td align="center" valign="middle"
-							class="borderright borderbottom" th:text="${listStat.index}+1"></td>
-						<td align="center" valign="middle"
-							class="borderright borderbottom" th:text="${postclasslist.className}"></td>
-						<td align="center" valign="middle"
-							class="borderright borderbottom" th:text="${postclasslist.moduleCode}"></td>
-						<td align="center" valign="middle"
-							class="borderright borderbottom"
-							th:text="${#dates.format(postclasslist.createDate,'yyyy-MM-dd HH:mm:ss')}"></td>
-						<td align="center" valign="middle" class="borderbottom"><a
-							th:href="@{/post/updatePost(name=${postclasslist.className})}">编辑</a>
-							<span
-							class="gray">&nbsp;|&nbsp;</span><a
-							th:href="@{/post/getPostClassNum(name=${postclasslist.className})}">删除</a>
-							</td>
-					</tr>
-				</table>
-			</td>
-		</tr>
-	</table>
+<!--main_top-->
+<table width="99%" border="0" cellspacing="0" cellpadding="0" id="searchmain">
+    <tr>
+        <td width="99%" align="left" valign="top">您的位置：贴类管理</td>
+    </tr>
+    <tr>
+        <td align="left" valign="top">
+            <table width="100%" border="0" cellspacing="0" cellpadding="0" id="search">
+                <tr>
+                    <td width="10%" align="center" valign="middle" style="text-align: right; width: 150px;">
+                        <a href="/module/addnewPostClassController" class="add">新增贴类</a>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+    <tr>
+        <td align="left" valign="top">
+            <table width="100%" border="0" cellspacing="0" cellpadding="0" id="main-tab">
+                <tr>
+                    <th align="center" valign="middle" class="borderright">编号</th>
+                    <th align="center" valign="middle" class="borderright">帖类名称</th>
+                    <th align="center" valign="middle" class="borderright">历史发帖量</th>
+                    <th align="center" valign="middle" class="borderright">创建日期</th>
+                    <th align="center" valign="middle">操作</th>
+                </tr>
+                <tr th:each="postclasslist,listStat : ${postclasslist}"
+                    onMouseOut="this.style.backgroundColor='#ffffff'"
+                    onMouseOver="this.style.backgroundColor='#edf5ff'">
+                    <td align="center" valign="middle" class="borderright borderbottom"
+                        th:text="${listStat.index}+1"></td>
+                    <td align="center" valign="middle" class="borderright borderbottom"
+                        th:text="${postclasslist.className}"></td>
+                    <td align="center" valign="middle" class="borderright borderbottom"
+                        th:text="${postclasslist.moduleCode}"></td>
+                    <td align="center" valign="middle" class="borderright borderbottom"
+                        th:text="${#dates.format(postclasslist.createDate,'yyyy-MM-dd HH:mm:ss')}"></td>
+                    <td align="center" valign="middle" class="borderbottom">
+                        <a th:href="@{/post/updatePost(name=${postclasslist.className})}">编辑</a>
+                        <span class="gray">&nbsp;|&nbsp;</span>
+                        <a th:href="@{/post/getPostClassNum(name=${postclasslist.className})}">删除</a>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
 </body>
 </html>

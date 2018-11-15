@@ -1,5 +1,4 @@
 package com.bbs.domain;
 
-public class DataVo extends Data{
-
+public class DataVo extends Data {
 }

@@ -23,16 +23,5 @@ public interface RoleService {
 
     List<User1> listUserByRole();
 
-    //sitong
-    int getmonthday(String yearStr, String monthStr);//得到上个月的天数
-
-    void checkMonthActivityUser();//更新月活跃度用户
-
-    void checkBestActivityUser(int daytime);//更新每周活跃度用户
-
-    void checkLastWeekActivityUser();//特殊更新 闰年2月 只有28天 需要放到3.1号去更新
-    //sitong
-
-	int getManageNumber();
-
+    int getManageNumber();
 }

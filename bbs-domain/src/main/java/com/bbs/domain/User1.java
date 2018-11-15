@@ -4,148 +4,129 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 
  * @author 唐垒
  * @description 用户注册实体类
- *
  */
-public class User1 implements Serializable{
+public class User1 implements Serializable {
+    private static final long serialVersionUID = 313458296429042376L;
+    /*用户id*/
+    private Integer id;
+    /*用户账号 userName -> account*/
+    private String account;
+    /*用户昵称name->userName*/
+    private String userName;
+    /*用户密码*/
+    private String password;
+    /*性别*/
+    private Integer sex;
+    /*用户角色*/
+    private String roleName;
+    /*用户创建日期*/
+    private Date createDate;
+    /*用户最新修改日期*/
+    private Date modifyDate;
+    /**/
+    private String key;
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 313458296429042376L;
+    public static enum roleNameEnum {
+        ORDINARY(1, "普通用户"),
+        MODERATOR(2, "版主"),
+        MANAGER(3, "管理员");
+        public int code;
+        public String value;
 
-	/**
-	 * 
-	 */
+        private roleNameEnum(int code, String value) {
+            this.code = code;
+            this.value = value;
+        }
 
-	/*用户id*/
-	private Integer id;
+        public static String getValueBycode(int code) {
+            switch (code) {
+                case 1:
+                    return ORDINARY.value;
+                case 2:
+                    return MODERATOR.value;
+                case 3:
+                    return MANAGER.value;
+                default:
+                    return "";
+            }
+        }
+    }
 
-	/*用户账号 userName -> account*/
-	private String account;
-	
-	/*用户昵称name->userName*/
-	private String userName;
+    public Integer getId() {
+        return id;
+    }
 
-	/*用户密码*/
-	private String password;
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	/*性别*/
-	private Integer sex;
-	
-	/*用户角色*/
-	private String roleName;
-	
-	/*用户创建日期*/
-	private Date createDate;
-	
-	/*用户最新修改日期*/
-	private Date modifyDate;
-	/**/
-	private String key;
-	
-	public static enum roleNameEnum{
-		ORDINARY(1,"普通用户"),
-		MODERATOR(2,"版主"),
-		MANAGER(3,"管理员");
-		public int code;
-		public String value;
-		private roleNameEnum(int code, String value) {
-			this.code = code;
-			this.value = value;
-		}
-		public static String getValueBycode(int code) {
-			switch(code){
-			case 1:
-				return ORDINARY.value;
-			case 2:
-				return MODERATOR.value;
-			case 3:
-				return MANAGER.value;
-			default:
-				return "";
-			
-			}
-		}
-		
-	}
+    public String getAccount() {
+        return account;
+    }
 
-	public Integer getId() {
-		return id;
-	}
+    public void setAccount(String account) {
+        this.account = account;
+    }
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    public String getUserName() {
+        return userName;
+    }
 
-	public String getAccount() {
-		return account;
-	}
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
 
-	public void setAccount(String account) {
-		this.account = account;
-	}
+    public String getPassword() {
+        return password;
+    }
 
-	public String getUserName() {
-		return userName;
-	}
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
-	public void setUserName(String userName) {
-		this.userName = userName;
-	}
+    public Integer getSex() {
+        return sex;
+    }
 
-	public String getPassword() {
-		return password;
-	}
+    public void setSex(Integer sex) {
+        this.sex = sex;
+    }
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
+    public String getRoleName() {
+        return roleName;
+    }
 
-	public Integer getSex() {
-		return sex;
-	}
+    public void setRoleName(String roleName) {
+        this.roleName = roleName;
+    }
 
-	public void setSex(Integer sex) {
-		this.sex = sex;
-	}
+    public Date getCreateDate() {
+        return createDate;
+    }
 
-	public String getRoleName() {
-		return roleName;
-	}
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
+    }
 
-	public void setRoleName(String roleName) {
-		this.roleName = roleName;
-	}
+    public Date getModifyDate() {
+        return modifyDate;
+    }
 
-	public Date getCreateDate() {
-		return createDate;
-	}
+    public void setModifyDate(Date modifyDate) {
+        this.modifyDate = modifyDate;
+    }
 
-	public void setCreateDate(Date createDate) {
-		this.createDate = createDate;
-	}
+    public String getKey() {
+        return key;
+    }
 
-	public Date getModifyDate() {
-		return modifyDate;
-	}
+    public void setKey(String key) {
+        this.key = key;
+    }
 
-	public void setModifyDate(Date modifyDate) {
-		this.modifyDate = modifyDate;
-	}
-
-	public String getKey() {
-		return key;
-	}
-
-	public void setKey(String key) {
-		this.key = key;
-	}
-
-	public static long getSerialversionuid() {
-		return serialVersionUID;
-	}
-			
+    public static long getSerialversionuid() {
+        return serialVersionUID;
+    }
 }

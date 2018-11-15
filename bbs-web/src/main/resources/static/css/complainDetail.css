@@ -10,7 +10,7 @@ body {
 }
 
 .td1 {
-    width:99%;
+    width: 99%;
 }
 
 #searchmain {
@@ -48,7 +48,7 @@ body {
     height: 24px;
     line-height: 24px;
     width: 55px;
-    background: url(/images/main/list_input.jpg) no-repeat left top;
+    background: url(../images/main/list_input.jpg) no-repeat left top;
     border: none;
     cursor: pointer;
     font-family: "Microsoft YaHei", "Tahoma", "Arial", '宋体';
@@ -82,7 +82,7 @@ body {
 
 #main-tab th {
     font-size: 12px;
-    background: url(/images/main/list_bg.jpg) repeat-x;
+    background: url(../images/main/list_bg.jpg) repeat-x;
     height: 32px;
     line-height: 32px;
 }

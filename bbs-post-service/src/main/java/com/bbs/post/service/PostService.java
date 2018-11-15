@@ -38,7 +38,7 @@ public interface PostService {
     void updatePostByname(String name, String code);
 
     //通过名字得到帖子类
-    PostClass getpostclassByname(String name);//得到帖子类
+    PostClass getpostclassByname(String moduleCode,String name);//得到帖子类
 
     //通过用户Account查询该用户所管理的模块Id
     String getmoduleCodebyAccount(String Account);//得到帖子类
@@ -85,4 +85,20 @@ public interface PostService {
     Page<Object> getAllPostPage(Integer currentPage, Integer pageSize);
 
     void updateComment(PostVo postVo);
+
+    /**
+     * 根据阅读量获取阅读量前5的帖子
+     *
+     * @author chenhuayang
+     * @version 2018/10/18 15:45
+     */
+    PostVo PostOrderByReadingAmount1();
+
+    PostVo PostOrderByReadingAmount2();
+
+    PostVo PostOrderByReadingAmount3();
+
+    PostVo PostOrderByReadingAmount4();
+
+    PostVo PostOrderByReadingAmount5();
 }

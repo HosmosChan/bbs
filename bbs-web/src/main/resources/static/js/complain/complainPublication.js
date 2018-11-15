@@ -6,15 +6,15 @@ $(function () {
      * @version 2018/8/10
      */
     $("#saveComplain").click(function () {
-        if ($("#typeCode").val() == "" && $("#message").val() != "") {
+        if ("" == $("#typeCode").val() && "" != $("#message").val()) {
             alert("请选择投诉类型");
             return false;
         }
-        else if ($("#typeCode").val() != "" && $("#message").val() == "") {
+        else if ("" != $("#typeCode").val() && "" == $("#message").val()) {
             alert("请输入投诉内容描述");
             return false;
         }
-        else if ($("#typeCode").val() == "" && $("#message").val() == "") {
+        else if ( "" == $("#typeCode").val() && "" == $("#message").val()) {
             alert("请输入投诉信息");
             return false;
         }

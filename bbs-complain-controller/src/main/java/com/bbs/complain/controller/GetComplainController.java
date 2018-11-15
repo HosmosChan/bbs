@@ -31,10 +31,15 @@ public class GetComplainController {
      */
     @RequestMapping(value = "/ignoreComplain")
     public String ignoreComplain(String code) {
-        ComplainVo ignoreComplain = complainService.findComplainByCode(code);
-        ignoreComplain.setStatus("01");
-        complainService.updateComplainByCode(ignoreComplain);
-        return "complain/complainJump";
+        try {
+            ComplainVo ignoreComplain = complainService.findComplainByCode(code);
+            ignoreComplain.setStatus("01");
+            complainService.updateComplainByCode(ignoreComplain);
+            return "complain/complainJump";
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     /**
@@ -46,8 +51,13 @@ public class GetComplainController {
      */
     @RequestMapping(value = "/deleteComplainAndPostAndComment")
     public String deleteComplainAndPostAndComment(String code) {
-        complainService.deleteComplainAndPostAndComment(code);
-        return "complain/complainJump";
+        try {
+            complainService.deleteComplainAndPostAndComment(code);
+            return "complain/complainJump";
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     /**
@@ -59,8 +69,13 @@ public class GetComplainController {
     @ResponseBody
     @RequestMapping(value = "/deletePost")
     public String deletePost(String postCode) {
-        complainService.deleteComplainAndPostAndComment(postCode);
-        return "success";
+        try {
+            complainService.deleteComplainAndPostAndComment(postCode);
+            return "success";
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     /**
@@ -72,13 +87,18 @@ public class GetComplainController {
     @ResponseBody
     @RequestMapping(value = "/searchingComplain")
     public ModelAndView searchingComplain(String status) {
-        status = "00";
-        Integer currentPage = 1;
-        Page<Object> page = complainService.getComplain(status, currentPage);
-        ModelAndView myComplainPageModelAndView = new ModelAndView();
-        myComplainPageModelAndView.setViewName("complain/searchingComplain");
-        myComplainPageModelAndView.addObject("page", page);
-        return myComplainPageModelAndView;
+        try {
+            status = "00";
+            Integer currentPage = 1;
+            Page<Object> page = complainService.getComplain(status, currentPage);
+            ModelAndView myComplainPageModelAndView = new ModelAndView();
+            myComplainPageModelAndView.setViewName("complain/searchingComplain");
+            myComplainPageModelAndView.addObject("page", page);
+            return myComplainPageModelAndView;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     /**
@@ -90,7 +110,12 @@ public class GetComplainController {
     @ResponseBody
     @RequestMapping(value = "/getComplainType")
     public List<ComplainVo> getComplainType(ComplainVo complainVo) {
-        List<ComplainVo> listComplain = complainService.getComplainType(complainVo);
-        return listComplain;
+        try {
+            List<ComplainVo> listComplain = complainService.getComplainType(complainVo);
+            return listComplain;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

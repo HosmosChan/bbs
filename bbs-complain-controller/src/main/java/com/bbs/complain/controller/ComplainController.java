@@ -30,7 +30,11 @@ public class ComplainController {
     @ResponseBody
     @RequestMapping(value = "/saveComplain")
     public void saveComplain(ComplainVo complainVo) {
-        complainService.saveComplain(complainVo);
+        try {
+            complainService.saveComplain(complainVo);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -41,10 +45,15 @@ public class ComplainController {
      */
     @RequestMapping(value = "/addComplain")
     public ModelAndView addComplain(String code) {
-        ModelAndView complainPublication = new ModelAndView();
-        PostVo postInfo = complainService.postInfo(code);
-        complainPublication.setViewName("complain/complainPublication");
-        complainPublication.addObject("postInfo", postInfo);
-        return complainPublication;
+        try {
+            ModelAndView complainPublication = new ModelAndView();
+            PostVo postInfo = complainService.postInfo(code);
+            complainPublication.setViewName("complain/complainPublication");
+            complainPublication.addObject("postInfo", postInfo);
+            return complainPublication;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

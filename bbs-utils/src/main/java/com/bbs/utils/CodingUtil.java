@@ -34,6 +34,7 @@ import javax.crypto.spec.IvParameterSpec;
  * @since 1.0
  */
 public class CodingUtil {
+    private final static String des3SecretKey = "rk7nP6V3cWSuAeG89XvIZzyuBo0v31Eb";
 
     private final static Logger logger = LoggerFactory.getLogger(CodingUtil.class);
 
@@ -261,9 +262,9 @@ public class CodingUtil {
      * @return
      * @throws Exception
      */
-    public static String des3Encode(String plainText, String secretKey) throws Exception {
+    public static String des3Encode(String plainText) throws Exception {
         Key deskey = null;
-        DESedeKeySpec spec = new DESedeKeySpec(secretKey.getBytes());
+        DESedeKeySpec spec = new DESedeKeySpec(des3SecretKey.getBytes());
         SecretKeyFactory keyfactory = SecretKeyFactory.getInstance("desede");
         deskey = keyfactory.generateSecret(spec);
 
@@ -282,9 +283,9 @@ public class CodingUtil {
      * @return
      * @throws Exception
      */
-    public static String des3Decode(String encryptText, String secretKey) throws Exception {
+    public static String des3Decode(String encryptText) throws Exception {
         Key deskey = null;
-        DESedeKeySpec spec = new DESedeKeySpec(secretKey.getBytes());
+        DESedeKeySpec spec = new DESedeKeySpec(des3SecretKey.getBytes());
         SecretKeyFactory keyfactory = SecretKeyFactory.getInstance("desede");
         deskey = keyfactory.generateSecret(spec);
         Cipher cipher = Cipher.getInstance("desede/CBC/PKCS5Padding");

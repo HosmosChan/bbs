@@ -1,0 +1,31 @@
+/**
+ * 返回顶部
+ * @author chenhuayang
+ * @version 2018/10/15
+ */
+#top {
+    position: fixed;
+    display: none;
+    bottom: 40px;
+    right: 50px;
+    height: 55px;
+    width: 55px;
+    transition-property: none;
+    transition-duration: 300ms;
+    transition-timing-function: linear;
+    opacity: 0.8;
+    background: url(../../bbs/img/tops.png) center center no-repeat #e43e20;
+}
+
+#top:hover {
+    position: fixed;
+    bottom: 40px;
+    right: 50px;
+    height: 55px;
+    width: 55px;
+    transition-property: none;
+    transition-duration: 300ms;
+    transition-timing-function: linear;
+    opacity: 1;
+    background: url(../../bbs/img/tops.png) center center no-repeat #e43e20;
+}

@@ -1,0 +1,27 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+    <!--author : chenhuayang-->
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title th:text="给 + ${postInfo.userName} + 发私信"></title>
+    <script type="text/javascript" src="/../../js/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="/../../js/privateMessage/sendMessage.js"></script>
+</head>
+<body>
+<div>
+    <form action="/../../sendMessage/savePrivateMessage" method="post">
+        <input id="sendPersonAccount" name="sendPersonAccount" class="sendPersonAccount"
+               th:value="${session.user1.account}" hidden="hidden">
+        <input id="aboutPostCode" name="aboutPostCode" class="aboutPostCode"
+               th:value="${postInfo.code}" hidden="hidden">
+        <input id="recievePersonAccount" name="recievePersonAccount" class="recievePersonAccount"
+               th:value="${postInfo.hostAccount}" hidden="hidden">
+        <label class="postTitleLabel">私信内容：</label>
+        <textarea id="message" name="message" class="message" bindcursor="true"></textarea>
+        <input type="submit" class="savePrivateMessage" id="savePrivateMessage" value="发 送">
+    </form>
+</div>
+</body>
+</html>

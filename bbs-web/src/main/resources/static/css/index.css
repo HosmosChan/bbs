@@ -1,7 +1,8 @@
-body{
+body {
     background-color: #f2f2f2;
 }
-.search{
+
+.search {
     width: 100%;
     height: 40px;
     border-radius: 10px;
@@ -9,7 +10,9 @@ body{
     margin-top: 14px;
     background-color: #fff;
 }
-.search input[type=text]{
+
+.search input[type=text] {
+    color: #000;
     position: absolute;
     width: 230px;
     height: 40px;
@@ -18,7 +21,9 @@ body{
     border-radius: 10px 0 0 10px;
     float: left;
 }
-.search input[type=date]{
+
+.search input[type=date] {
+    color: #000;
     position: absolute;
     width: 230px;
     height: 40px;
@@ -27,7 +32,8 @@ body{
     border-radius: 10px 0 0 10px;
     float: left;
 }
-.search select{
+
+.search select {
     position: absolute;
     width: 60px;
     height: 40px;
@@ -36,7 +42,8 @@ body{
     border: none;
     background: #f2f2f2;
 }
-.search input[type=submit]{
+
+.search input[type=submit] {
     position: absolute;
     width: 100px;
     height: 40px;
@@ -49,4 +56,53 @@ body{
     background-color: #e43e20;
     font-size: 14px;
     margin-left: 290px;
+}
+
+.navTop {
+    position: fixed;
+    top: 0;
+    z-index: 99;
+}
+
+.navMe {
+    display: block;
+    height: 60px;
+    line-height: 60px;
+    float: right;
+    font-size: 14px;
+    color: #fff;
+    text-indent: 25px;
+    background: url(../bbs/img/indexPerson.png) no-repeat 0 center;
+}
+
+.navLogin {
+    display: block;
+    height: 60px;
+    line-height: 60px;
+    float: right;
+    font-size: 14px;
+    color: #fff;
+    text-indent: 25px;
+    background: url(../bbs/img/navLogin.png) no-repeat 0 center;
+}
+
+.navWrite {
+    display: block;
+    box-sizing: border-box;
+    width: 100px;
+    height: 40px;
+    border: 2px solid #fff;
+    border-radius: 5px;
+    float: right;
+    margin-right: 20px;
+    margin-top: 10px;
+    font-size: 14px;
+    color: #fff;
+    text-align: center;
+    line-height: 36px;
+}
+
+.navFix {
+    float: right;
+    display: none;
 }

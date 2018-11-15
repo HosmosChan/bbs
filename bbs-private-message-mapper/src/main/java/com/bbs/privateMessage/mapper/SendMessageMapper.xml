@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bbs.privateMessage.mapper.SendMessageMapper">
+    <!--
+    - 用户发送私信存储入数据库映射文件
+    - author:chenhuayang 2018/10/19
+    -->
+    <insert id="savePrivateMessage" parameterType="PrivateMessageVo">
+        INSERT INTO
+        bbs.test_bbs_user_private_message(code,sendPersonAccount,recievePersonAccount,aboutPostCode,message,privateKey,messageStatus,createDate,createBy)
+        values(#{code},#{sendPersonAccount},#{recievePersonAccount},#{aboutPostCode},#{message},#{privateKey},#{messageStatus},now(),#{createBy});
+    </insert>
+    <!--
+    - 根据code搜索帖子映射文件
+    - author:chenhuayang 2018/10/19
+    -->
+    <select id="postInfo" parameterType="String" resultType="PostVo">
+        SELECT a.*,b.userName FROM bbs.bbs_post_info a LEFT JOIN bbs.bbs_user_info b ON a.hostAccount=b.account WHERE
+        1=1
+        <if test="_parameter != null  and _parameter != '' ">
+            AND code = #{code}
+        </if>
+    </select>
+</mapper>

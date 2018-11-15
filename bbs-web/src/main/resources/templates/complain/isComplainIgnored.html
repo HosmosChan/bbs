@@ -54,7 +54,7 @@
                     <td align="center" valign="middle" class="borderright borderbottom"
                         th:text="${complainlist.typer}"></td>
                     <td align="center" valign="middle" class="borderright borderbottom">
-                        <a th:href="@{'/../../post/getPostByCode?code='+${complainlist.postCode}}" target="_blank"
+                        <a th:href="@{/../../post/getPostByCode(code=${complainlist.postCode})}" target="_blank"
                            th:text="${complainlist.postTitle}"></a>
                     </td>
                     <td align="center" valign="middle" class="borderright borderbottom"

@@ -1,32 +1,31 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<script type="text/javascript"   th:src="@{/js/jquery-3.3.1.min.js}"></script>
-<script type="text/javascript"   th:src="@{/js/user/userDetail.js}"></script>
-<title>添加用户信息</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <script type="text/javascript" th:src="@{/js/jquery-3.3.1.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/user/userDetail.js}"></script>
+    <title>添加用户信息</title>
 </head>
 <body>
-    <h2>添加用户信息</h2>
-    <form th:action="@{/user/saveUser}" id="form" th:object="${user}" method="POST">
-    		<input type="hidden" th:field="*{tid}"/>
-    	  <label for="account">账号</label>
-    	   <input type="text" th:field="*{account}" name="account"/><br/>
-          <label for="name">用户名:</label>
-          <input type="text" th:field="*{userName}"  name="userName" /><br/>
-          <label for="password">登录密码:</label>
-          <input type="password" th:field="*{password}"  name="password"/> <br/>
-          
-           <label for="password">确认登录密码:</label>
-          <input type="password" th:field="*{confirmPassword}"  name="confirmPassword"/> <br/>
-            <label for="levelCode">用户角色:</label>
-            <select th:field="*{levelCode}" name="levelCode">
-            	<option value="1" th:selected="${levelCode==1}">普通用户</option>
-            	<option value="2" th:selected="${levelCode==2}">版主</option>
-            	<option value="3" th:selected="${levelCode==2}">管理员</option>
-            </select>
-          <input type="button" id="saveUser" value="提交"/>
-    </form>
-    
+<h2>添加用户信息</h2>
+<form th:action="@{/user/saveUser}" id="form" th:object="${user}" method="POST">
+    <input type="hidden" th:field="*{tid}"/>
+    <label for="account">账号</label>
+    <input type="text" th:field="*{account}" name="account"/><br/>
+    <label for="name">用户名:</label>
+    <input type="text" th:field="*{userName}" name="userName"/><br/>
+    <label for="password">登录密码:</label>
+    <input type="password" th:field="*{password}" name="password"/> <br/>
+
+    <label for="password">确认登录密码:</label>
+    <input type="password" th:field="*{confirmPassword}" name="confirmPassword"/> <br/>
+    <label for="levelCode">用户角色:</label>
+    <select th:field="*{levelCode}" name="levelCode">
+        <option value="1" th:selected="${levelCode==1}">普通用户</option>
+        <option value="2" th:selected="${levelCode==2}">版主</option>
+        <option value="3" th:selected="${levelCode==2}">管理员</option>
+    </select>
+    <input type="button" id="saveUser" value="提交"/>
+</form>
 </body>
 </html>

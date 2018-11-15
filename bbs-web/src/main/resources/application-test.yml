@@ -5,14 +5,16 @@ spring:
     username: root
     password: 111111
     type: com.alibaba.druid.pool.DruidDataSource
+  resources:
+    static-locations: classpath:static/,file:static/
+imagepath: /home/bbs/bbs/img
 mybatis:
   type-aliases-package: com.bbs.domain
-imagepath: /root/bbs/img
 pagehelper:
   helperDialect: mysql
   reasonable: true
   supportMethodsArguments: true
   params: count=countSql
 logging:
-    level:
-      com.bbs.post.mapper: error
+  level:
+    com.bbs.post.mapper: error

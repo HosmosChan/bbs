@@ -8,36 +8,44 @@ body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, code, form, fiel
     margin: 0;
     padding: 0;
 }
+
 html {
     color: #000;
 }
-body{
-	font-size: 12px;
+
+body {
+    font-size: 12px;
     font-family: 宋体;
     display: block;
 }
+
 div {
     display: block;
 }
+
 li {
     list-style: none;
     display: list-item;
     text-align: -webkit-match-parent;
 }
+
 a {
     color: #2965b1;
     outline: 0;
     text-decoration: none;
 }
+
 input, button, textarea, select, optgroup, option {
     font-family: inherit;
     font-size: inherit;
     font-style: inherit;
     font-weight: inherit;
 }
+
 .clearfix, .cf {
     zoom: 1;
 }
+
 .clearfix:after, .cf:after {
     content: "";
     display: block;
@@ -53,14 +61,17 @@ input, button, textarea, select, optgroup, option {
     position: relative;
     z-index: 1000;
 }
+
 #top_nav_wrap {
     width: 1000px;
     height: 45px;
     margin: 0 auto;
 }
+
 #top_nav.clearfix, #top_nav .clearfix {
     overflow: visible;
 }
+
 #top_nav {
     position: relative;
     z-index: 1000;
@@ -69,114 +80,132 @@ input, button, textarea, select, optgroup, option {
     border-bottom: solid 1px #E7E7E7;
     background: #F7F7F7;
 }
+
 #top_nav * {
     font-size: 12px;
     line-height: 14px;
     font-family: 微软雅黑;
 }
+
 #top_nav .top-nav-logo {
     float: left;
     display: inline-block;
     width: 70px;
     height: 100%;
 }
+
 #huebox {
     background-position: top center;
     background-repeat: no-repeat;
     margin-top: -60px;
     padding-top: 60px;
 }
+
 .skin-c119 {
     background-color: #067caa;
 }
+
 #doc {
     width: 1000px;
     margin: auto;
 }
+
 #hd {
     position: relative;
     height: 240px;
     z-index: 50;
 }
+
 .header-profile {
     position: relative;
     top: 65px;
     margin-left: 20px;
     z-index: 53;
 }
+
 .header-profile .img-left {
     position: relative;
     width: 160px;
     float: left;
     display: inline;
 }
+
 .header-profile .user-pic {
     border-radius: 5px;
     border: 1px solid #ccc;
     padding: 4px;
     background-color: #fff;
-    box-shadow: 0 0 5px rgba(0,0,0,.2);
+    box-shadow: 0 0 5px rgba(0, 0, 0, .2);
     display: block;
 }
-
 
 #doc #bd {
     padding-bottom: 10px;
 }
+
 .layout-wrapper-lmr, .layout-wrapper-lm, .layout-wrapper-mr, .layout-wrapper-m {
     padding-top: 10px;
 }
+
 .layout-left {
     float: left;
     display: inline;
     margin-right: 10px;
     width: 150px;
 }
+
 #left_nav {
     font-family: Arial, 微软雅黑;
     padding-bottom: 10px;
     background: rgb(255, 255, 255);
     border-bottom: 1px solid rgb(216, 216, 216);
 }
+
 #left_nav ul li {
     margin-bottom: 2px;
     height: 32px;
     line-height: 32px;
     overflow: hidden;
 }
+
 #left_nav ul li a {
     display: block;
     padding-left: 40px;
     font-size: 14px;
     background: url(http://static.tianyaui.com/global/my/web/static/images/ico_32f0aa1.png) no-repeat 1000px 1000px;
 }
+
 #left_nav ul li.curr a, #left_nav ul li a:hover {
     color: #fff;
     text-decoration: none;
     background-color: #4ca0d7;
 }
+
 #left_nav ul li a.index {
     background-position: 15px -3792px;
 }
 
-
 .layout-wrapper-lmr .layout-middle {
     width: 580px;
 }
+
 .layout-middle {
     float: left;
     display: inline;
 }
+
 #twitter_area {
     min-height: 85px;
     width: 550px;
     padding: 15px;
     background: #fff;
 }
+
 .suiji-report {
     background-color: #fff;
     overflow-x: hidden;
 }
+
 .suiji-report .hd {
     position: relative;
     height: 29px;
@@ -185,16 +214,19 @@ input, button, textarea, select, optgroup, option {
 .suiji-report .suiji-icon, .suiji-report .arrow, .suiji-report .sels a, .suiji-report .suiji-label {
     padding: 2px 5px 2px 20px;
 }
+
 .suiji-report .suiji-icon, .suiji-report .arrow, .suiji-report .sels a, .suiji-report .suiji-label, .suiji-report .tags-wrap .tags-list, .suiji-pop .pop-hd .closeBtn, .suiji-pop .pop-hd .closeBtn:hover {
     background: url(http://static.tianyaui.com/global/my/web/static/images/record/map_74948ed.png) no-repeat;
 }
+
 .suiji-report .suiji-icon, .suiji-report .suiji-label {
     background-position: 0 -22px;
     font-size: 14px;
-    font-family: "微软雅黑","黑体";
+    font-family: "微软雅黑", "黑体";
     font-style: normal;
     color: #56a5ea;
 }
+
 .suiji-report .arrow {
     display: block;
     width: 16px;
@@ -205,55 +237,68 @@ input, button, textarea, select, optgroup, option {
     left: 30px;
     padding: 0;
 }
+
 .suiji-report .bd {
     border: 1px solid #d5d5d5;
 }
+
 .suiji-report .sels {
     height: 36px;
     line-height: 36px;
     border-bottom: 1px solid #d5d5d5;
     padding: 0 10px;
 }
+
 .suiji-report .sels .image {
     background-position: 0 -114px;
 }
+
 .suiji-report .suiji-icon, .suiji-report .sels a, .suiji-report .suiji-label {
     padding: 2px 5px 2px 20px;
 }
+
 .suiji-report .title, .suiji-report .content {
     overflow-x: hidden;
 }
+
 .suiji-report .title textarea {
     height: 35px;
     line-height: 35px;
     font-size: 16px;
-    font-family: "微软雅黑","黑体";
+    font-family: "微软雅黑", "黑体";
     color: #C3C3C3;
 }
+
 textarea {
     resize: none;
 }
+
 .suiji-report .title .line {
     border-bottom: 1px solid #d5d5d5;
     height: 1px;
     margin: 0 10px;
 }
+
 .suiji-report .content textarea {
     height: 140px;
     margin: 10px 0;
     line-height: 22px;
 }
+
 .suiji-report .tags-wrap {
     line-height: 30px;
     border-top: 1px solid #d5d5d5;
 }
+
 .suiji-report .tags-wrap .tags-list {
     background-position: 0 -216px;
     padding-left: 30px;
 }
+
 .suiji-report .ft {
     padding: 10px 0;
 }
+
 .suiji-report .ft input {
     height: 30px;
     line-height: 30px;
@@ -261,63 +306,75 @@ textarea {
     display: block;
     color: #fff;
     font-size: 16px;
-    font-family: "微软雅黑","黑体";
+    font-family: "微软雅黑", "黑体";
     text-align: center;
     font-weight: 700;
     border: 0;
     cursor: pointer;
 }
+
 .suiji-report .ft .cancle {
     background-color: #C1CFD8;
     float: left;
 }
+
 .suiji-report .ft .submit {
     background-color: #56a5ea;
     float: right;
 }
+
 #suiji_feed {
-    font-family: "微软雅黑",Arial;
+    font-family: "微软雅黑", Arial;
     margin-top: 10px;
 }
+
 .feed-content-item {
     background: #fff;
     padding: 15px;
     margin-bottom: 10px;
-    box-shadow: 0 1px 2px rgba(0,0,0,.1);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, .1);
     position: relative;
     zoom: 1;
 }
+
 .f-i-hd {
     position: relative;
     z-index: 10;
     zoom: 1;
 }
+
 .f-i-hd .hd-pic {
     float: left;
     display: inline;
     width: 50px;
     height: 50px;
 }
+
 .f-i-hd .hd-info {
     margin-left: 60px;
     height: 49px;
     border-bottom: 1px solid #e9e9e9;
     overflow: hidden;
 }
+
 .f-i-hd .hd-info .info-name {
     font-size: 14px;
     line-height: 24px;
 }
+
 .f-i-hd .hd-info .info-from {
     color: #a0a0a0;
     line-height: 24px;
 }
+
 .f-i-hd .hd-info .info-from span {
     margin-right: 8px;
 }
+
 .f-i-bd {
     margin-top: 15px;
 }
+
 .f-i-bd .bd-text .title {
     font-size: 16px;
     line-height: 26px;
@@ -329,6 +386,7 @@ textarea {
     overflow: hidden;
     margin-bottom: 10px;
 }
+
 .f-i-bd .bd-text .article {
     font-size: 14px;
     color: #333;
@@ -336,47 +394,58 @@ textarea {
     word-wrap: break-word;
     word-break: break-all;
 }
+
 .f-i-bd .bd-text .article .at-link, .f-i-bd .bd-text .article .at-toggle {
     text-decoration: none;
     display: inline-block;
     zoom: 1;
 }
+
 .f-i-bd .bd-media {
     margin-top: 10px;
 }
+
 .f-i-bd .bd-media .picture .picture-preview .single li {
     width: 100%;
     margin-bottom: 5px;
 }
+
 .f-i-bd .bd-media .picture .picture-preview li {
     float: left;
     display: inline;
     position: relative;
     zoom: 1;
 }
+
 .f-i-bd .bd-operate {
     margin-top: 10px;
 }
+
 .sj-operate {
     height: 18px;
     line-height: 18px;
     overflow: hidden;
 }
+
 .sj-operate .handle {
     float: right;
     display: inline;
 }
+
 a * {
     cursor: pointer;
 }
+
 .sj-operate .handle .split-line {
     margin: 0 8px;
     color: #e2e7ed;
     font-family: "宋体";
 }
+
 .sj-operate .handle a.praise .praise-icon {
     background-position: 0 -153px;
 }
+
 .sj-operate .handle .praise-icon {
     display: inline-block;
     vertical-align: -2px;
@@ -386,30 +455,36 @@ a * {
     background: url(http://static.tianyaui.com/global/my/web/static/images/suiji-icons-png24_e352fc5.png) 0 -153px no-repeat;
     zoom: 1;
 }
+
 .f-i-bd .bd-comment {
     margin-top: 10px;
     display: none;
 }
+
 .sj-comment .comment-wrapper .comment-title {
     height: 22px;
     line-height: 22px;
     overflow: hidden;
 }
+
 .sj-comment .comment-wrapper .comment-title .cm-prompt {
     float: right;
     display: inline;
     color: #a0a0a0;
 }
+
 .sj-comment .comment-wrapper .comment-title .cm-title {
     font-size: 14px;
     color: #2965b1;
 }
+
 .sj-comment .comment-wrapper .comment-area {
     height: 40px;
     border: 1px solid #dcdcdc;
     padding: 4px 64px 4px 4px;
     position: relative;
 }
+
 .sj-comment .comment-wrapper .comment-area .cm-textarea {
     border: 0 none;
     width: 100%;
@@ -417,6 +492,7 @@ a * {
     line-height: 20px;
     overflow: auto;
 }
+
 .sj-comment .comment-wrapper .comment-area .cm-button {
     position: absolute;
     top: -1px;
@@ -429,47 +505,57 @@ a * {
     color: #868686;
     font-weight: 700;
 }
+
 .sj-comment .comment-list {
     margin-top: 10px;
 }
+
 .sj-comment .comment-list .comment-item {
     padding: 10px 0;
     border-bottom: 1px dashed #b0b0b0;
 }
+
 .sj-comment .comment-list .comment-item .cm-pic {
     float: left;
     display: inline;
     width: 30px;
     height: 30px;
 }
+
 .sj-comment .comment-list .comment-item .cm-pic {
     float: left;
     display: inline;
     width: 30px;
     height: 30px;
 }
+
 .sj-comment .comment-list .comment-item .cm-pic img {
     width: 30px;
     height: 30px;
     display: block;
 }
+
 .sj-comment .comment-list .comment-item .cm-info {
     margin-left: 40px;
 }
+
 .sj-comment .comment-list .comment-item .cm-info .info-name {
     line-height: 16px;
 }
+
 .sj-comment .comment-list .comment-item .cm-info .info-content {
     word-wrap: break-word;
     word-break: break-all;
     line-height: 20px;
 }
+
 .sj-comment .comment-list .comment-item .cm-info .info-content .time {
     display: inline-block;
     color: #a0a0a0;
     margin-left: 6px;
     zoom: 1;
 }
+
 .layout-right {
     float: right;
     display: inline;

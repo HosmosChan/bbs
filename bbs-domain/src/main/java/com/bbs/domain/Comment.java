@@ -4,13 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class Comment implements Serializable {
-
-    /**
-     *
-     */
     private static final long serialVersionUID = 6329376930573607907L;
-
-
     private Integer tid;
     /**
      * 评论编码

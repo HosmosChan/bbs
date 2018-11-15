@@ -38,11 +38,7 @@ public class PostServiceImpl implements PostService {
     @Transactional(rollbackFor = BusinessRunException.class)
     public void savePost(PostVo postVo) throws BusinessRunException {
         try {
-            postVo.setCode(GETuuid.getUUID());
             String postClassName = postVo.getPostClassCode();
-            PostClass postClass = postClassMapper.getPostClassByClassName(postClassName);
-            postVo.setPostClassCode(postClass.getCode());
-            postVo.setModuleCode(postClass.getModuleCode());
             postVo.setPublishDate(new Date());
             postVo.setCreateDate(new Date());
             postVo.setCreateBy("Admin");
@@ -105,8 +101,11 @@ public class PostServiceImpl implements PostService {
     public String addPostClass(String modulecode, String className) {
         // TODO Auto-generated method stub
         String msg = null;
-        System.out.println(postMapper.getPostClassName(className).size());
-        if (postMapper.getPostClassName(className).size() == 0)//如果没有在module模块下找到该类贴
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("modulecode",modulecode);
+        map.put("className",className);
+        int size=postMapper.getPostClassName(map).size();
+        if (size== 0)//如果没有在module模块下找到该类贴
         {
             try {
                 PostClass postclass = new PostClass();
@@ -201,9 +200,12 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public PostClass getpostclassByname(String name) {
+    public PostClass getpostclassByname(String moduleCode,String name) {
         // TODO Auto-generated method stub
-        return postMapper.getpostclassByname(name);
+    	Map<String, Object> map = new HashMap<String, Object>();
+        map.put("name", name);
+        map.put("code", moduleCode);
+        return postMapper.getpostclassByname(map);
     }
 
     @Override
@@ -216,5 +218,40 @@ public class PostServiceImpl implements PostService {
     public String getmoduleCodebypostCode(String postCode) {
         // TODO Auto-generated method stub
         return postMapper.getmoduleCodebypostCode(postCode);
+    }
+    /**
+     * 根据阅读量获取阅读量前5的帖子
+     *
+     * @author chenhuayang
+     * @version 2018/10/18 15:45
+     */
+    @Override
+    public PostVo PostOrderByReadingAmount1() {
+        PostVo PostOrderByReadingAmount1 = postMapper.PostOrderByReadingAmount1();
+        return PostOrderByReadingAmount1;
+    }
+
+    @Override
+    public PostVo PostOrderByReadingAmount2() {
+        PostVo PostOrderByReadingAmount2 = postMapper.PostOrderByReadingAmount2();
+        return PostOrderByReadingAmount2;
+    }
+
+    @Override
+    public PostVo PostOrderByReadingAmount3() {
+        PostVo PostOrderByReadingAmount3 = postMapper.PostOrderByReadingAmount3();
+        return PostOrderByReadingAmount3;
+    }
+
+    @Override
+    public PostVo PostOrderByReadingAmount4() {
+        PostVo PostOrderByReadingAmount4 = postMapper.PostOrderByReadingAmount4();
+        return PostOrderByReadingAmount4;
+    }
+
+    @Override
+    public PostVo PostOrderByReadingAmount5() {
+        PostVo PostOrderByReadingAmount5 = postMapper.PostOrderByReadingAmount5();
+        return PostOrderByReadingAmount5;
     }
 }

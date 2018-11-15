@@ -2,35 +2,34 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head lang="en">
     <meta charset="UTF-8">
-    <title>帖子</title>
+    <title th:text="${post.title}"></title>
     <!-- 分页部分的样式 -->
     <link href="/bbs/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/bbs/css/reset.css"/>
     <link rel="stylesheet" href="/bbs/css/public.css"/>
     <link rel="stylesheet" href="/bbs/css/index.css"/>
     <link rel="stylesheet" href="/css/index.css"/>
+    <link rel="stylesheet" href="../../css/top.css"/><!--返回顶部css样式-->
     <script type="text/javascript" th:src="@{/js/jquery-3.3.1.min.js}"></script>
     <script type="text/javascript" src="/../../js/searching.js"></script>
     <script type="text/javascript" th:src="@{/js/layer.js}"></script>
-    <script src="/bbs/js/bootstrap.min.js" type="text/javascript"></script>
-    <script src="/bbs/js/bootstrap-paginator.js" type="text/javascript"></script>
+    <script src="../../bbs/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="../../bbs/js/bootstrap-paginator.js" type="text/javascript"></script>
     <script type="text/javascript" src="../../js/user/modulePost.js"></script>
 </head>
 <body>
 <header class="ltHead">
     <div class="ltHead_cen">
-        <a href=""><img src="img/logo.png" alt="" class="headPic1"/></a>
         <ul class="headNav">
             <li><a href="/post/index">首页</a></li>
             <tr th:each="module : ${session.moduleList}">
-               <li><a href="javascript:void(0)" class="moduleClass"
-						th:value="${module.code}" th:text="${module.moduleName}"></a></li>
+                <li><a href="javascript:void(0)" class="moduleClass" th:value="${module.code}"
+                       th:text="${module.moduleName}"></a></li>
             </tr>
         </ul>
         <!--未登入开始-->
         <div th:if="${session.user1==null}">
             <div class="ltForm appear">
-                <a href=""><img src="img/indexForm_bg.png" alt="" class="headPic2"/></a>
                 <ul>
                     <li><a th:href="@{/user1/demo}">登录</a></li>
                     <li><a th:href="@{/user1/UserRegister}">注册</a></li>
@@ -53,11 +52,11 @@
         </div>
     </div>
 </header>
-<div class="indexMain">
-    <div class="indexMain_left">
+<div class="indexMain" style="width: 1400px;">
+    <div class="indexMain_left" style="width: 985px;">
         <div class="tzCon">
             <div class="tzCon_head">
-                <div class="tzCon_head_left"><img src="/images/touxiang.jpg"/></div>
+                <!-- <div class="tzCon_head_left"><img src="/images/touxiang.jpg"/></div> -->
                 <div class="tzCon_head_right">
                     <h1 th:text="${post.title}"></h1>
                     <ul>
@@ -95,7 +94,7 @@
             <!--楼主可以删除评论、自己可以删除自己的评论删除按钮酌情出现-->
             <tr th:each="comment,commentList : ${page.result}">
                 <div class="newPending_son">
-                    <div class="pendPic"><img src="/images/touxiang.jpg"/></div>
+                    <div class="pendPic"><img src="../../images/touxiang.jpg"/></div>
                     <div class="pendDetail">
                         <div class="pendDetail_head">
                             <p>
@@ -107,13 +106,15 @@
                         <div class="pendDetail_con">
                             <p th:text="${comment.content}"></p>
                         </div>
-                        <div class="pendDetail_btn"
-                             th:if="${session.user1.account} == ${post.hostAccount} or ${session.user1.account} == ${comment.userAccount}">
-                            <ul>
-                                <li class="delateBtn"
-                                    th:onclick="'deleteComment(`'+${post.code}+'`,`'+${comment.code}+'`)'">删除
-                                </li>
-                            </ul>
+                        <div th:if="${session.user1 != null}">
+                            <div class="pendDetail_btn"
+                                 th:if="${session.user1.account} == ${post.hostAccount} or ${session.user1.account} == ${comment.userAccount}">
+                                <ul>
+                                    <li class="deleteBtn"
+                                        th:onclick="'deleteComment(`'+${post.code}+'`,`'+${comment.code}+'`)'">删除
+                                    </li>
+                                </ul>
+                            </div>
                         </div>
                         <div class="pendDetail_action">
                             <input type="text" value="回复XXX:"/>
@@ -159,6 +160,9 @@
             </div>
             <div class="myMsg_footer">
                 <ul>
+                    <a href="javascript:void(0)" th:onclick="'javascript:sendPrivateMessage(\''+${post.code}+'\',\''+${post.userName}+'\')'">
+                        <div class="sendPrivateMessage" th:text="发送私信"></div>
+                    </a>
                     <!--<li><a href="">
                         <p>主题数</p>
                         <p>23</p>
@@ -181,7 +185,7 @@
             -->
             <form action="/post/searchingPostInfo" method="post" id="searching-post-result"
                   class="searching-post-result">
-                <input name="searchingDetails" class="searchingDetails" id="searchingDetails" style="color:#000;"
+                <input name="searchingDetails" type="text" class="searchingDetails" id="searchingDetails"
                        placeholder="请输入搜索关键字">
                 <select name="searchingType" class="searchingType" id="searchingType">
                     <option value="1">搜帖子</option>
@@ -198,8 +202,8 @@
                     <tr th:each="PostOrderByList : ${session.PostOrderByList}">
                         <li>
                             <a th:href="@{/post/getPostByCode/(code=${PostOrderByList.code})}"
-                               th:text="${PostOrderByList.title}"></a>
-                            <span th:text="${PostOrderByList.readingAmount}"></span>
+                               th:text="${PostOrderByList.title}" target="_blank"></a>
+                            <span th:text="${PostOrderByList.replyAmount}"></span>
                         </li>
                     </tr>
                 </ul>
@@ -212,7 +216,7 @@
             <div class="indexPublic_con">
                 <ul class="indexLink">
                     <li><a href="https://www.baidu.com" target="_blank">百度</a></li>
-                    <li><a href="https://ienjoys.com/" target="_blank">智慧深圳市智慧享联网络技术有限公司</a></li>
+                    <li><a href="https://ienjoys.com/" target="_blank">智慧享联网络技术有限公司官网</a></li>
                     <li><a href="https://www.jb51.net" target="_blank">脚本之家</a></li>
                     <li><a href="http://www.qq.com" target="_blank">腾讯首页</a></li>
                     <li><a href="https://www.twitter.com/" target="_blank">推特</a></li>
@@ -229,6 +233,7 @@
     </div>
     <div class="clear"></div>
 </div>
+<div id="top" title="返回顶端"></div><!--返回顶部-->
 <footer class="publicFooter">
     <p>Copyrigh &copy; 深圳市智慧享联网络技术有限公司 版权所有 粤ICP备05144415-1</p>
 </footer>
@@ -236,13 +241,6 @@
 </html>
 <script src="/bbs/js/tiezi.js"></script>
 <script>
-    /* 用于发帖成功后的提示消息  autor：wangshixu 2018/8/30  */
-    var message = "";
-    if (message != '[[${message}]]') {
-        message = '[[${message}]]';
-        alert(message);
-        message = null;
-    }
     /* 帖子内容格式处理，回填帖子 autor：wangshixu 2018/8/30 */
     {
         var strHtml = "";
@@ -250,21 +248,56 @@
         $("#postArticle").html(strHtml);
     }
 
+    /**
+     * 举报前判断是否已登录
+     * @author chenhuayang
+     * @version 2018/9/14
+     */
     function postReport(postCode) {
-        layer.open({
-            type: 2,
-            skin: '#e43e20',
-            title: '举报',
-            fix: false,
-            shadeClose: true,
-            area: ['353px', '369px'],
-            content: '/complain/addComplain?code=' + postCode,
-        })
+        var account = $("#currentAccount").text();
+        if (account) {
+            layer.open({
+                type: 2,
+                skin: '#e43e20',
+                title: '举报',
+                fix: false,
+                shadeClose: true,
+                area: ['353px', '369px'],
+                content: '/complain/addComplain?code=' + postCode,
+            });
+        }
+        else {
+            alert("举报前请先登录！");
+            window.location.href = "/user1/demo";
+        }
+    }
+
+    /**
+     * 发送私信前判断是否已登录
+     * @author chenhuayang
+     * @version 2018/10/19
+     */
+    function sendPrivateMessage(postCode, userName) {
+        var account = $("#currentAccount").text();
+        if (account) {
+            layer.open({
+                type: 2,
+                skin: '#e43e20',
+                title: '给' + userName + '发送私信',
+                fix: false,
+                shadeClose: true,
+                area: ['353px', '369px'],
+                content: '/sendMessage/sendPrivateMessage?code=' + postCode,
+            });
+        }
+        else {
+            alert("发送私信前请先登录！");
+            window.location.href = "/user1/demo";
+        }
     }
 
     /**
      * 根据code删除评论
-     *
      * @author chenhuayang
      * @version 2018/8/28
      */
@@ -327,26 +360,32 @@
     * */
     function opPraise(postCode) {
         var flag = $("#praiseOrNot").val();
-        $.ajax({
-            type: "POST",
-            data: {
-                "postCode": postCode,
-                "flag": flag
-            },
-            dataType: "json",
-            url: "/about/praise",
-            async: true,
-            success: function (data) {
-                $("#praiseAmount").html(data);
+        var account = $("#currentAccount").text();
+        if (account) {
+            $.ajax({
+                type: "POST",
+                data: {
+                    "postCode": postCode,
+                    "flag": flag
+                },
+                dataType: "json",
+                url: "/about/praise",
+                async: true,
+                success: function (data) {
+                    $("#praiseAmount").html(data);
+                }
+            });
+            if (flag == 1) {
+                background: ;
+                $("#praise").css("background", "url(/bbs/img/zan_hover.png) no-repeat 15px center");
+                $("#praiseOrNot").val(-1);
+            } else {
+                $("#praise").css("background", "url(/bbs/img/zan.png) no-repeat 15px center");
+                $("#praiseOrNot").val(1);
             }
-        });
-        if (flag == 1) {
-            background: ;
-            $("#praise").css("background", "url(/bbs/img/zan_hover.png) no-repeat 15px center");
-            $("#praiseOrNot").val(-1);
         } else {
-            $("#praise").css("background", "url(/bbs/img/zan.png) no-repeat 15px center");
-            $("#praiseOrNot").val(1);
+            alert("点赞前请先登录！");
+            window.location.href = "/user1/demo";
         }
     }
 
@@ -369,4 +408,44 @@
             }
         });
     });
+    /**
+     * 返回顶部
+     * @author chenhuayang
+     * @version 2018/10/15
+     */
+    var x;
+    var otop;
+
+    function myScroll() {
+        var timer = setInterval(function () {
+            var moveby = 15;
+            x -= Math.ceil(x * moveby / 100);
+            if (x <= 0) {
+                x = 0;
+                clearInterval(timer);
+            }
+            if (document.body.scrollTop) {
+                document.body.scrollTop = x;
+            }
+            else {
+                document.documentElement.scrollTop = x;
+            }
+        }, 20);
+    }
+
+    function switchD() {
+        x = document.body.scrollTop || document.documentElement.scrollTop;
+        if (x > 100) {
+            otop.style.display = "block";
+        }
+        else {
+            otop.style.display = "none";
+        }
+    }
+
+    window.onload = function () {
+        otop = document.getElementById("top");
+        window.onscroll = switchD;
+        otop.onclick = myScroll;
+    };
 </script>

@@ -1,7 +1,8 @@
-body{
+body {
     background-color: #f2f2f2;
 }
-.writeCon{
+
+.writeCon {
     width: 1200px;
     margin: 0 auto 40px auto;
     margin-top: 14px;
@@ -9,33 +10,38 @@ body{
     border-radius: 10px;
     box-shadow: 0 0 10px #999;
 }
-.writeCon_head{
+
+.writeCon_head {
     width: 100%;
     height: 60px;
     border-radius: 10px;
     background-color: #f8f8f8;
     border-bottom: 1px solid #d7d7d7;
 }
-.writeCon_head p{
+
+.writeCon_head p {
     font-size: 14px;
     color: #333;
     line-height: 60px;
     text-indent: 25px;
 }
-.writeCon_cen{
-    width: 700px;
+
+.writeCon_cen {
+    width: 900px;
     height: 720px;
     margin: 0 auto;
     margin-top: 20px;
 }
-.writePic{
+
+.writePic {
     width: 100%;
     height: 250px;
     border-radius: 10px;
-    background:#f2f2f2 url("../img/writeBg.png") no-repeat center center;
+    background: #f2f2f2 url(../img/writeBg.png) no-repeat center center;
     position: relative;
 }
-.upload_file{
+
+.upload_file {
     width: 100%;
     height: 100%;
     position: absolute;
@@ -45,11 +51,13 @@ body{
     cursor: pointer;
     z-index: 2;
 }
-.writeMsg{
+
+.writeMsg {
     width: 100%;
     height: 55px;
 }
-.writeMsg input{
+
+.writeMsg input {
     width: 100%;
     height: 100%;
     border: none;
@@ -57,15 +65,17 @@ body{
     font-size: 24px;
     color: #999;
 }
-.chooseDevide{
-    width: 330px;
+
+.chooseDevide {
+    width: 540px;
     height: 36px;
     border: 1px solid #e8e8e8;
     border-radius: 5px;
     margin-top: 20px;
     margin-bottom: 20px;
 }
-.chooseDevide_left{
+
+.chooseDevide_left {
     width: 119px;
     height: 100%;
     float: left;
@@ -78,19 +88,22 @@ body{
     line-height: 35px;
     letter-spacing: 1px;
 }
-.chooseDevide_right{
+
+.chooseDevide_right {
     width: 210px;
     height: 35px;
-    float: right;
+    float: left;
 }
+
 .nice-select {
     width: 100%;
     height: 35px;
     position: relative;
-    cursor:pointer;
+    cursor: pointer;
     float: left;
-    background: url("../img/writeX_icon.png") no-repeat 180px center;
+    background: url(../img/writeX_icon.png) no-repeat 180px center;
 }
+
 .nice-select input {
     display: block;
     box-sizing: border-box;
@@ -100,26 +113,28 @@ body{
     border: none;
     outline: 0;
     background: none;
-    cursor:pointer;
+    cursor: pointer;
     color: #999;
     font-size: 14px;
-   text-indent: 18px;
+    text-indent: 18px;
 }
+
 .nice-select ul {
     box-sizing: border-box;
     padding: 7px 0;
-    width:210px;
+    width: 210px;
     display: none;
     position: absolute;
     top: 38px;
     overflow: hidden;
     overflow-y: auto;
-    z-index:9999;
+    z-index: 9999;
     background-color: #fff;
     border: 1px solid #e5e5e5;
     border-radius: 5px;
 }
-.nice-select ul li{
+
+.nice-select ul li {
     font-size: 14px;
     height: 30px;
     width: 100%;
@@ -131,9 +146,10 @@ body{
 }
 
 .nice-select ul li.on {
-    background-color: #e8e8e8 ;
+    background-color: #e8e8e8;
 }
-.writeDown{
+
+.writeDown {
     width: 100%;
     height: 260px;
     border-radius: 3px;
@@ -141,7 +157,8 @@ body{
     overflow: hidden;
 
 }
-.reform{
+
+.reform {
     width: 120px;
     height: 38px;
     background-color: #ff0000;

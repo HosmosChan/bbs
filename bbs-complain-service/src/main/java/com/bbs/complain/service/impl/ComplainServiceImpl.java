@@ -44,6 +44,7 @@ public class ComplainServiceImpl implements ComplainService {
         PostVo postInfo = complainMapper.postInfo(code);
         return postInfo;
     }
+
     /**
      * 获取投诉信息数据访问层
      *
@@ -56,6 +57,7 @@ public class ComplainServiceImpl implements ComplainService {
         complainMapper.getComplain(status);
         return page;
     }
+
     /**
      * 获取投诉类型数据访问层
      *
@@ -66,6 +68,7 @@ public class ComplainServiceImpl implements ComplainService {
     public List<ComplainVo> getComplainType(ComplainVo complainVo) {
         return complainMapper.getComplainType(complainVo);
     }
+
     /**
      * 根据code获取投诉信息数据访问层
      *
@@ -77,6 +80,7 @@ public class ComplainServiceImpl implements ComplainService {
         ComplainVo complainVo = complainMapper.findComplainByCode(code);
         return complainVo;
     }
+
     /**
      * 更新投诉信息数据访问层（修改status）
      *
@@ -87,6 +91,7 @@ public class ComplainServiceImpl implements ComplainService {
     public void updateComplainByCode(ComplainVo ignoreComplain) {
         complainMapper.updateComplainByCode(ignoreComplain);
     }
+
     /**
      * 删除帖子并删除对应投诉信息以及对应评论信息数据访问层
      *
@@ -98,6 +103,7 @@ public class ComplainServiceImpl implements ComplainService {
     public void deleteComplainAndPostAndComment(String code) {
         complainMapper.deleteComplainAndPostAndComment(code);
     }
+
     /**
      * 删除投诉信息数据访问层
      *

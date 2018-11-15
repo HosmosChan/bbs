@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="/bbs/css/homeHead.css"/>
     <link rel="stylesheet" href="/bbs/css/homePublic.css"/>
     <link rel="stylesheet" href="/bbs/css/myWrite.css"/>
+    <link rel="stylesheet" type="text/css" href="/../../css/index.css"/>
     <script type="text/javascript" th:src="@{/js/jquery-3.3.1.min.js}"></script>
     <!-- 分页部分的样式 -->
     <script src="/bbs/js/bootstrap.min.js" type="text/javascript"></script>
@@ -21,8 +22,6 @@
       <!--未登入开始-->
 			<div th:if="${session.user1==null}">
 				<div class="ltForm appear">
-					<a href=""><img src="img/indexForm_bg.png" alt=""
-						class="headPic2" /></a>
 					<ul>
 						<li><a th:href="@{/user1/demo}">登录</a></li>
 						<li><a th:href="@{/user1/UserRegister}">注册</a></li>

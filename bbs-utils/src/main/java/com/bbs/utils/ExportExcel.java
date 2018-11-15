@@ -12,6 +12,8 @@ import org.apache.poi.xssf.usermodel.XSSFRichTextString;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.bbs.domain.Data;
 
@@ -25,7 +27,6 @@ public class ExportExcel<T> {
 	public void exportExcel(String[] headers,List<Data> dataset, String fileName,HttpServletResponse response) {
 		// 声明一个工作薄
 		// 生成一个表格
-		
 		XSSFWorkbook workbook =new XSSFWorkbook();
 		XSSFSheet sheet = workbook.createSheet(fileName);
 		// 设置表格默认列宽度为15个字节

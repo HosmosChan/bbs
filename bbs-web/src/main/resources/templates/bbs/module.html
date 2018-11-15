@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns:th="http://www.thymeleaf.org">
 <head lang="en">
     <meta charset="UTF-8">
@@ -6,26 +6,26 @@
     <link rel="stylesheet" href="/bbs/css/reset.css"/>
     <link rel="stylesheet" href="/bbs/css/public.css"/>
     <link rel="stylesheet" href="/bbs/css/index.css"/>
+    <link rel="stylesheet" href="../../css/index.css"/>
+    <link rel="stylesheet" href="../../css/top.css"/><!--返回顶部css样式-->
+    <link rel="stylesheet" href="../../css/imagesRoll.css"/><!--页面右侧第一个框框图片滚动css样式-->
     <script type="text/javascript" th:src="@{/js/jquery-3.3.1.min.js}"></script>
+    <script type="text/javascript" src="../../js/searching.js"></script>
     <script type="text/javascript" src="../../js/user/modulePost.js"></script>
 </head>
 <body>
 <header class="ltHead">
     <div class="ltHead_cen">
-        <a href=""><img src="img/logo.png" alt="" class="headPic1"/></a>
         <ul class="headNav">
             <li><a href="/post/index">首页</a></li>
             <tr th:each="module : ${session.moduleList}">
-                <li><a href="javascript:void(0)" class="moduleClass" th:value="${module.code}"  
-						th:text="${module.moduleName}"></a></li>
+                <li><a href="javascript:void(0)" class="moduleClass" th:value="${module.code}"
+                       th:text="${module.moduleName}"></a></li>
             </tr>
         </ul>
-    <!--未登入开始-->
+        <!--未登入开始-->
         <div th:if="${session.user1==null}">
             <div class="ltForm appear">
-                <a href="">
-                    <img src="img/indexForm_bg.png" alt="" class="headPic2"/>
-                </a>
                 <ul>
                     <li><a th:href="@{/user1/demo}">登录</a></li>
                     <li><a th:href="@{/user1/UserRegister}">注册</a></li>
@@ -59,9 +59,9 @@
             <!--有主题图循环开始-->
             <tr th:each="post : ${postList}">
                 <div class="indexCon_msg">
-                    <div class="indexCon_msg_pic">
+                    <!-- <div class="indexCon_msg_pic">
                         <img src="/images/touxiang.jpg"/>
-                    </div>
+                    </div> -->
                     <div class="indexCon_msg_detail">
                         <a th:href="@{/post/getPostByCode(code=${post.code})}">
                             <div class="indexCon_msg_detail_tittle">
@@ -70,12 +70,11 @@
                             </div>
                         </a>
                         <div class="havePic" th:if="${post.icon}">
-                            <a href="">
-                                <div class="havePic_head">
-                                    <img th:src="${'../img/read?path=' + post.icon}"
-                                         onload="javascript:DrawImage(this,110)">
-                                </div>
-                            </a>
+                            <div class="havePic_head">
+                                <img class="pimg" name="pimg" th:src="${'../img/read?path=' + post.icon}" alt=""
+                                     title="点击显示大图"
+                                     style="width: 190px;height: 110px; cursor: pointer;">
+                            </div>
                         </div>
                         <div class="indexCon_msg_detail_other">
                             <ul>
@@ -106,15 +105,92 @@
         <div class="indexMain_rightCon">
             <a href="/index/write" class="newMsg">发新帖</a>
             <div class="pwfb">
-                <div class="pwfbHead">
-                    BBS论坛
+                <div class="pwfbHead">BBS论坛</div>
+                <div class="pwfbCon">
+                    <div class="box">
+                        <div class="pic">
+                            <ul>
+                                <li>
+                                    <a th:href="@{/post/getPostByCode(code=${session.PostOrderByReadingAmount1.code})}">
+                                        <img th:src="${'../img/read?path=' + session.PostOrderByReadingAmount1.icon}"/>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a th:href="@{/post/getPostByCode(code=${session.PostOrderByReadingAmount2.code})}">
+                                        <img th:src="${'../img/read?path=' + session.PostOrderByReadingAmount2.icon}"/>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a th:href="@{/post/getPostByCode(code=${session.PostOrderByReadingAmount3.code})}">
+                                        <img th:src="${'../img/read?path=' + session.PostOrderByReadingAmount3.icon}"/>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a th:href="@{/post/getPostByCode(code=${session.PostOrderByReadingAmount4.code})}">
+                                        <img th:src="${'../img/read?path=' + session.PostOrderByReadingAmount4.icon}"/>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a th:href="@{/post/getPostByCode(code=${session.PostOrderByReadingAmount5.code})}">
+                                        <img th:src="${'../img/read?path=' + session.PostOrderByReadingAmount5.icon}"/>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="nav">
+                            <ul>
+                                <li class="bg">1</li>
+                                <li>2</li>
+                                <li>3</li>
+                                <li>4</li>
+                                <li>5</li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
-                <div class="pwfbCon"></div>
-                <div class="pwfbFooter"></div>
+                <div class="pwfbFooter">
+                    <div class="title">
+                        <ul>
+                            <li>
+                                <a th:href="@{/post/getPostByCode(code=${session.PostOrderByReadingAmount1.code})}"
+                                   th:text="${session.PostOrderByReadingAmount1.title}" target="_blank"></a>
+                            </li>
+                            <li>
+                                <a th:href="@{/post/getPostByCode(code=${session.PostOrderByReadingAmount2.code})}"
+                                   th:text="${session.PostOrderByReadingAmount2.title}" target="_blank"></a>
+                            </li>
+                            <li>
+                                <a th:href="@{/post/getPostByCode(code=${session.PostOrderByReadingAmount3.code})}"
+                                   th:text="${session.PostOrderByReadingAmount3.title}" target="_blank"></a>
+                            </li>
+                            <li>
+                                <a th:href="@{/post/getPostByCode(code=${session.PostOrderByReadingAmount4.code})}"
+                                   th:text="${session.PostOrderByReadingAmount4.title}" target="_blank"></a>
+                            </li>
+                            <li>
+                                <a th:href="@{/post/getPostByCode(code=${session.PostOrderByReadingAmount5.code})}"
+                                   th:text="${session.PostOrderByReadingAmount5.title}" target="_blank"></a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
             </div>
-            <div class="indexSearch">
-                <input type="text" placeholder="请输入关键词"/>
-                <input type="submit" value="搜索"/>
+            <div class="search">
+                <!--
+            - 搜索帖子
+            - author：chenhuayang 2018/8/13
+            -->
+                <form action="/post/searchingPostInfo" method="post" id="searching-post-result"
+                      class="searching-post-result">
+                    <input name="searchingDetails" type="text" class="searchingDetails" id="searchingDetails"
+                           placeholder="请输入搜索关键字">
+                    <select name="searchingType" class="searchingType" id="searchingType">
+                        <option value="1">搜帖子</option>
+                        <option value="2">搜作者</option>
+                        <option value="3">搜时间</option>
+                    </select>
+                    <input type="submit" class="searchingPost" id="searchingPost" value="搜 索">
+                </form>
             </div>
             <div class="indexPublic">
                 <div class="indexPublic_head">本周热议</div>
@@ -123,8 +199,8 @@
                         <tr th:each="PostOrderByList : ${session.PostOrderByList}">
                             <li>
                                 <a th:href="@{/post/getPostByCode(code=${PostOrderByList.code})}"
-                                   th:text="${PostOrderByList.title}"></a>
-                                <span th:text="${PostOrderByList.readingAmount}"></span>
+                                   th:text="${PostOrderByList.title}" target="_blank"></a>
+                                <span th:text="${PostOrderByList.replyAmount}"></span>
                             </li>
                         </tr>
                     </ul>
@@ -137,7 +213,7 @@
                 <div class="indexPublic_con">
                     <ul class="indexLink">
                         <li><a href="https://www.baidu.com" target="_blank">百度</a></li>
-                        <li><a href="https://ienjoys.com/" target="_blank">智慧深圳市智慧享联网络技术有限公司</a></li>
+                        <li><a href="https://ienjoys.com/" target="_blank">智慧享联网络技术有限公司官网</a></li>
                         <li><a href="https://www.jb51.net" target="_blank">脚本之家</a></li>
                         <li><a href="http://www.qq.com" target="_blank">腾讯首页</a></li>
                         <li><a href="https://www.twitter.com/" target="_blank">推特</a></li>
@@ -155,44 +231,19 @@
     </div>
     <div class="clear"></div>
 </div>
+<div id="top" title="返回顶端"></div><!--返回顶部-->
 <footer class="publicFooter">
     <p>Copyrigh &copy; 深圳市智慧享联网络技术有限公司 版权所有 粤ICP备05144415-1</p>
 </footer>
+<div id="outerdiv"
+     style="position:fixed;top:0;left:0;background:rgba(0,0,0,0.7);z-index:100;width:100%;height:100%;display:none;">
+    <div id="innerdiv" style="position:absolute;">
+        <img id="bigimg" style="border:5px solid #fff;" src=""/>
+    </div>
+</div>
 </body>
 </html>
 <script>
-    /**
-     * @author chenhuayang
-     * @version 2018/8/30
-     * 图片按宽高比例进行自动缩放
-     * @param ImgObj
-     * 缩放图片源对象
-     * @param maxWidth
-     * 允许缩放的最大宽度
-     * @param maxHeight
-     * 允许缩放的最大高度
-     * @usage
-     * 调用：<img src="图片" onload="javascript:DrawImage(this,*,*)">
-     */
-    function DrawImage(ImgObj, maxHeight) {
-        var image = new Image();
-        //原图片原始地址（用于获取原图片的真实宽高，当<img>标签指定了宽、高时不受影响）
-        image.src = ImgObj.src;
-        // 用于设定图片的宽度和高度
-        var tempWidth;
-        var tempHeight;
-        if (image.width > 0 && image.height > 0) {
-            tempHeight = maxHeight;
-            // 按原图片的比例进行缩放
-            tempWidth = (image.width * maxHeight) / image.height;
-            // 设置页面图片的宽和高
-            ImgObj.height = tempHeight;
-            ImgObj.width = tempWidth;
-            // 提示图片的原来大小
-            ImgObj.alt = image.width + "×" + image.height;
-        }
-    }
-
     $(".indexMain_left_btn li a").click(function () {
         $(".indexMain_left_btn li a").removeClass("on");
         $(this).addClass("on");
@@ -210,5 +261,122 @@
             $(".ltHead").removeClass("navTop");
         }
     };
-   
+    /**
+     * 图片放大预览
+     * @author chenhuayang
+     * @version 2018/9/14
+     */
+    $(function () {
+        $(".pimg").click(function () {
+            var pthis = $(this);//将当前的pimg元素作为_this传入函数
+            imgShow(pthis);
+        });
+    });
+
+    function imgShow(pthis) {
+        var image = new Image();
+        var src = pthis.attr("src");//获取当前点击的pimg元素中的src属性
+        $("#bigimg").attr("src", src);//设置#bigimg元素的src属性
+        /*获取当前点击图片的真实大小，并显示弹出层及大图*/
+        image.src = src;
+        var windowW = $(window).width();//获取当前窗口宽度
+        var windowH = $(window).height();//获取当前窗口高度
+        var realWidth = image.width;//获取图片真实宽度
+        var realHeight = image.height;//获取图片真实高度
+        var imgWidth, imgHeight;
+        var scale = 0.8;//缩放尺寸，当图片真实宽度和高度大于窗口宽度和高度时进行缩放
+
+        if (realHeight > windowH * scale) {//判断图片高度
+            imgHeight = windowH * scale;//如大于窗口高度，图片高度进行缩放
+            imgWidth = imgHeight / realHeight * realWidth;//等比例缩放宽度
+            if (imgWidth > windowW * scale) {//如宽度扔大于窗口宽度
+                imgWidth = windowW * scale;//再对宽度进行缩放
+            }
+        } else if (realWidth > windowW * scale) {//如图片高度合适，判断图片宽度
+            imgWidth = windowW * scale;//如大于窗口宽度，图片宽度进行缩放
+            imgHeight = imgWidth / realWidth * realHeight;//等比例缩放高度
+        } else {//如果图片真实高度和宽度都符合要求，高宽不变
+            imgWidth = realWidth;
+            imgHeight = realHeight;
+        }
+        $("#bigimg").css("width", imgWidth);//以最终的宽度对图片缩放
+        var w = (windowW - imgWidth) / 2;//计算图片与窗口左边距
+        var h = (windowH - imgHeight) / 2;//计算图片与窗口上边距
+        $("#innerdiv").css({"top": h, "left": w});//设置#innerdiv的top和left属性
+        $("#outerdiv").fadeIn("fast");//淡入显示#outerdiv及.pimg
+    }
+
+    $("#outerdiv").click(function () {//再次点击淡出消失弹出层
+        $(this).fadeOut("fast");
+    });
+    /**
+     * 返回顶部
+     * @author chenhuayang
+     * @version 2018/10/15
+     */
+    var x;
+    var otop;
+
+    function myScroll() {
+        var timer = setInterval(function () {
+            var moveby = 15;
+            x -= Math.ceil(x * moveby / 100);
+            if (x <= 0) {
+                x = 0;
+                clearInterval(timer);
+            }
+            if (document.body.scrollTop) {
+                document.body.scrollTop = x;
+            }
+            else {
+                document.documentElement.scrollTop = x;
+            }
+        }, 20);
+    }
+
+    function switchD() {
+        x = document.body.scrollTop || document.documentElement.scrollTop;
+        if (x > 100) {
+            otop.style.display = "block";
+        }
+        else {
+            otop.style.display = "none";
+        }
+    }
+
+    window.onload = function () {
+        otop = document.getElementById("top");
+        window.onscroll = switchD;
+        otop.onclick = myScroll;
+    };
+    /**
+     * 页面右侧第一个框框图片滚动
+     * @author chenhuayang
+     * @version 2018/10/16
+     */
+    var i = -1;
+    var time = 0;
+    junmper();
+
+    function junmper() {
+        i++;
+        if (i > 4)
+            i = 0;
+        $(".nav ul li").eq(i).addClass("bg").siblings().removeClass("bg");
+        $(".pic ul li").eq(i).fadeIn(100).siblings().fadeOut(100);
+        $(".title ul li").eq(i).fadeIn(100).siblings().fadeOut(100);
+    }
+
+    time = setInterval("junmper()", 3700);
+    $(".nav ul li").click(function () {
+        i = $(this).index();
+        $(".nav ul li").eq(i).addClass("bg").siblings().removeClass("bg");
+        $(".pic ul li").eq(i).fadeIn(100).siblings().fadeOut(100);
+        $(".title ul li").eq(i).fadeIn(100).siblings().fadeOut(100);
+    });
+    $(".nav ul li").hover(function () {
+        clearInterval(time);
+    }, function () {
+        time = setInterval("junmper()", 3700);
+    });
 </script>

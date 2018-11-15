@@ -1,25 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper
-        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.bbs.post.mapper.PostMapper">
-
     <insert id="savePost" parameterType="PostVo">
-   		<!-- <selectKey resultType="Integer" order="AFTER" keyProperty="tid">
-            SELECT LAST_INSERT_ID()
-        </selectKey> -->
+        <!-- <selectKey resultType="Integer" order="AFTER" keyProperty="tid">
+         SELECT LAST_INSERT_ID()
+     </selectKey> -->
         INSERT INTO
         bbs.bbs_post_info(code,moduleCode,postClassCode,title,hostAccount,publishDate,article,icon,createDate,createBy)
         values(#{code},#{moduleCode},#{postClassCode},#{title},#{hostAccount},#{publishDate},#{article},#{icon},#{createDate},#{createBy});
     </insert>
     <select id="getMyPost" parameterType="String" resultType="PostVo">
-        SELECT a.*,b.userName,d.className FROM (bbs.bbs_post_info a LEFT JOIN bbs.bbs_user_info b ON a.hostAccount=b.account) LEFT JOIN bbs.bbs_post_class d ON a.postClassCode = d.code WHERE 1=1
+        SELECT a.*,b.userName,d.className FROM (bbs.bbs_post_info a LEFT JOIN bbs.bbs_user_info b ON
+        a.hostAccount=b.account) LEFT JOIN bbs.bbs_post_class d ON a.postClassCode = d.code WHERE 1=1
         <if test="_parameter != null  and _parameter != '' ">
             AND a.hostAccount=#{account}
         </if>
     </select>
     <select id="getPostByCode" parameterType="String" resultType="PostVo">
-        SELECT a.*,b.userName,d.className FROM (bbs.bbs_post_info a LEFT JOIN bbs.bbs_user_info b ON a.hostAccount=b.account) LEFT JOIN bbs.bbs_post_class d ON a.postClassCode = d.code WHERE 1=1
+        SELECT a.*,b.userName,d.className FROM (bbs.bbs_post_info a LEFT JOIN bbs.bbs_user_info b ON
+        a.hostAccount=b.account) LEFT JOIN bbs.bbs_post_class d ON a.postClassCode = d.code WHERE 1=1
         <if test="_parameter != null  and _parameter != '' ">
             AND a.CODE=#{postCode}
         </if>
@@ -95,36 +94,35 @@
 		FROM bbs.bbs_post_info 
 		WHERE CODE = #{postCode}
 	</select>
-
-  <!-- that  down was write by Sitong -->
- 
-<!--  查找 -->
+    <!-- that  down was write by Sitong -->
+    <!--  查找 -->
     <!--通过帖子Code查找模块的Id -->
     <select id="getmoduleCodebypostCode" parameterType="String" resultType="String">
         select moduleCode from bbs.bbs_post_info where code=#{postCode}
     </select>
     <!--     通过用户Account得到其管理的模块的code -->
-     <select id="getmoduleCodebyAccount" parameterType="String" resultType="String">
+    <select id="getmoduleCodebyAccount" parameterType="String" resultType="String">
         select code from bbs.bbs_module_info where userAccount=#{Account}
     </select>
-     <!--        通过模块和帖子类名字，查找是否在该模块是否存在该类，返回该类名 -->
+    <!--        通过模块和帖子类名字，查找是否在该模块是否存在该类，返回该类名 -->
     <select id="getPostClassName" parameterType="String" resultType="PostClass">
-        select * from bbs.bbs_post_class where className=#{className}
+        select * from bbs.bbs_post_class where className=#{className} and moduleCode=#{modulecode}
     </select>
     <!--            查询帖子类，返回当天帖子点赞数最多的列表 -->
     <select id="getBestPost" parameterType="java.util.Map" resultType="PostVo">
-    select * from bbs.bbs_post_info where publishDate=#{datetime} and moduleCode=#{moduleId}and 
-    praiseAmount in (select MAX(praiseAmount) from bbs.bbs_post_info where publishDate=#{datetime});
+    select * from bbs.bbs_post_info where publishDate=#{datetime} and moduleCode=#{moduleId} and 
+    praiseAmount in (select MAX(praiseAmount) from bbs.bbs_post_info where publishDate=#{datetime}
+    and moduleCode=#{moduleId});
     </select>
     <!--                  查询帖子类，返回列表 -->
     <select id="getPostClass" resultType="PostClass">
         select * from bbs.bbs_post_class 
     </select>
     <!--     根据帖子类名字 返回帖子 -->
-    <select id="getpostclassByname" parameterType="String" resultType="PostClass">
-        select * from bbs.bbs_post_class where className=#{name} 
+    <select id="getpostclassByname" parameterType="java.util.Map" resultType="PostClass">
+        select * from bbs.bbs_post_class where className=#{name} and moduleCode=#{code}
     </select>
-     <!--     根据模块名字 返回模块code -->
+    <!--     根据模块名字 返回模块code -->
     <select id="getModuleCode" parameterType="String" resultType="String">
         select code from bbs.bbs_module_info where moduleName=#{module} 
     </select>
@@ -140,75 +138,97 @@
     <select id="getModuleName" parameterType="String" resultType="String">
         select moduleName from bbs.bbs_module_info where code=#{moudleCode} 
     </select>
-<!--  删除 -->
-<!--  更新 -->
-     <!--     更新标题 -->
+    <!--  删除 -->
+    <!--  更新 -->
+    <!--     更新标题 -->
     <update id="updateBestPost" parameterType="java.util.Map">
 		UPDATE bbs.bbs_sumdata_table
 		SET maxPraisePostName=#{name} 
 		WHERE day= #{time} and moduleId=#{moduleId}
 	</update>
-	<!--     更新帖子类标题 -bug其code里面保存的是未修改的数据 name保存的是修改后的数据 -->
+    <!--     更新帖子类标题 -bug其code里面保存的是未修改的数据 name保存的是修改后的数据 -->
     <update id="updatepostclassByname" parameterType="java.util.Map">
 		UPDATE bbs.bbs_post_class
 		SET className=#{name} 
 		WHERE className= #{code}
 	</update>
-<!--  插入-->
-     <!--     添加新的帖子类 -->
+    <!--  插入-->
+    <!--     添加新的帖子类 -->
     <insert id="AddPostClassName" parameterType="PostClass"> 
         insert into bbs.bbs_post_class(code,moduleCode,className,createDate,CreateBy,modifyDate,modifyBy)
         values (#{code},#{moduleCode},#{className},#{createDate},#{createBy},#{modifyDate},#{modifyBy})
     </insert>
-
-
-<!-- 	 that  up was write by Sitong -->
+    <!-- 	 that  up was write by Sitong -->
     <!--
     - 根据标题搜索帖子映射文件
     - author:chenhuayang 2018/7/19
     -->
     <select id="searchingPostInfo1" parameterType="String" resultType="PostVo">
-        SELECT a.*,b.userName,d.className FROM (bbs.bbs_post_info a LEFT JOIN bbs.bbs_user_info b ON a.hostAccount=b.account) LEFT JOIN bbs.bbs_post_class d ON a.postClassCode = d.code WHERE
+        SELECT a.*,b.userName,d.className FROM (bbs.bbs_post_info a LEFT JOIN bbs.bbs_user_info b ON
+        a.hostAccount=b.account) LEFT JOIN bbs.bbs_post_class d ON a.postClassCode = d.code WHERE
         1=1
         <if test="_parameter != null  and _parameter != '' ">
             AND title LIKE CONCAT('%', #{title}, '%')
         </if>
+        ORDER BY tid DESC
     </select>
     <!--
     - 根据作者搜索帖子映射文件
     - author:chenhuayang 2018/7/19
     -->
     <select id="searchingPostInfo2" parameterType="String" resultType="PostVo">
-        SELECT a.*,b.userName,d.className FROM (bbs.bbs_post_info a LEFT JOIN bbs.bbs_user_info b ON a.hostAccount=b.account) LEFT JOIN bbs.bbs_post_class d ON a.postClassCode = d.code WHERE
+        SELECT a.*,b.userName,d.className FROM (bbs.bbs_post_info a LEFT JOIN bbs.bbs_user_info b ON
+        a.hostAccount=b.account) LEFT JOIN bbs.bbs_post_class d ON a.postClassCode = d.code WHERE
         hostAccount IN (
         SELECT account FROM bbs.bbs_user_info WHERE 1=1
         <if test="_parameter != null  and _parameter != '' ">
             AND userName LIKE CONCAT('%', #{userName}, '%')
         </if>
         )
+        ORDER BY tid DESC
     </select>
-
     <!--
     - 根据发表时间搜索帖子映射文件
     - author:chenhuayang 2018/7/19
     -->
     <select id="searchingPostInfo3" parameterType="String" resultType="PostVo">
-        SELECT a.*,b.userName,d.className FROM (bbs.bbs_post_info a LEFT JOIN bbs.bbs_user_info b ON a.hostAccount=b.account) LEFT JOIN bbs.bbs_post_class d ON a.postClassCode = d.code WHERE
+        SELECT a.*,b.userName,d.className FROM (bbs.bbs_post_info a LEFT JOIN bbs.bbs_user_info b ON
+        a.hostAccount=b.account) LEFT JOIN bbs.bbs_post_class d ON a.postClassCode = d.code WHERE
         1=1
         <if test="_parameter != null  and _parameter != '' ">
             AND publishDate = #{publishDate}
         </if>
+        ORDER BY tid DESC
     </select>
     <delete id="deletePostByCode" parameterType="String">
 		DELETE FROM bbs.bbs_post_info
 		WHERE CODE = #{code}
 	</delete>
-		<!-- 根据帖子的阅读量排序，取前6做为热点帖子 -->
-	<select id="selectPostOrderBy6" resultType="PostVo">
-	SELECT a.*,b.userName,d.className FROM (bbs.bbs_post_info a LEFT JOIN bbs.bbs_user_info b ON a.hostAccount=b.account) LEFT JOIN bbs.bbs_post_class d ON a.postClassCode = d.code ORDER BY readingAmount DESC LIMIT 0,6;
+    <!-- 根据帖子的阅读量排序，取前6做为热点帖子 -->
+    <select id="selectPostOrderBy6" resultType="PostVo">
+	SELECT a.*,b.userName,d.className FROM (bbs.bbs_post_info a LEFT JOIN bbs.bbs_user_info b ON a.hostAccount=b.account) LEFT JOIN bbs.bbs_post_class d ON a.postClassCode = d.code ORDER BY replyAmount DESC LIMIT 0,6;
 	</select>
-		<!-- 获取所有的帖子 autor:wangshixu 2018/8/15 -->
-	<select id="getAllPost"  resultType="PostVo">
-        SELECT a.*,b.userName,d.className FROM (bbs.bbs_post_info a LEFT JOIN bbs.bbs_user_info b ON a.hostAccount=b.account) LEFT JOIN bbs.bbs_post_class d ON a.postClassCode = d.code
+    <!-- 获取所有的帖子 autor:wangshixu 2018/8/15 -->
+    <select id="getAllPost" resultType="PostVo">
+        SELECT a.*,b.userName,d.className FROM (bbs.bbs_post_info a LEFT JOIN bbs.bbs_user_info b ON a.hostAccount=b.account) LEFT JOIN bbs.bbs_post_class d ON a.postClassCode = d.code ORDER BY createDate DESC
     </select>
+    <!--
+    - 根据阅读量获取阅读量前5的帖子
+    - author:chenhuayang 2018/10/18
+    -->
+    <select id="PostOrderByReadingAmount1" resultType="PostVo">
+	SELECT a.*,b.userName,d.className FROM (bbs.bbs_post_info a LEFT JOIN bbs.bbs_user_info b ON a.hostAccount=b.account) LEFT JOIN bbs.bbs_post_class d ON a.postClassCode = d.code WHERE a.icon IS NOT NULL ORDER BY readingAmount DESC LIMIT 0,1;
+	</select>
+    <select id="PostOrderByReadingAmount2" resultType="PostVo">
+	SELECT a.*,b.userName,d.className FROM (bbs.bbs_post_info a LEFT JOIN bbs.bbs_user_info b ON a.hostAccount=b.account) LEFT JOIN bbs.bbs_post_class d ON a.postClassCode = d.code WHERE a.icon IS NOT NULL ORDER BY readingAmount DESC LIMIT 1,1;
+	</select>
+    <select id="PostOrderByReadingAmount3" resultType="PostVo">
+	SELECT a.*,b.userName,d.className FROM (bbs.bbs_post_info a LEFT JOIN bbs.bbs_user_info b ON a.hostAccount=b.account) LEFT JOIN bbs.bbs_post_class d ON a.postClassCode = d.code WHERE a.icon IS NOT NULL ORDER BY readingAmount DESC LIMIT 2,1;
+	</select>
+    <select id="PostOrderByReadingAmount4" resultType="PostVo">
+	SELECT a.*,b.userName,d.className FROM (bbs.bbs_post_info a LEFT JOIN bbs.bbs_user_info b ON a.hostAccount=b.account) LEFT JOIN bbs.bbs_post_class d ON a.postClassCode = d.code WHERE a.icon IS NOT NULL ORDER BY readingAmount DESC LIMIT 3,1;
+	</select>
+    <select id="PostOrderByReadingAmount5" resultType="PostVo">
+	SELECT a.*,b.userName,d.className FROM (bbs.bbs_post_info a LEFT JOIN bbs.bbs_user_info b ON a.hostAccount=b.account) LEFT JOIN bbs.bbs_post_class d ON a.postClassCode = d.code WHERE a.icon IS NOT NULL ORDER BY readingAmount DESC LIMIT 4,1;
+	</select>
 </mapper>

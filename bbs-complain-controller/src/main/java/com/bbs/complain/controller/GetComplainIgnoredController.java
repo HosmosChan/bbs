@@ -30,13 +30,18 @@ public class GetComplainIgnoredController {
     @ResponseBody
     @RequestMapping(value = "/searchingComplainIgnored")
     public ModelAndView searchingComplain(String status) {
-        status = "01";
-        Integer currentPage = 1;
-        Page<Object> page = complainService.getComplain(status, currentPage);
-        ModelAndView myComplainPageModelAndView = new ModelAndView();
-        myComplainPageModelAndView.setViewName("complain/isComplainIgnored");
-        myComplainPageModelAndView.addObject("page", page);
-        return myComplainPageModelAndView;
+        try {
+            status = "01";
+            Integer currentPage = 1;
+            Page<Object> page = complainService.getComplain(status, currentPage);
+            ModelAndView myComplainPageModelAndView = new ModelAndView();
+            myComplainPageModelAndView.setViewName("complain/isComplainIgnored");
+            myComplainPageModelAndView.addObject("page", page);
+            return myComplainPageModelAndView;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     /**
@@ -47,10 +52,15 @@ public class GetComplainIgnoredController {
      */
     @RequestMapping(value = "/payAttentionComplain")
     public String payAttentionComplain(String code) {
-        ComplainVo ignoreComplain = complainService.findComplainByCode(code);
-        ignoreComplain.setStatus("00");
-        complainService.updateComplainByCode(ignoreComplain);
-        return "complain/complainJumpIgnored";
+        try {
+            ComplainVo ignoreComplain = complainService.findComplainByCode(code);
+            ignoreComplain.setStatus("00");
+            complainService.updateComplainByCode(ignoreComplain);
+            return "complain/complainJumpIgnored";
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     /**
@@ -61,7 +71,12 @@ public class GetComplainIgnoredController {
      */
     @RequestMapping(value = "/deleteComplain")
     public String deleteComplain(String code) {
-        complainService.deleteComplain(code);
-        return "complain/complainJumpIgnored";
+        try {
+            complainService.deleteComplain(code);
+            return "complain/complainJumpIgnored";
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

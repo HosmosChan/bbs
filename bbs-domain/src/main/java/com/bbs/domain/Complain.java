@@ -11,7 +11,6 @@ import java.util.Date;
  * @author chenhuayang
  */
 public class Complain implements Serializable {
-
     private Integer tid;
     /**
      * 投诉编码

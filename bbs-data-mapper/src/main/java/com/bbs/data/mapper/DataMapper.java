@@ -29,6 +29,9 @@ public interface DataMapper {
     //更新最佳活跃用户
     void updatesumdatebyActivityUsername(Map<String, Object> map);
 
+    //最佳活跃用户 特例 当月28天时 需要将周、月用户存在一起 获取当前存储的用户名字
+    String getWeekName(Map<String, Object> updatamap);
+
     //保存用户活跃度
     void saveUserLiveness(UserLiveness userLiveness);
 
@@ -38,7 +41,7 @@ public interface DataMapper {
     //根据名字删除帖子类（建立在帖子类名唯一性的基础上）
     void deletepostclass(String name);
 
-	ArrayList findmsg(Map<String, Object> map);
+    ArrayList findmsg(Map<String, Object> map);
 
-	ArrayList sumliveness(Map<String, Object> map);
+    ArrayList sumliveness(Map<String, Object> map);
 }

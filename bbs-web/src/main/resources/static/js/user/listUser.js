@@ -1,7 +1,8 @@
-$(function(){
-	  /*<![CDATA[*/
-	function userDetail(account){
-		alert(account);
-	}
-	 /*]]>*/
-})
+$(function () {
+    /*<![CDATA[*/
+    function userDetail(account) {
+        alert(account);
+    }
+
+    /*]]>*/
+});

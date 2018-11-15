@@ -1,5 +1,4 @@
 ﻿@charset "utf-8";
-
 .ulleftmenu {
     background-color: #F5F5F5;
     border-right: 1px solid #CCCCCC;
@@ -20,14 +19,14 @@
     border-left: 3px solid #F5F5F5;
 }
 
-    .limenuitem:hover {
-        background-color: white;
-        color: #2B7DBC;
-    }
+.limenuitem:hover {
+    background-color: white;
+    color: #2B7DBC;
+}
 
-        .limenuitem:hover .ulleftsubitems li {
-            color: black;
-        }
+.limenuitem:hover .ulleftsubitems li {
+    color: black;
+}
 
 .menuicon {
     margin-right: 10px;
@@ -43,15 +42,15 @@
     background-color: white;
 }
 
-    .ulleftsubitems li {
-        text-indent: 60px;
-        background-image: url('/content/resources/images/menuline.jpg');
-        background-repeat: no-repeat;
-        background-position: 45px 0px;
-        border-bottom: 1px dotted #E4E4E4;
-    }
+.ulleftsubitems li {
+    text-indent: 60px;
+    background-image: url('/content/resources/images/menuline.jpg');
+    background-repeat: no-repeat;
+    background-position: 45px 0px;
+    border-bottom: 1px dotted #E4E4E4;
+}
 
-        .ulleftsubitems li:hover {
-            color: #2B7DBC !important;
-            background-image: url('/content/resources/images/menuarrow.jpg');
-        }
+.ulleftsubitems li:hover {
+    color: #2B7DBC !important;
+    background-image: url('/content/resources/images/menuarrow.jpg');
+}

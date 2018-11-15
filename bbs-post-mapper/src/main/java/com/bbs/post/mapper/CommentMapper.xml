@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper  
-  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
-  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.bbs.post.mapper.CommentMapper">
-	<select id="getOnePostComments" parameterType="String" resultType="Comment">
-		SELECT a.*,b.userName FROM bbs.bbs_comment_info AS a LEFT JOIN bbs.bbs_user_info AS b ON a.userAccount=b.Account WHERE 1=1
-		<if test="_parameter != null  and _parameter != '' ">
-			AND postCode=#{postCode}
-		</if>
-	</select>
-	
-		  <!-- 插入一条评论 -->
+    <select id="getOnePostComments" parameterType="String" resultType="Comment">
+        SELECT a.*,b.userName FROM bbs.bbs_comment_info AS a LEFT JOIN bbs.bbs_user_info AS b ON a.userAccount=b.Account
+        WHERE 1=1
+        <if test="_parameter != null  and _parameter != '' ">
+            AND postCode=#{postCode}
+        </if>
+        ORDER BY tid DESC
+    </select>
+    <!-- 插入一条评论 -->
     <insert id="saveComment" parameterType="Comment">
-       <selectKey resultType="Integer" order="AFTER" keyProperty="tid">
-          SELECT LAST_INSERT_ID()
-      </selectKey>
-        INSERT INTO bbs.bbs_comment_info(code,postCode,userAccount,content,commentTime,createDate,createBy,modifyDate,modifyBy)
+        <selectKey resultType="Integer" order="AFTER" keyProperty="tid">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        INSERT INTO
+        bbs.bbs_comment_info(code,postCode,userAccount,content,commentTime,createDate,createBy,modifyDate,modifyBy)
         values(#{code},#{postCode},#{userAccount},#{content},#{commentTime},#{createDate},#{createBy},#{modifyDate},#{modifyBy});
     </insert>
     <!-- 删除某贴的所有评论 -->
@@ -23,12 +23,12 @@
 		DELETE FROM bbs.bbs_comment_info 
 		WHERE postCode = #{postCode}
 	</delete>
-	<!--
+    <!--
     - 根据code删除评论
     - author chenhuayang
     - version 2018/8/28
     -->
-	<delete id="deleteComment" parameterType="String">
+    <delete id="deleteComment" parameterType="String">
 		DELETE FROM bbs.bbs_comment_info WHERE code = #{code}
 	</delete>
 </mapper>

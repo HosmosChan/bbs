@@ -1,5 +1,5 @@
-$(function(){
-	  $("#tijiao").click(function(){
-		    alert("Text: " + $("#select").find("option:selected").text());
-		  });
-})
+$(function () {
+    $("#tijiao").click(function () {
+        alert("Text: " + $("#select").find("option:selected").text());
+    });
+});

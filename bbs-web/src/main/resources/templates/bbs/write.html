@@ -3,68 +3,60 @@
 <head lang="en">
 <meta charset="UTF-8">
 <title>发表帖子</title>
-<link rel="stylesheet" href="/bbs/css/reset.css" />
-<link rel="stylesheet" href="/bbs/css/public.css" />
-<link rel="stylesheet" href="/bbs/css/index.css" />
-<link rel="stylesheet" href="/bbs/css/write.css" />
+<link rel="stylesheet" href="../../bbs/css/reset.css" />
+<link rel="stylesheet" href="../../bbs/css/public.css" />
+<link rel="stylesheet" href="../../bbs/css/index.css" />
+<link rel="stylesheet" href="../../bbs/css/write.css" />
 <script type="text/javascript" th:src="@{/js/jquery-3.3.1.min.js}"></script>
 <!-- umeditor 编辑器  2018/8/30 -->
-<link href="/bbs/umeditor/themes/default/css/umeditor.css"
-	type="text/css" rel="stylesheet">
-<script type="text/javascript" charset="UTF-8"
-	src="/bbs/umeditor/umeditor.config.js"></script>
-<script type="text/javascript" charset="UTF-8"
-	src="/bbs/umeditor/umeditor.min.js"></script>
-<script type="text/javascript" src="/bbs/umeditor/lang/zh-cn/zh-cn.js"></script>
+<link href="../../bbs/umeditor/themes/default/css/umeditor.css" type="text/css" rel="stylesheet">
+<script type="text/javascript" charset="UTF-8" src="../../bbs/umeditor/umeditor.config.js"></script>
+<script type="text/javascript" charset="UTF-8" src="../../bbs/umeditor/umeditor.min.js"></script>
+<script type="text/javascript" src="../../bbs/umeditor/lang/zh-cn/zh-cn.js"></script>
 <script type="text/javascript" src="../../js/user/modulePost.js"></script>
 </head>
 <body>
-	<header class="ltHead">
-		<div class="ltHead_cen">
-			<a href=""><img src="img/logo.png" alt="" class="headPic1" /></a>
-			<ul class="headNav">
-				<li><a href="/post/index">首页</a></li>
-				<tr th:each="module : ${session.moduleList}">
-					<li><a href="javascript:void(0)" class="moduleClass"
-						th:value="${module.code}" th:text="${module.moduleName}"></a></li>
-				</tr>
-			</ul>
-			<!--未登入开始-->
-			<div th:if="${session.user1==null}">
-				<div class="ltForm appear">
-					<a href=""><img src="img/indexForm_bg.png" alt=""
-						class="headPic2" /></a>
-					<ul>
-						<li><a th:href="@{/user1/demo}">登录</a></li>
-						<li><a th:href="@{/user1/UserRegister}">注册</a></li>
-					</ul>
-				</div>
-			</div>
-			<div th:if="${session.user1!=null}">
-				<div class="lt_login appear"
-					th:if="${session.user1.userName != null}">
-					<ul>
-						<li><a href="/index/home" class="navMe"
-							th:text="${session.user1.userName}"></a></li>
-						<li><a th:href="@{/user1/logOut}">退出</a></li>
-					</ul>
-				</div>
-			</div>
-			<!-- 隐藏框 -->
-			<div th:if="${session.user1==null}">
-				<div class="navFix">
-					<a class="navLogin" th:href="@{/user1/demo}">登录</a>
-				</div>
+<header class="ltHead">
+	<div class="ltHead_cen">
+		<ul class="headNav">
+			<li><a href="/post/index">首页</a></li>
+			<tr th:each="module : ${session.moduleList}">
+				<li><a href="javascript:void(0)" class="moduleClass" th:value="${module.code}"
+					   th:text="${module.moduleName}"></a></li>
+			</tr>
+		</ul>
+		<!--未登入开始-->
+		<div th:if="${session.user1==null}">
+			<div class="ltForm appear">
+				<ul>
+					<li><a th:href="@{/user1/demo}">登录</a></li>
+					<li><a th:href="@{/user1/UserRegister}">注册</a></li>
+				</ul>
 			</div>
 		</div>
-	</header>
+		<div th:if="${session.user1!=null}">
+			<div class="lt_login appear" th:if="${session.user1.userName != null}">
+				<ul>
+					<li><a href="/index/home" class="navMe"
+						   th:text="${session.user1.userName}"></a></li>
+					<li><a th:href="@{/user1/logOut}">退出</a></li>
+				</ul>
+			</div>
+		</div>
+		<!-- 隐藏框 -->
+		<div th:if="${session.user1==null}">
+			<div class="navFix">
+				<a class="navLogin" th:href="@{/user1/demo}">登录</a>
+			</div>
+		</div>
+	</div>
+</header>
 	<div class="writeCon">
 		<div class="writeCon_head">
 			<p>发新帖</p>
 		</div>
 		<div class="writeCon_cen">
-			<form action="/post/savePost" method="POST"
-				enctype="multipart/form-data" onsubmit=" return judgeSlt()">
+			<form action="/post/savePost" method="POST" enctype="multipart/form-data" onsubmit=" return judgeSlt()">
 				<div class="writePic">
 					<input type="file" name="filename" accept=".jpeg, .jpg, .png"
 						multiple />
@@ -75,16 +67,41 @@
 				</div>
 				<div class="chooseDevide">
 					<div class="chooseDevide_left">所在分类</div>
+					<!-- 下拉选项框----》bbs板块 -->
+                    <div class="chooseDevide_right"  >
+                        <!-- 用于提交moduleCode -->
+                        <input id="moduleCode" type="text" value="" style="display:none" name="moduleCode">
+                        <div class="nice-select" name="nice-select" id="province">
+                          <!-- 用于展示帖子板块------不提交 -->
+                          <input class="postModuleCodeslt" type="text" value="请选择板块" readonly style="float: right" >
+                          <ul>
+                              <tr th:each="module : ${moduleList}">
+								  <li class="click" th:data-val="${module.code}" th:text="${module.moduleName}"></li>
+                              </tr>
+                          </ul>
+                        </div>
+                    </div>
+					<!-- 下拉选项框----》bbs类别 -->
 					<div class="chooseDevide_right">
-						<div class="nice-select" name="nice-select">
-							<input id="postClassCodeslt" type="text" value="请选择" readonly
-								style="float: right" name="postClassCode">
-							<ul>
-								<tr th:each="postClass : ${session.allPostClassList}">
-									<li class="click" th:data-val="${postClass.code}"
-										th:text="${postClass.className}"></li>
-								</tr>
-							</ul>
+						<!-- 用于提交classCode -->
+						<input id="postClassCode" type="text" value="" style="display:none" name="postClassCode">
+						<div class="nice-select city" id="select0" name="nice-select">
+							<input type="text" value="请选择类别" readonly style="float: right" disabled="disabled">
+						</div>
+						<div th:each="module : ${moduleList}" th:id="${module.moduleName}" class="city"
+							 style="display:none">
+							<div class="nice-select city" name="nice-select">
+								<!-- 用于展示帖子类别------不提交 -->
+								<input class="postClassCodeslt" type="text" value="请选择类别" readonly style="float: right">
+								<ul>
+									<tr th:each="postClass : ${allPostClassList}">
+										<div th:if="${module.code==postClass.moduleCode}">
+											<li class="click" th:data-val="${postClass.code}"
+												th:text="${postClass.className}"></li>
+										</div>
+									</tr>
+								</ul>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -95,7 +112,6 @@
             </script>
 				<div class="clear"></div>
 				<div id="btns"></div>
-
 				<!--  <input class="writeDown" name="article" /> -->
 				<input id="hiddenArticle" class="writeDown" name="article"
 					type="hidden" /> <input type="submit" class="reform" value="发布" />
@@ -108,6 +124,7 @@
 </html>
 <script>
 	/*  帖子类别的下拉菜单 autor：wangshixu time:2018/9/5  */
+    var currentselect = "select0"
 	$('[name="nice-select"]').click(function(e) {
 		$('[name="nice-select"]').find('ul').hide();
 		$(this).find('ul').show();
@@ -117,27 +134,41 @@
 		$(this).toggleClass('on');
 		e.stopPropagation();
 	});
-	$('[name="nice-select"] li').click(function(e) {
+	$('#province li').click(function(e) {
 		var val = $(this).text();
-		var dataVal = $(this).attr("data-value");
+		var dataVal = $(this).attr("data-val");
 		$(this).parents('[name="nice-select"]').find('input').val(val);
+		$("#moduleCode").val(dataVal);
+		$('[name="nice-select"] ul').hide();
+		$("#"+currentselect).css('display','none');
+		$("#"+val).css('display','block');
+		currentselect = val;
+		e.stopPropagation();
+	});
+	$('.city li').click(function(e) {
+		var val = $(this).text();
+		var dataVal = $(this).attr("data-val");
+		$(this).parents('[name="nice-select"]').find('input').val(val);
+		$("#postClassCode").val(dataVal);
 		$('[name="nice-select"] ul').hide();
 		e.stopPropagation();
 	});
 	$(document).click(function() {
 		$('[name="nice-select"] ul').hide();
 	});
+	
+	
 	/* 判断帖子类别是否已经选择并给出相应的提示 autor：wangshixu time：2018/9/5 */
 	function judgeSlt() {
-		var slt = document.getElementById("postClassCodeslt");
+		var classSlt = document.getElementById("postClassCode");
 		var inputTitle = document.getElementById("inputTitle");
-		if (slt.value == "请选择") {
-			alert("请选择一个帖子类别！");
-			return false;
-		} else if (inputTitle.value == "") {
+		 if (inputTitle.value == "") {
 			alert("请输入帖子标题！");
 			return false;
-		}
+		}else if (classSlt.value == "") {
+            alert("请选择帖子板块和类别");
+            return false;
+        } 
 		return true;
 	}
 

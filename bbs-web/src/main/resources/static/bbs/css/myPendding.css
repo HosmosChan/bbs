@@ -1,7 +1,8 @@
-.homeCen_left li:nth-child(5) a{
-    background: url("../img/homeIcon5_hover.png") no-repeat 40px center;
+.homeCen_left li:nth-child(5) a {
+    background: url(../img/homeIcon5_hover.png) no-repeat 40px center;
 }
-.motai_con{
+
+.motai_con {
     float: left;
     box-sizing: border-box;
     width: 510px;
@@ -10,53 +11,65 @@
     margin-left: 45px;
 }
 
-.order-msg{
+.order-msg {
     font-size: 14px;
     line-height: 50px;
     color: #555353;
 }
-.order-msg span{
+
+.order-msg span {
     color: #e94716;
 }
-.order-msg i{
+
+.order-msg i {
     font-style: normal;
 }
-.order_tittle{
+
+.order_tittle {
     font-size: 16px;
     line-height: 30px;
     color: #e94716;
 }
-.star_arg{
+
+.star_arg {
     margin: 10px 0;
     width: 100%;
 }
-.star_arg p{
+
+.star_arg p {
     float: left;
     font-size: 14px;
     color: #555353;
 }
-.star_arg p span{
+
+.star_arg p span {
     color: #e94716;
 }
-.star_star{
-    margin-left: 20px ;
+
+.star_star {
+    margin-left: 20px;
 }
-.arg_con{
+
+.arg_con {
     margin-top: 20px;
 }
-.arg_con span{
+
+.arg_con span {
     font-size: 14px;
     color: #555353;
 }
-.arg_con span i{
+
+.arg_con span i {
     color: #e94716;
 }
-.arg_con textarea{
+
+.arg_con textarea {
     width: 385px;
     height: 100px;
     margin-left: 20px;
 }
-input[type=submit]{
+
+input[type=submit] {
     width: 145px;
     height: 44px;
     background-color: #fd6769;
@@ -67,34 +80,39 @@ input[type=submit]{
     color: #fff;
     font-size: 16px;
 }
-.motai_img{
+
+.motai_img {
     width: 55px;
     height: 55px;
     float: left;
     margin-top: 30px;
-    background: url("../img/motai_img.png") no-repeat 0 0;
 }
-.pending_stand{
+
+.pending_stand {
     width: 510px;
     height: 120px;
     margin-top: 20px;
     margin-bottom: 20px;
 }
-.pending_stand p{
+
+.pending_stand p {
     font-size: 14px;
     color: #555353;
     float: left;
 }
-.pending_stand p span{
+
+.pending_stand p span {
     color: #e94716;
 }
-.pending_stand_con{
+
+.pending_stand_con {
     float: left;
     margin-left: 20px;
     width: 395px;
     height: 100px;
 }
-.pending_stand_con li{
+
+.pending_stand_con li {
     box-sizing: border-box;
     float: left;
     padding: 0 7px;
