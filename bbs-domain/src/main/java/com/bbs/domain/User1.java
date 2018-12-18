@@ -32,10 +32,10 @@ public class User1 implements Serializable {
         ORDINARY(1, "普通用户"),
         MODERATOR(2, "版主"),
         MANAGER(3, "管理员");
-        public int code;
-        public String value;
+        private int code;
+        private String value;
 
-        private roleNameEnum(int code, String value) {
+        roleNameEnum(int code, String value) {
             this.code = code;
             this.value = value;
         }

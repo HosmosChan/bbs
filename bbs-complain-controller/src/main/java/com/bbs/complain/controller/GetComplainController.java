@@ -3,6 +3,7 @@ package com.bbs.complain.controller;
 import com.bbs.complain.service.ComplainService;
 import com.bbs.domain.ComplainVo;
 import com.github.pagehelper.Page;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +21,7 @@ import java.util.List;
 @Controller
 @RequestMapping(value = "/complain")
 public class GetComplainController {
+    private Logger logger = Logger.getLogger(this.getClass());
     @Autowired
     private ComplainService complainService;
 
@@ -37,8 +39,8 @@ public class GetComplainController {
             complainService.updateComplainByCode(ignoreComplain);
             return "complain/complainJump";
         } catch (Exception e) {
-            e.printStackTrace();
-            return null;
+            logger.info(e);
+            throw e;
         }
     }
 
@@ -55,8 +57,8 @@ public class GetComplainController {
             complainService.deleteComplainAndPostAndComment(code);
             return "complain/complainJump";
         } catch (Exception e) {
-            e.printStackTrace();
-            return null;
+            logger.info(e);
+            throw e;
         }
     }
 
@@ -73,8 +75,8 @@ public class GetComplainController {
             complainService.deleteComplainAndPostAndComment(postCode);
             return "success";
         } catch (Exception e) {
-            e.printStackTrace();
-            return null;
+            logger.info(e);
+            throw e;
         }
     }
 
@@ -86,18 +88,18 @@ public class GetComplainController {
      */
     @ResponseBody
     @RequestMapping(value = "/searchingComplain")
-    public ModelAndView searchingComplain(String status) {
+    public ModelAndView searchingComplain() {
+        String status = "00";
+        Integer currentPage = 1;
         try {
-            status = "00";
-            Integer currentPage = 1;
             Page<Object> page = complainService.getComplain(status, currentPage);
             ModelAndView myComplainPageModelAndView = new ModelAndView();
             myComplainPageModelAndView.setViewName("complain/searchingComplain");
             myComplainPageModelAndView.addObject("page", page);
             return myComplainPageModelAndView;
         } catch (Exception e) {
-            e.printStackTrace();
-            return null;
+            logger.info(e);
+            throw e;
         }
     }
 
@@ -114,8 +116,8 @@ public class GetComplainController {
             List<ComplainVo> listComplain = complainService.getComplainType(complainVo);
             return listComplain;
         } catch (Exception e) {
-            e.printStackTrace();
-            return null;
+            logger.info(e);
+            throw e;
         }
     }
 }

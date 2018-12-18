@@ -1,6 +1,7 @@
 package com.bbs.post.controller;
 
 import com.bbs.domain.PostVo;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,6 +15,7 @@ import com.github.pagehelper.Page;
 @Controller
 @RequestMapping(value = "/about")
 public class AboutPostController {
+    private Logger logger = Logger.getLogger(this.getClass());
     @Autowired
     private PostService postService;
     @Autowired
@@ -58,8 +60,8 @@ public class AboutPostController {
             postserviceImpl.updateComment(postVo);
             return null;
         } catch (Exception e) {
-            e.printStackTrace();
-            return null;
+            logger.info(e);
+            throw e;
         }
     }
 
@@ -85,8 +87,8 @@ public class AboutPostController {
             MV.setViewName("bbs/post");
             return MV;
         } catch (Exception e) {
-            e.printStackTrace();
-            return null;
+            logger.info(e);
+            throw e;
         }
     }
 }

@@ -3,6 +3,7 @@ package com.bbs.privateMessage.controller;
 import com.bbs.domain.PostVo;
 import com.bbs.domain.PrivateMessageVo;
 import com.bbs.privateMessage.service.SendMessageService;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,6 +22,7 @@ import java.security.interfaces.RSAPublicKey;
 @Controller
 @RequestMapping(value = "/sendMessage")
 public class SendMessageController {
+    private Logger logger = Logger.getLogger(this.getClass());
     @Autowired
     private SendMessageService sendMessageService;
 
@@ -41,7 +43,7 @@ public class SendMessageController {
             privateMessageVo.setPrivateKey(keyPair.getPrivateKey());
             sendMessageService.savePrivateMessage(privateMessageVo);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.info(e);
         }
     }
 
@@ -60,8 +62,8 @@ public class SendMessageController {
             sendPrivateMessage.addObject("postInfo", postInfo);
             return sendPrivateMessage;
         } catch (Exception e) {
-            e.printStackTrace();
-            return null;
+            logger.info(e);
+            throw e;
         }
     }
 }

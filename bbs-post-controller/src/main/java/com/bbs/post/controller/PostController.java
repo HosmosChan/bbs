@@ -6,6 +6,7 @@ import javax.servlet.http.HttpSession;
 
 import com.bbs.domain.PostVo;
 import com.bbs.domain.User1;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,6 +28,7 @@ import com.github.pagehelper.Page;
 @Controller
 @RequestMapping(value = "/post")
 public class PostController {
+    private Logger logger = Logger.getLogger(this.getClass());
     @Autowired
     private PostService postService;
     @Autowired
@@ -100,8 +102,8 @@ public class PostController {
             try {
                 dataserviceImpl.deletepostclass(name);
             } catch (Exception e) {
-                e.printStackTrace();
-                return null;
+                logger.info(e);
+                throw e;
             }
         }
         HttpSession session = request.getSession();
@@ -189,7 +191,7 @@ public class PostController {
                 return "redirect:/post/getPostByCode?code=" + postVo.getCode();
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.info(e);
             return "redirect:post/getPostByCode?code=" + postVo.getCode();
         } finally {
         }
@@ -251,8 +253,8 @@ public class PostController {
             myPostPageModelAndView.addObject("page", page);
             return myPostPageModelAndView;
         } catch (Exception e) {
-            e.printStackTrace();
-            return null;
+            logger.info(e);
+            throw e;
         }
     }
 
@@ -268,8 +270,8 @@ public class PostController {
             Page<Object> page = postService.getMyPost(account, currentPage);
             return page.getResult();
         } catch (Exception e) {
-            e.printStackTrace();
-            return null;
+            logger.info(e);
+            throw e;
         }
     }
 
@@ -305,8 +307,8 @@ public class PostController {
             postDetail.setViewName("bbs/post");
             return postDetail;
         } catch (Exception e) {
-            e.printStackTrace();
-            return null;
+            logger.info(e);
+            throw e;
         }
     }
 
@@ -337,7 +339,7 @@ public class PostController {
             postService.updatePost(postVo);
             return "" + postVo.getReplyAmount();
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.info(e);
             return "error";
         }
     }
@@ -364,8 +366,8 @@ public class PostController {
             searchingPost.addObject("searchingType", searchingType);
             return searchingPost;
         } catch (Exception e) {
-            e.printStackTrace();
-            return null;
+            logger.info(e);
+            throw e;
         }
     }
 

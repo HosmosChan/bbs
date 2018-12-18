@@ -3,6 +3,7 @@ package com.bbs.complain.controller;
 import com.bbs.complain.service.ComplainService;
 import com.bbs.domain.ComplainVo;
 import com.github.pagehelper.Page;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,6 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 @RequestMapping(value = "/complainIgnored")
 public class GetComplainIgnoredController {
+    private Logger logger = Logger.getLogger(this.getClass());
     @Autowired
     private ComplainService complainService;
 
@@ -29,18 +31,18 @@ public class GetComplainIgnoredController {
      */
     @ResponseBody
     @RequestMapping(value = "/searchingComplainIgnored")
-    public ModelAndView searchingComplain(String status) {
+    public ModelAndView searchingComplain() {
+        String status = "01";
+        Integer currentPage = 1;
         try {
-            status = "01";
-            Integer currentPage = 1;
             Page<Object> page = complainService.getComplain(status, currentPage);
             ModelAndView myComplainPageModelAndView = new ModelAndView();
             myComplainPageModelAndView.setViewName("complain/isComplainIgnored");
             myComplainPageModelAndView.addObject("page", page);
             return myComplainPageModelAndView;
         } catch (Exception e) {
-            e.printStackTrace();
-            return null;
+            logger.info(e);
+            throw e;
         }
     }
 
@@ -58,8 +60,8 @@ public class GetComplainIgnoredController {
             complainService.updateComplainByCode(ignoreComplain);
             return "complain/complainJumpIgnored";
         } catch (Exception e) {
-            e.printStackTrace();
-            return null;
+            logger.info(e);
+            throw e;
         }
     }
 
@@ -75,8 +77,8 @@ public class GetComplainIgnoredController {
             complainService.deleteComplain(code);
             return "complain/complainJumpIgnored";
         } catch (Exception e) {
-            e.printStackTrace();
-            return null;
+            logger.info(e);
+            throw e;
         }
     }
 }

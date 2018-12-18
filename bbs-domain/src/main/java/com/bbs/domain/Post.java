@@ -89,10 +89,10 @@ public class Post implements Serializable {
     public static enum StatusEnum {
         CLOSESTATUS("00", "关闭"),
         NORMALSTATUS("00", "正常");
-        public String code;
-        public String value;
+        private String code;
+        private String value;
 
-        private StatusEnum(String code, String value) {
+        StatusEnum(String code, String value) {
             this.code = code;
             this.value = value;
         }

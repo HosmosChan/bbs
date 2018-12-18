@@ -62,10 +62,10 @@ public class User implements Serializable {
     public static enum StatusEnum {
         CANCESTATUS("00", "注销"),
         NORMALSTATUS("01", "正常");
-        public String code;
-        public String value;
+        private String code;
+        private String value;
 
-        private StatusEnum(String code, String value) {
+        StatusEnum(String code, String value) {
             this.code = code;
             this.value = value;
         }

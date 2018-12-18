@@ -3,6 +3,7 @@ package com.bbs.complain.controller;
 import com.bbs.complain.service.ComplainService;
 import com.bbs.domain.ComplainVo;
 import com.bbs.domain.PostVo;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,6 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 @RequestMapping(value = "/complain")
 public class ComplainController {
+    private Logger logger = Logger.getLogger(this.getClass());
     @Autowired
     private ComplainService complainService;
 
@@ -33,7 +35,8 @@ public class ComplainController {
         try {
             complainService.saveComplain(complainVo);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.info(e);
+            throw e;
         }
     }
 
@@ -52,8 +55,8 @@ public class ComplainController {
             complainPublication.addObject("postInfo", postInfo);
             return complainPublication;
         } catch (Exception e) {
-            e.printStackTrace();
-            return null;
+            logger.info(e);
+            throw e;
         }
     }
 }
