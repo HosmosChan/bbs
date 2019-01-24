@@ -21,4 +21,13 @@
             AND code = #{code}
         </if>
     </select>
+    <!--
+    - 根据recievePersonAccount接收人更新接收人新私信状态
+    - author:chenhuayang 2019/01/23
+    -->
+    <update id="updateUser">
+        UPDATE bbs.bbs_user_info bui join bbs.test_bbs_user_private_message tbupm
+        SET bui.newMessage = #{newMessage}
+        WHERE bui.account = #{recievePersonAccount}
+    </update>
 </mapper>

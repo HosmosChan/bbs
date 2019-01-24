@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>私信详情</title>
+    <script type="text/javascript" src="/../../js/jquery-3.3.1.min.js"></script>
+</head>
+<body>
+<div>
+    <label id="id" for="ids" hidden="hidden">id：</label>
+    <label id="ids" hidden="hidden" th:text="${messageDetail.tid}"></label>
+    <label id="sendPersonUserName" for="sendPersonUserNames">发送人：</label>
+    <a href="#" id="sendPersonUserNames" th:text="${messageDetail.userName}" th:title="${messageDetail.sendPersonAccount}"></a>
+</div>
+</body>
+</html>

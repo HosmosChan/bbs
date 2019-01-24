@@ -31,7 +31,7 @@ public class UserServiceImpl implements UserService {
         try {
             user.setCreateBy("admin");
             user.setCreateDate(new Date());
-            user.setStatusCode(User.StatusEnum.NORMALSTATUS.code);
+            user.setStatusCode(User.StatusEnum.NORMALSTATUS.getCode());
             user.setPassword(MD5Utils.MD5Encode(user.getPassword(), "UTF-8"));
             return userMapper.saveUser(user);
         } catch (Exception e) {

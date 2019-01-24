@@ -59,7 +59,7 @@ public class User implements Serializable {
      *
      * @author liuqiangsheng
      */
-    public static enum StatusEnum {
+    public enum StatusEnum {
         CANCESTATUS("00", "注销"),
         NORMALSTATUS("01", "正常");
         private String code;
@@ -67,6 +67,22 @@ public class User implements Serializable {
 
         StatusEnum(String code, String value) {
             this.code = code;
+            this.value = value;
+        }
+
+        public String getCode() {
+            return code;
+        }
+
+        public void setCode(String code) {
+            this.code = code;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        public void setValue(String value) {
             this.value = value;
         }
 

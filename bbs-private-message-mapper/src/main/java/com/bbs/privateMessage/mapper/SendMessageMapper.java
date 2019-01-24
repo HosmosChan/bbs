@@ -13,4 +13,6 @@ public interface SendMessageMapper {
     void savePrivateMessage(PrivateMessageVo privateMessageVo);
 
     PostVo postInfo(String code);
+
+    void updateUser(short newMessage, String recievePersonAccount);
 }

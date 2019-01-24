@@ -53,6 +53,7 @@
             <li><a href="/../../index/home">我的主页</a></li>
             <li><a href="/../../role/mangerUser">基本设置</a></li>
             <li class="on"><a href="/../../post/myPost">我的贴子</a></li>
+            <li><a href="/../../selectMessage/selectMessage">我的私信</a></li>
             <li th:if="${session.user1.roleName =='版主'}"><a href="javascript:void(0)" id="moduleMessage">版块信息</a></li>
             <li th:if="${session.user1.roleName =='版主'}"><a href="/../../module/ModuleData">版块数据</a></li>
             <li th:if="${session.user1.roleName =='管理员'}"><a href="/../../role/login" target="_blank">后台数据管理</a></li>
@@ -149,17 +150,12 @@
         });
     });
 
-    /*
-    *  autor:wangshixu 2018/7/23/17:22
-    *	此处有一个重大bug，后台在执行成功的情况下，还是会调转到error。重大疑问，苦恼。
-    * */
     function deletePost(postCode) {
         $.ajax({
             type: "POST",
             data: {
                 "postCode": postCode
             },
-            dataType: "json",
             url: "/complain/deletePost",
             async: false,
             success: function (data) {
@@ -167,7 +163,7 @@
                 window.location.reload();
             },
             error: function () {
-                alert("删帖成功");
+                alert("删帖失败");
                 window.location.reload();
             }
         });

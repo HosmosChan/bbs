@@ -56,6 +56,7 @@
             <li class="on"><a href="/../../index/home">我的主页</a></li>
             <li><a href="/../../role/mangerUser">基本设置</a></li>
             <li><a href="/../../post/myPost">我的贴子</a></li>
+            <li><a href="/../../selectMessage/selectMessage">我的私信</a></li>
             <li th:if="${session.user1.roleName =='版主'}"><a href="javascript:void(0)" id="moduleMessage">版块信息</a></li>
             <li th:if="${session.user1.roleName =='版主'}"><a href="/../../module/ModuleData">版块数据</a></li>
             <li th:if="${session.user1.roleName =='管理员'}"><a href="/../../role/login" target="_blank">后台数据管理</a></li>

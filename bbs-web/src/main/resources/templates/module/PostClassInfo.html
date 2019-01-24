@@ -65,7 +65,6 @@
             data: {
                 "postCode": postCode
             },
-            dataType: "json",
             url: "/complain/deletePost",
             async: false,
             success: function (data) {
@@ -73,7 +72,7 @@
                 window.location.reload();
             },
             error: function () {
-                alert("删帖成功！");
+                alert("删帖失败！");
                 window.location.reload();
             }
         });

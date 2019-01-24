@@ -27,6 +27,7 @@ public class SendMessageServiceImpl implements SendMessageService {
         privateMessageVo.setCreateBy(privateMessageVo.getSendPersonAccount());
         privateMessageVo.setCode(GETuuid.getUUID());
         sendMessageMapper.savePrivateMessage(privateMessageVo);
+        sendMessageMapper.updateUser((short) 1, privateMessageVo.getRecievePersonAccount());
     }
 
     /**

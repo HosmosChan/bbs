@@ -308,7 +308,6 @@
                 "postCode": postCode,
                 "code": code
             },
-            dataType: "json",
             url: "/about/deleteComment",
             async: false,
             success: function (data) {
@@ -316,7 +315,7 @@
                 window.location.reload();
             },
             error: function () {
-                alert("删评论成功");
+                alert("删评论失败");
                 window.location.reload();
             }
         });

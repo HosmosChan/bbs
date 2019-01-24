@@ -1,0 +1,184 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+    <!--author : chenhuayang-->
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>私信</title>
+    <link rel="stylesheet" href="../../bbs/css/reset.css"/>
+    <link rel="stylesheet" href="../../bbs/css/public.css"/>
+    <link rel="stylesheet" href="../../bbs/css/homeHead.css"/>
+    <link rel="stylesheet" href="../../bbs/css/homePublic.css"/>
+    <link rel="stylesheet" href="../../bbs/css/privateMessage.css"/>
+    <link rel="stylesheet" href="../../bbs/css/base.css"/>
+    <link rel="stylesheet" href="../../css/index.css"/>
+    <script type="text/javascript" th:src="@{/js/jquery-3.3.1.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/layer.js}"></script>
+    <script type="text/javascript" src="../../layui/layui.js"></script>
+    <script type="text/javascript" th:src="@{/js/jq.js}"></script>
+</head>
+<body>
+<header class="ltHead">
+    <div class="ltHead_cen">
+        <ul class="headNav">
+            <li><a href="/post/index">首页</a></li>
+            <tr th:each="module : ${session.moduleList}">
+                <li><a href="javascript:void(0)" class="moduleClass" th:value="${module.code}"
+                       th:text="${module.moduleName}"></a></li>
+            </tr>
+        </ul>
+        <!--未登入开始-->
+        <div th:if="${session.user1==null}">
+            <div class="ltForm appear">
+                <ul>
+                    <li><a th:href="@{/user1/demo}">登录</a></li>
+                    <li><a th:href="@{/user1/UserRegister}">注册</a></li>
+                </ul>
+            </div>
+        </div>
+        <div th:if="${session.user1!=null}">
+            <div class="lt_login appear" th:if="${session.user1.userName != null}">
+                <ul>
+                    <li><a href="/index/home" class="navMe" th:text="${session.user1.userName}"></a></li>
+                    <li><a th:href="@{/user1/logOut}">退出</a></li>
+                </ul>
+            </div>
+        </div>
+        <!-- 隐藏框 -->
+        <div th:if="${session.user1==null}">
+            <div class="navFix">
+                <a class="navLogin" th:href="@{/user1/demo}">登录</a>
+            </div>
+        </div>
+    </div>
+</header>
+<div class="homeCen">
+    <div class="homeCen_left">
+        <ul th:if="${session.user1!=null}">
+            <li><a href="/../../index/home">我的主页</a></li>
+            <li><a href="/../../role/mangerUser">基本设置</a></li>
+            <li><a href="/../../post/myPost">我的贴子</a></li>
+            <li class="on"><a href="/../../selectMessage/selectMessage">我的私信</a></li>
+            <li th:if="${session.user1.roleName =='版主'}"><a href="javascript:void(0)" id="moduleMessage">版块信息</a></li>
+            <li th:if="${session.user1.roleName =='版主'}"><a href="/../../module/ModuleData">版块数据</a></li>
+            <li th:if="${session.user1.roleName =='管理员'}"><a href="/../../role/login" target="_blank">后台数据管理</a></li>
+        </ul>
+    </div>
+    <div class="homeCen_right">
+        <div class="baseHead">
+            <ul>
+                <li><a href="/../../selectMessage/selectMessage" id="all">所有私信</a></li>
+                <li><a href="/../../selectMessage/selectMessage?messageStatus=0" id="unread">未读私信</a></li>
+                <li><a href="/../../selectMessage/selectMessage?messageStatus=1" id="read">已读私信</a></li>
+                <li><a href="/../../selectMessage/selectMessage?messageStatus=2" id="recycle">回收站</a></li>
+            </ul>
+        </div>
+        <div class="privateMessage_con" id="privateMessages">
+            <div class="writeHead">
+                <div class="writeHead1">发信人</div>
+                <div class="writeHead2">相关帖子</div>
+                <div class="writeHead3">内容</div>
+                <div class="writeHead4">发送时间</div>
+                <div class="writeHead5">阅读状态</div>
+                <div class="writeHead6">操作</div>
+            </div>
+            <!--列表形式展示出未读私信-->
+            <tr th:each="message : ${message}">
+                <div class="writeFoot">
+                    <div class="writeFoot1" th:text="${message.recievePersonAccount}"></div>
+                    <div class="writeFoot2" th:text="${message.title}"></div>
+                    <div class="writeFoot3" th:text="${message.message}">
+                        <!--<p>
+                            <a th:href="'/post/getPostByCode?code='+${post.code}" th:text="${post.title}"
+                               target="_blank"></a>
+                        </p>-->
+                    </div>
+                    <div class="writeFoot4"
+                         th:text="${#dates.format(message.createDate,'yyyy-MM-dd HH:mm:ss')}"></div>
+                    <div class="writeFoot5" th:text="${message.messageStatus}"></div>
+                    <div class="writeFoot6">
+                        <a href="javascript:void(0)"
+                           th:onclick="'javascript:detail(`'+${message.code}+'`)'">详情</a>
+                        ||
+                        <a href="javascript:void(0)" th:if="${message.messageStatus} != '回收站状态'"
+                           th:onclick="'javascript:putMessageIntoRecycle(`'+${message.code}+'`, \'回收站状态\')'">删除</a>
+                        <a href="javascript:void(0)" th:if="${message.messageStatus} == '回收站状态'"
+                           th:onclick="'javascript:putMessageIntoRecycle(`'+${message.code}+'`, \'已读\')'">这不是垃圾私信</a>
+                    </div>
+                </div>
+            </tr>
+        </div>
+        <div class="indexFooter">
+            <!--   分页 -->
+            <div class="container">
+                <div>
+                    <ul id="page"></ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script type="text/javascript">
+    layui.use('layer', function () {
+        var layer = layui.layer;
+    });
+
+    function init() {
+        var messageStatus = [[${session.messageStatus}]];
+        switch (messageStatus) {
+            case -1:
+                document.getElementsByClassName("on").className = "";
+                document.getElementById("all").className = "on";
+                break;
+            case 0:
+                document.getElementsByClassName("on").className = "";
+                document.getElementById("unread").className = "on";
+                break;
+            case 1:
+                document.getElementsByClassName("on").className = "";
+                document.getElementById("read").className = "on";
+                break;
+            case 2:
+                document.getElementsByClassName("on").className = "";
+                document.getElementById("recycle").className = "on";
+                break;
+        }
+    }
+
+    init();
+
+    function putMessageIntoRecycle(code, messageStatus) {
+        $.ajax({
+            type: "PUT",
+            data: {
+                "code": code,
+                "messageStatus": messageStatus
+            },
+            url: "/selectMessage/updateMessage",
+            async: false,
+            success: function (data) {
+                layer.msg("成功", {shift: -1, time: 1000});
+            },
+            error: function (data) {
+                layer.msg("失败", {shift: -1, time: 1000});
+            }
+        });
+        setTimeout(function () {
+            window.location.reload()
+        }, "1000");
+    }
+    function detail(code) {
+        layer.open({
+            type: 2,
+            skin: '#e43e20',
+            title: '私信详情',
+            fix: false,
+            shadeClose: true,
+            area: ['353px', '369px'],
+            content: '/selectMessage/getMessageByCode?code=' + code,
+        });
+    }
+</script>
+</html>

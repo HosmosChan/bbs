@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bbs.privateMessage.mapper.SelectMessageMapper">
+    <!--
+    - 获取用户接收私信映射文件
+    - author:chenhuayang 2018/10/19
+    -->
+    <select id="getMessageList" parameterType="java.util.Map" resultType="PrivateMessageVo">
+        SELECT a.*,b.userName,c.title FROM bbs.test_bbs_user_private_message a JOIN bbs.bbs_user_info b JOIN
+        bbs.bbs_post_info c ON a.recievePersonAccount = b.account AND a.aboutPostCode = c.code WHERE
+        1=1
+        <if test="recievePersonAccount != null and recievePersonAccount != ''">
+            AND a.recievePersonAccount = #{recievePersonAccount}
+        </if>
+        <if test="messageStatus != null and messageStatus != ''">
+            AND a.messageStatus = #{messageStatus}
+        </if>
+        <if test="messageStatus == null">
+            AND a.messageStatus != "回收站状态"
+        </if>
+        ORDER BY a.createDate DESC
+    </select>
+    <update id="updateMessage" parameterType="PrivateMessageVo">
+        update bbs.test_bbs_user_private_message
+        <trim prefix="set" suffixOverrides=','>
+            <if test="code != null and code != '' ">
+                code=#{code},
+            </if>
+            <if test="recievePersonAccount != null and recievePersonAccount != '' ">
+                recievePersonAccount=#{recievePersonAccount},
+            </if>
+            <if test="sendPersonAccount != null and sendPersonAccount != '' ">sendPersonAccount=#{sendPersonAccount},
+            </if>
+            <if test="aboutPostCode != null and aboutPostCode != '' ">aboutPostCode=#{aboutPostCode},</if>
+            <if test="message != null and message != '' ">message=#{message},</if>
+            <if test="messageStatus != null and messageStatus != '' ">messageStatus=#{messageStatus},</if>
+            modifyDate=now(),
+            <if test="modifyBy!=null">modifyBy=#{modifyBy},</if>
+        </trim>
+        where code=#{code}
+    </update>
+    <select id="getMessageByCode" parameterType="String" resultType="PrivateMessageVo">
+        SELECT a.*,b.userName,c.title FROM bbs.test_bbs_user_private_message a JOIN bbs.bbs_user_info b JOIN
+        bbs.bbs_post_info c ON a.sendPersonAccount = b.account AND a.aboutPostCode = c.code WHERE
+        1=1
+        <if test="_parameter != null and _parameter != ''">
+            AND a.code = #{code}
+        </if>
+    </select>
+</mapper>
