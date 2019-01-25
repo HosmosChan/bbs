@@ -47,4 +47,10 @@
             AND a.code = #{code}
         </if>
     </select>
+    <select id="getNewMessageCount" parameterType="String" resultType="int">
+        SELECT newMessage FROM bbs.bbs_user_info WHERE 1=1
+        <if test="_parameter != null and _parameter != ''">
+            AND account = #{account}
+        </if>
+    </select>
 </mapper>

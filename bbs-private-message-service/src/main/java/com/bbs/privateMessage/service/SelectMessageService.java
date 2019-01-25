@@ -1,7 +1,9 @@
 package com.bbs.privateMessage.service;
 
 import com.bbs.domain.PrivateMessageVo;
+import com.github.pagehelper.Page;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -11,7 +13,9 @@ import java.util.List;
  * @version 2018/11/02
  */
 public interface SelectMessageService {
-    List<PrivateMessageVo> getMessageList(String recievePersonAccount, Integer messageStatus);
+    void getNewMessageCount(HttpServletRequest request);
+
+    Page<Object> getMessageList(String recievePersonAccount, Integer messageStatus, Integer currentPage, Integer pageSize);
 
     void updateMessage(PrivateMessageVo privateMessageVo);
 

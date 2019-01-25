@@ -11,7 +11,8 @@
     <label id="id" for="ids" hidden="hidden">id：</label>
     <label id="ids" hidden="hidden" th:text="${messageDetail.tid}"></label>
     <label id="sendPersonUserName" for="sendPersonUserNames">发送人：</label>
-    <a href="#" id="sendPersonUserNames" th:text="${messageDetail.userName}" th:title="${messageDetail.sendPersonAccount}"></a>
+    <label id="sendPersonUserNames" th:text="${messageDetail.userName}"
+           th:title="${messageDetail.sendPersonAccount}"></label>
 </div>
 </body>
 </html>

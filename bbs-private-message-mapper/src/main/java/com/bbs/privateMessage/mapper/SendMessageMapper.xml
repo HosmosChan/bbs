@@ -27,7 +27,10 @@
     -->
     <update id="updateUser">
         UPDATE bbs.bbs_user_info bui join bbs.test_bbs_user_private_message tbupm
-        SET bui.newMessage = #{newMessage}
+        <trim prefix="set" suffixOverrides=','>
+            <if test="newMessage == 0">bui.newMessage = #{newMessage},</if>
+            <if test="newMessage == 1">bui.newMessage = bui.newMessage + #{newMessage},</if>
+        </trim>
         WHERE bui.account = #{recievePersonAccount}
     </update>
 </mapper>

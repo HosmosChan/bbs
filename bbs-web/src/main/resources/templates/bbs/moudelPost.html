@@ -1,4 +1,5 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns:th="http://www.thymeleaf.org">
 <head lang="en">
     <meta charset="UTF-8">
@@ -37,9 +38,15 @@
             </div>
         </div>
         <div th:if="${session.user1!=null}">
-            <div class="lt_login appear"
-                 th:if="${session.user1.userName != null}">
+            <div class="lt_login appear" th:if="${session.user1.userName != null}">
                 <ul>
+                    <li th:if="${session.newMessage} != 0">
+                        <a href="/../../selectMessage/selectMessage" th:text="'新消息(' + ${session.newMessage} + ')'"
+                           class="blink"></a>
+                    </li>
+                    <li th:if="${session.newMessage} == 0">
+                        <a href="/../../selectMessage/selectMessage" class="noBlink">私信</a>
+                    </li>
                     <li><a href="/index/home" class="navMe" th:text="${session.user1.userName}"></a></li>
                     <li><a th:href="@{/user1/logOut}">退出</a></li>
                 </ul>
@@ -354,8 +361,7 @@
             }
             if (document.body.scrollTop) {
                 document.body.scrollTop = x;
-            }
-            else {
+            } else {
                 document.documentElement.scrollTop = x;
             }
         }, 20);
@@ -365,8 +371,7 @@
         x = document.body.scrollTop || document.documentElement.scrollTop;
         if (x > 100) {
             otop.style.display = "block";
-        }
-        else {
+        } else {
             otop.style.display = "none";
         }
     }

@@ -17,4 +17,6 @@ public interface SelectMessageMapper {
     void updateMessage(PrivateMessageVo privateMessageVo);
 
     PrivateMessageVo getMessageByCode(String code);
+
+    int getNewMessageCount(String account);
 }

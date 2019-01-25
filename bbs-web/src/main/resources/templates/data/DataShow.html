@@ -61,9 +61,15 @@
             </div>
         </div>
         <div th:if="${session.user1!=null}">
-            <div class="lt_login appear"
-                 th:if="${session.user1.userName != null}">
+            <div class="lt_login appear" th:if="${session.user1.userName != null}">
                 <ul>
+                    <li th:if="${session.newMessage} != 0">
+                        <a href="/../../selectMessage/selectMessage" th:text="'新消息(' + ${session.newMessage} + ')'"
+                           class="blink"></a>
+                    </li>
+                    <li th:if="${session.newMessage} == 0">
+                        <a href="/../../selectMessage/selectMessage" class="noBlink">私信</a>
+                    </li>
                     <li><a href="/index/home" class="navMe" th:text="${session.user1.userName}"></a></li>
                     <li><a th:href="@{/user1/logOut}">退出</a></li>
                 </ul>

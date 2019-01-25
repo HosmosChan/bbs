@@ -21,6 +21,8 @@ public class User1 implements Serializable {
     private Integer sex;
     /*用户角色*/
     private String roleName;
+    /*新邮件*/
+    private String newMessage;
     /*用户创建日期*/
     private Date createDate;
     /*用户最新修改日期*/
@@ -100,6 +102,14 @@ public class User1 implements Serializable {
 
     public void setRoleName(String roleName) {
         this.roleName = roleName;
+    }
+
+    public String getNewMessage() {
+        return newMessage;
+    }
+
+    public void setNewMessage(String newMessage) {
+        this.newMessage = newMessage;
     }
 
     public Date getCreateDate() {

@@ -1,12 +1,16 @@
 package com.bbs.privateMessage.service.impl;
 
 import com.bbs.domain.PrivateMessageVo;
+import com.bbs.domain.User1;
 import com.bbs.privateMessage.mapper.SelectMessageMapper;
 import com.bbs.privateMessage.mapper.SendMessageMapper;
 import com.bbs.privateMessage.service.SelectMessageService;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Map;
@@ -20,7 +24,20 @@ public class SelectMessageServiceImpl implements SelectMessageService {
     private SendMessageMapper sendMessageMapper;
 
     @Override
-    public List<PrivateMessageVo> getMessageList(String recievePersonAccount, Integer messageStatus) {
+    public void getNewMessageCount(HttpServletRequest request) {
+        HttpSession sessions = request.getSession();
+        if(null != sessions.getAttribute("user1")) {
+            User1 user1 = (User1) sessions.getAttribute("user1");
+            String account = user1.getAccount();
+            int newMessage = selectMessageMapper.getNewMessageCount(account);
+            HttpSession session = request.getSession();
+            session.setAttribute("newMessage", newMessage);
+        }
+    }
+
+    @Override
+    public Page<Object> getMessageList(String recievePersonAccount, Integer messageStatus, Integer currentPage, Integer pageSize) {
+        Page<Object> page = PageHelper.startPage(currentPage, pageSize);
         Map<String, Object> map = new TreeMap<>();
         map.put("recievePersonAccount", recievePersonAccount);
         sendMessageMapper.updateUser((short) 0, recievePersonAccount);
@@ -39,7 +56,8 @@ public class SelectMessageServiceImpl implements SelectMessageService {
                 break;
         }
         map.put("messageStatus", status);
-        return selectMessageMapper.getMessageList(map);
+        selectMessageMapper.getMessageList(map);
+        return page;
     }
 
     @Override

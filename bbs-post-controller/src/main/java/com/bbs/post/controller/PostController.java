@@ -6,6 +6,7 @@ import javax.servlet.http.HttpSession;
 
 import com.bbs.domain.PostVo;
 import com.bbs.domain.User1;
+import com.bbs.privateMessage.service.SelectMessageService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -40,6 +41,8 @@ public class PostController {
     private Uploader uploader;
     @Autowired
     private ImageUploader imageUploader;
+    @Autowired
+    private SelectMessageService selectMessageService;
 
     @RequestMapping(value = "/fileupload")
     @ResponseBody
@@ -241,6 +244,7 @@ public class PostController {
     @ResponseBody
     @RequestMapping(value = "/myPost")
     public ModelAndView MyPost(String account, HttpServletRequest request) {
+        selectMessageService.getNewMessageCount(request);
         try {
             // account = "0"; // 暂且让account = 0；
             HttpSession session = request.getSession();
@@ -284,7 +288,8 @@ public class PostController {
      * @version 2018/7/23 17:35
      */
     @RequestMapping(value = "/getPostByCode")
-    public ModelAndView getPostByCode(String code) {
+    public ModelAndView getPostByCode(String code, HttpServletRequest request) {
+        selectMessageService.getNewMessageCount(request);
         try {
             ModelAndView postDetail = new ModelAndView();
             PostVo postVo = new PostVo();
@@ -352,7 +357,8 @@ public class PostController {
      * @version 2018/9/1
      */
     @RequestMapping(value = "/searchingPostInfo")
-    public ModelAndView searchingPostInfo(String searchingDetails, Integer searchingType, Integer currentPage) {
+    public ModelAndView searchingPostInfo(String searchingDetails, Integer searchingType, Integer currentPage, HttpServletRequest request) {
+        selectMessageService.getNewMessageCount(request);
         try {
             if (currentPage == null) {
                 currentPage = 1;
@@ -387,6 +393,7 @@ public class PostController {
      */
     @RequestMapping(value = "/index")
     public ModelAndView indexPage(HttpServletRequest request) {
+        selectMessageService.getNewMessageCount(request);
         ModelAndView indexPageModelAndView = new ModelAndView();
         HttpSession session = request.getSession();
         Integer currentPage = 1;
@@ -440,6 +447,7 @@ public class PostController {
 
     @RequestMapping(value = "/PostRediect")
     public ModelAndView moudelPost2(HttpServletRequest request, String code) {
+        selectMessageService.getNewMessageCount(request);
         ModelAndView moudelPost = new ModelAndView();
         HttpSession session = request.getSession();
         List<PostClass> postClassList = aboutPostService.selectALlClass(code);
@@ -463,6 +471,7 @@ public class PostController {
 
     @RequestMapping(value = "/listPostByClassCode")
     public ModelAndView listPostByClassCode(HttpServletRequest request, String classCode) {
+        selectMessageService.getNewMessageCount(request);
         ModelAndView moudelPost = new ModelAndView();
         Integer currentPage = 1;
         Integer pageSize = 10;

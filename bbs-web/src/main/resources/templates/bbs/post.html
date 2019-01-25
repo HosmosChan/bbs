@@ -39,6 +39,13 @@
         <div th:if="${session.user1!=null}">
             <div class="lt_login appear" th:if="${session.user1.userName != null}">
                 <ul>
+                    <li th:if="${session.newMessage} != 0">
+                        <a href="/../../selectMessage/selectMessage" th:text="'新消息(' + ${session.newMessage} + ')'"
+                           class="blink"></a>
+                    </li>
+                    <li th:if="${session.newMessage} == 0">
+                        <a href="/../../selectMessage/selectMessage" class="noBlink">私信</a>
+                    </li>
                     <li><a href="/index/home" class="navMe" th:text="${session.user1.userName}"></a></li>
                     <li><a th:href="@{/user1/logOut}">退出</a></li>
                 </ul>
@@ -160,7 +167,8 @@
             </div>
             <div class="myMsg_footer">
                 <ul>
-                    <a href="javascript:void(0)" th:onclick="'javascript:sendPrivateMessage(\''+${post.code}+'\',\''+${post.userName}+'\')'">
+                    <a href="javascript:void(0)"
+                       th:onclick="'javascript:sendPrivateMessage(\''+${post.code}+'\',\''+${post.userName}+'\')'">
                         <div class="sendPrivateMessage" th:text="发送私信"></div>
                     </a>
                     <!--<li><a href="">
@@ -240,7 +248,7 @@
 </body>
 </html>
 <script src="/bbs/js/tiezi.js"></script>
-<script>
+<script type="text/javascript">
     /* 帖子内容格式处理，回填帖子 autor：wangshixu 2018/8/30 */
     {
         var strHtml = "";
@@ -265,8 +273,7 @@
                 area: ['353px', '369px'],
                 content: '/complain/addComplain?code=' + postCode,
             });
-        }
-        else {
+        } else {
             alert("举报前请先登录！");
             window.location.href = "/user1/demo";
         }
@@ -289,8 +296,7 @@
                 area: ['353px', '369px'],
                 content: '/sendMessage/sendPrivateMessage?code=' + postCode,
             });
-        }
-        else {
+        } else {
             alert("发送私信前请先登录！");
             window.location.href = "/user1/demo";
         }
@@ -425,8 +431,7 @@
             }
             if (document.body.scrollTop) {
                 document.body.scrollTop = x;
-            }
-            else {
+            } else {
                 document.documentElement.scrollTop = x;
             }
         }, 20);
@@ -436,8 +441,7 @@
         x = document.body.scrollTop || document.documentElement.scrollTop;
         if (x > 100) {
             otop.style.display = "block";
-        }
-        else {
+        } else {
             otop.style.display = "none";
         }
     }
