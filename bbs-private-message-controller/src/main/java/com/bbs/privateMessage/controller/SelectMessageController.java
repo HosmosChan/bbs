@@ -46,17 +46,17 @@ public class SelectMessageController {
             messageStatus = -1;
         }
         Integer pageSize = 10;
-        Page<Object> privateMessage = selectMessageService.getMessageList(recievePersonAccount, messageStatus, currentPage, pageSize);
+        Page<PrivateMessageVo> privateMessage = selectMessageService.getMessageList(recievePersonAccount, messageStatus, currentPage, pageSize);
         HttpSession messageStatusSession = request.getSession();
         messageStatusSession.setAttribute("messageStatus", messageStatus);
+        selectPrivateMessageByUnread.setViewName("privateMessage/selectMessage");
         privateMessage.forEach(p -> {
-            /*try {
+            try {
                 p.setMessage(RSAUtils.decode(p.getMessage(), RSAUtils.getPrivateKey(p.getPrivateKey())));
             } catch (Exception e) {
                 e.printStackTrace();
-            }*/
+            }
         });
-        selectPrivateMessageByUnread.setViewName("privateMessage/selectMessage");
         selectPrivateMessageByUnread.addObject("message", privateMessage);
         return selectPrivateMessageByUnread;
     }

@@ -36,8 +36,8 @@ public class SelectMessageServiceImpl implements SelectMessageService {
     }
 
     @Override
-    public Page<Object> getMessageList(String recievePersonAccount, Integer messageStatus, Integer currentPage, Integer pageSize) {
-        Page<Object> page = PageHelper.startPage(currentPage, pageSize);
+    public Page<PrivateMessageVo> getMessageList(String recievePersonAccount, Integer messageStatus, Integer currentPage, Integer pageSize) {
+        Page<PrivateMessageVo> page = PageHelper.startPage(currentPage, pageSize);
         Map<String, Object> map = new TreeMap<>();
         map.put("recievePersonAccount", recievePersonAccount);
         sendMessageMapper.updateUser((short) 0, recievePersonAccount);

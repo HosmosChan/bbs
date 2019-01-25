@@ -15,7 +15,7 @@ import java.util.List;
 public interface SelectMessageService {
     void getNewMessageCount(HttpServletRequest request);
 
-    Page<Object> getMessageList(String recievePersonAccount, Integer messageStatus, Integer currentPage, Integer pageSize);
+    Page<PrivateMessageVo> getMessageList(String recievePersonAccount, Integer messageStatus, Integer currentPage, Integer pageSize);
 
     void updateMessage(PrivateMessageVo privateMessageVo);
 
