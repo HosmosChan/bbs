@@ -470,7 +470,7 @@ public class PostController {
     }
 
     @RequestMapping(value = "/listPostByClassCode")
-    public ModelAndView listPostByClassCode(HttpServletRequest request, String classCode) {
+    public ModelAndView listPostByClassCode(HttpServletRequest request, String code, String classCode) {
         selectMessageService.getNewMessageCount(request);
         ModelAndView moudelPost = new ModelAndView();
         Integer currentPage = 1;
@@ -478,6 +478,7 @@ public class PostController {
         Page<Object> page = aboutPostService.selectAllPostClassByCode(classCode, currentPage, pageSize);
         moudelPost.setViewName("bbs/moudelPost");
         moudelPost.addObject("page", page);
+        moudelPost.addObject("code", code);
         moudelPost.addObject("currentClassCode", classCode);
         return moudelPost;
     }

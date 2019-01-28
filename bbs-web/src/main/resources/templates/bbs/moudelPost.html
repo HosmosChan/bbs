@@ -24,7 +24,7 @@
         <ul class="headNav">
             <li><a href="/post/index">首页</a></li>
             <tr th:each="module : ${session.moduleList}">
-                <li><a href="javascript:void(0)" class="moduleClass" th:value="${module.code}"
+                <li><a href="javascript:void(0)" class="moduleClass" th:value="${module.code}" th:id="${module.code}"
                        th:text="${module.moduleName}"></a></li>
             </tr>
         </ul>
@@ -72,7 +72,7 @@
             <ul>
                 <tr th:each="postClassList : ${session.postClass}">
                     <li>
-                        <a th:text="${postClassList.className}"
+                        <a th:id="${postClassList.code}" th:text="${postClassList.className}"
                            th:href="@{/post/listPostByClassCode(classCode=${postClassList.code},code=${code})}"></a>
                     </li>
                 </tr>
@@ -260,7 +260,7 @@
 </div>
 </body>
 </html>
-<script>
+<script type="text/javascript">
     $(".indexMain_left_btn li a").click(function () {
         $(".indexMain_left_btn li a").removeClass("on");
         $(this).addClass("on");
@@ -411,4 +411,34 @@
     }, function () {
         time = setInterval("junmper()", 3700);
     });
+    $(function () {
+        var classCode = getParam("classCode");
+        var code = getParam("code");
+        document.getElementsByClassName("on").className = "";
+        if(null != classCode) {
+            document.getElementById(classCode).className = "on";
+        } else {
+            document.getElementById("[[${currentClassCode}]]").className = "on";
+        }
+        document.getElementById("[[${code}]]").style.borderBottom = "2px solid #FFFFFF";
+    });
+
+    function getParam(findName) {
+        var name, value;
+        var str=location.href; //取得整个地址栏
+        var num=str.indexOf("?");
+        str=str.substr(num+1); //取得所有参数   stringvar.substr(start [, length ]
+        var arr=str.split("&"); //各个参数放到数组里
+        for(var i=0;i < arr.length;i++){
+            num=arr[i].indexOf("=");
+            if(num>0){
+                name=arr[i].substring(0,num);
+                value=arr[i].substr(num+1);
+                this[name]=value;
+            }
+            if(findName == name) {
+                return this[name];
+            }
+        }
+    }
 </script>
