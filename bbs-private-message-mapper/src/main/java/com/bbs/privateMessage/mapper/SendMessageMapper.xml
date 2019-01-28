@@ -7,7 +7,7 @@
     -->
     <insert id="savePrivateMessage" parameterType="PrivateMessageVo">
         INSERT INTO
-        bbs.test_bbs_user_private_message(code,sendPersonAccount,recievePersonAccount,aboutPostCode,message,privateKey,messageStatus,createDate,createBy)
+        bbs.bbs_user_private_message(code,sendPersonAccount,recievePersonAccount,aboutPostCode,message,privateKey,messageStatus,createDate,createBy)
         values(#{code},#{sendPersonAccount},#{recievePersonAccount},#{aboutPostCode},#{message},#{privateKey},#{messageStatus},now(),#{createBy});
     </insert>
     <!--
@@ -26,7 +26,7 @@
     - author:chenhuayang 2019/01/23
     -->
     <update id="updateUser">
-        UPDATE bbs.bbs_user_info bui join bbs.test_bbs_user_private_message tbupm
+        UPDATE bbs.bbs_user_info bui
         <trim prefix="set" suffixOverrides=','>
             <if test="newMessage == 0">bui.newMessage = #{newMessage},</if>
             <if test="newMessage == 1">bui.newMessage = bui.newMessage + #{newMessage},</if>

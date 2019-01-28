@@ -6,7 +6,7 @@
     - author:chenhuayang 2018/10/19
     -->
     <select id="getMessageList" parameterType="java.util.Map" resultType="PrivateMessageVo">
-        SELECT a.*,b.userName,c.title FROM bbs.test_bbs_user_private_message a JOIN bbs.bbs_user_info b JOIN
+        SELECT a.*,b.userName,c.title FROM bbs.bbs_user_private_message a JOIN bbs.bbs_user_info b JOIN
         bbs.bbs_post_info c ON a.recievePersonAccount = b.account AND a.aboutPostCode = c.code WHERE
         1=1
         <if test="recievePersonAccount != null and recievePersonAccount != ''">
@@ -21,7 +21,7 @@
         ORDER BY a.createDate DESC
     </select>
     <update id="updateMessage" parameterType="PrivateMessageVo">
-        update bbs.test_bbs_user_private_message
+        update bbs.bbs_user_private_message
         <trim prefix="set" suffixOverrides=','>
             <if test="code != null and code != '' ">
                 code=#{code},
@@ -40,7 +40,7 @@
         where code=#{code}
     </update>
     <select id="getMessageByCode" parameterType="String" resultType="PrivateMessageVo">
-        SELECT a.*,b.userName,c.title FROM bbs.test_bbs_user_private_message a JOIN bbs.bbs_user_info b JOIN
+        SELECT a.*,b.userName,c.title FROM bbs.bbs_user_private_message a JOIN bbs.bbs_user_info b JOIN
         bbs.bbs_post_info c ON a.sendPersonAccount = b.account AND a.aboutPostCode = c.code WHERE
         1=1
         <if test="_parameter != null and _parameter != ''">
