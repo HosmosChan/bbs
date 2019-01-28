@@ -2,8 +2,7 @@ package com.bbs.post.controller;
 
 import java.util.List;
 
-import com.bbs.domain.User1;
-import com.bbs.privateMessage.service.SelectMessageService;
+import com.bbs.privatemsg.service.SelectMessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,7 +15,6 @@ import com.bbs.post.service.PostService;
 import com.github.pagehelper.Page;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping(value = "/index")

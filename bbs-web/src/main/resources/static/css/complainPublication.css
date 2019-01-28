@@ -2,7 +2,7 @@ html {
     border: 2px solid #ccc;
 }
 
-label, input, textarea, select {
+label, input, textarea, th, td {
     margin-bottom: 10px;
 }
 
@@ -24,7 +24,7 @@ label, input, textarea, select {
 }
 
 .typeCode {
-    width: 232px;
+    width: 231px;
 }
 
 #saveComplain {

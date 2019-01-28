@@ -1,10 +1,10 @@
-package com.bbs.privateMessage.service.impl;
+package com.bbs.privatemsg.service.impl;
 
 import com.bbs.domain.PrivateMessageVo;
 import com.bbs.domain.User1;
-import com.bbs.privateMessage.mapper.SelectMessageMapper;
-import com.bbs.privateMessage.mapper.SendMessageMapper;
-import com.bbs.privateMessage.service.SelectMessageService;
+import com.bbs.privatemsg.mapper.SelectMessageMapper;
+import com.bbs.privatemsg.mapper.SendMessageMapper;
+import com.bbs.privatemsg.service.SelectMessageService;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,10 +12,14 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+/**
+ * 接收帖子投诉数据访问层
+ *
+ * @author chenhuayang
+ */
 @Service
 public class SelectMessageServiceImpl implements SelectMessageService {
     @Autowired
@@ -26,7 +30,7 @@ public class SelectMessageServiceImpl implements SelectMessageService {
     @Override
     public void getNewMessageCount(HttpServletRequest request) {
         HttpSession sessions = request.getSession();
-        if(null != sessions.getAttribute("user1")) {
+        if (null != sessions.getAttribute("user1")) {
             User1 user1 = (User1) sessions.getAttribute("user1");
             String account = user1.getAccount();
             int newMessage = selectMessageMapper.getNewMessageCount(account);
@@ -36,11 +40,11 @@ public class SelectMessageServiceImpl implements SelectMessageService {
     }
 
     @Override
-    public Page<PrivateMessageVo> getMessageList(String recievePersonAccount, Integer messageStatus, Integer currentPage, Integer pageSize) {
+    public Page<PrivateMessageVo> getMessageList(String receivePersonAccount, Integer messageStatus, Integer currentPage, Integer pageSize) {
         Page<PrivateMessageVo> page = PageHelper.startPage(currentPage, pageSize);
         Map<String, Object> map = new TreeMap<>();
-        map.put("recievePersonAccount", recievePersonAccount);
-        sendMessageMapper.updateUser((short) 0, recievePersonAccount);
+        map.put("receivePersonAccount", receivePersonAccount);
+        sendMessageMapper.updateUser((short) 0, receivePersonAccount);
         String status = null;
         switch (messageStatus) {
             case 0:

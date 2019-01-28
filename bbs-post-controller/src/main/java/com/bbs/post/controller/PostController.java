@@ -6,7 +6,7 @@ import javax.servlet.http.HttpSession;
 
 import com.bbs.domain.PostVo;
 import com.bbs.domain.User1;
-import com.bbs.privateMessage.service.SelectMessageService;
+import com.bbs.privatemsg.service.SelectMessageService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

@@ -1,0 +1,14 @@
+html {
+    border: 2px solid #ccc;
+}
+
+label, input, textarea, select {
+    margin-bottom: 10px;
+}
+.formInput {
+    width: 277px;
+}
+
+#savePrivateMessage {
+    margin: 0 177px;
+}

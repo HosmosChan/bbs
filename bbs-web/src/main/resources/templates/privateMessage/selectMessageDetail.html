@@ -5,14 +5,69 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>私信详情</title>
     <script type="text/javascript" src="/../../js/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" th:src="@{/js/layer.js}"></script>
 </head>
 <body>
 <div>
-    <label id="id" for="ids" hidden="hidden">id：</label>
-    <label id="ids" hidden="hidden" th:text="${messageDetail.tid}"></label>
-    <label id="sendPersonUserName" for="sendPersonUserNames">发送人：</label>
-    <label id="sendPersonUserNames" th:text="${messageDetail.userName}"
-           th:title="${messageDetail.sendPersonAccount}"></label>
+    <table>
+        <tr>
+            <td hidden="hidden"><label for="id">id：</label></td>
+            <td hidden="hidden">
+                <input id="id" th:value="${messageDetail.tid}" readonly>
+            </td>
+        </tr>
+        <tr>
+            <td><label for="sendPersonUserName">发送人：</label></td>
+            <td>
+                <input id="sendPersonUserName" th:value="${messageDetail.userName}"
+                       th:title="${messageDetail.sendPersonAccount}" readonly>
+            </td>
+        </tr>
+        <tr>
+            <td><label for="aboutPostCode">相关帖子：</label></td>
+            <td>
+                <input id="aboutPostCode" th:value="${messageDetail.title}" readonly>
+            </td>
+        </tr>
+        <tr>
+            <td><label for="message">私信内容：</label></td>
+            <td>
+                <textarea readonly id="message" name="message" class="message" bindcursor="true" rows="24" cols="37"
+                          th:text="${messageDetail.message}"></textarea>
+            </td>
+        </tr>
+    </table>
+    <input type="submit" id="reply" th:target="_top" value="回 复"
+           th:onclick="'javascript:sendPrivateMessage(\''+${messageDetail.message}+'\',\''+${messageDetail.aboutPostCode}+'\',\''+${messageDetail.userName}+'\')'">
 </div>
 </body>
 </html>
+<script type="text/javascript">
+    /**
+     * 发送私信前判断是否已登录
+     * @author chenhuayang
+     * @version 2018/10/19
+     */
+    function sendPrivateMessage(message, postCode, userName) {
+        try {
+            var account = "[[${session.user1.account}]]";
+        } catch (e) {
+            alert("发送私信前请先登录！");
+            window.location.href = "/user1/demo";
+        }
+        if (account) {
+            top.layer.open({
+                type: 2,
+                skin: '#e43e20',
+                title: '给' + userName + '发送私信',
+                fix: false,
+                shadeClose: true,
+                area: ['410px', '600px'],
+                content: '/sendMessage/sendPrivateMessage?code=' + postCode + '&replyMessage=' + message,
+            });
+        } else {
+            alert("发送私信前请先登录！");
+            window.location.href = "/user1/demo";
+        }
+    }
+</script>

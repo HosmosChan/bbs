@@ -22,7 +22,7 @@ public class PrivateMessage implements Serializable {
     /**
      * 私信接收人
      */
-    private String recievePersonAccount;
+    private String receivePersonAccount;
     /**
      * 相关的帖子编码(即记录从哪个帖子发私信的)
      */
@@ -80,12 +80,12 @@ public class PrivateMessage implements Serializable {
         this.sendPersonAccount = sendPersonAccount;
     }
 
-    public String getRecievePersonAccount() {
-        return recievePersonAccount;
+    public String getReceivePersonAccount() {
+        return receivePersonAccount;
     }
 
-    public void setRecievePersonAccount(String recievePersonAccount) {
-        this.recievePersonAccount = recievePersonAccount;
+    public void setReceivePersonAccount(String receivePersonAccount) {
+        this.receivePersonAccount = receivePersonAccount;
     }
 
     public String getAboutPostCode() {

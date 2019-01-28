@@ -1,5 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head lang="en">
     <!--author : chenhuayang-->
@@ -8,18 +7,55 @@
     <title th:text="给 + ${postInfo.userName} + 发私信"></title>
     <script type="text/javascript" src="/../../js/jquery-3.3.1.min.js"></script>
     <script type="text/javascript" src="/../../js/privateMessage/sendMessage.js"></script>
+    <link rel="stylesheet" type="text/css" href="/../../css/sendMessage.css"/>
 </head>
 <body>
 <div>
     <form action="/../../sendMessage/savePrivateMessage" method="post">
-        <input id="sendPersonAccount" name="sendPersonAccount" class="sendPersonAccount"
-               th:value="${session.user1.account}" hidden="hidden">
-        <input id="aboutPostCode" name="aboutPostCode" class="aboutPostCode"
-               th:value="${postInfo.code}" hidden="hidden">
-        <input id="recievePersonAccount" name="recievePersonAccount" class="recievePersonAccount"
-               th:value="${postInfo.hostAccount}" hidden="hidden">
-        <label class="postTitleLabel">私信内容：</label>
-        <textarea id="message" name="message" class="message" bindcursor="true"></textarea>
+        <table>
+            <tr>
+                <td><label for="sendPersonAccount">发件人：</label></td>
+                <td>
+                    <label>
+                        <input class="formInput" th:value="${session.user1.userName}" readonly>
+                    </label>
+                </td>
+                <td hidden="hidden">
+                    <input id="sendPersonAccount" name="sendPersonAccount" class="sendPersonAccount"
+                           th:value="${session.user1.account}">
+                </td>
+            </tr>
+            <tr>
+                <td><label for="aboutPostCode">相关帖子：</label></td>
+                <td>
+                    <label>
+                        <input class="formInput" th:value="${postInfo.title}" readonly>
+                    </label>
+                </td>
+                <td hidden="hidden">
+                    <input id="aboutPostCode" name="aboutPostCode" class="aboutPostCode" th:value="${postInfo.code}">
+                </td>
+            </tr>
+            <tr>
+                <td><label for="receivePersonAccount">收件人：</label></td>
+                <td>
+                    <label>
+                        <input class="formInput" th:value="${postInfo.userName}" readonly>
+                    </label>
+                </td>
+                <td hidden="hidden">
+                    <input id="receivePersonAccount" name="receivePersonAccount" class="receivePersonAccount"
+                           th:value="${postInfo.hostAccount}">
+                </td>
+            </tr>
+            <tr>
+                <td><label for="message">私信内容：</label></td>
+                <td>
+                    <textarea autofocus id="message" name="message" class="message" bindcursor="true" rows="24"
+                              cols="37" th:text="${replyMessage}"></textarea>
+                </td>
+            </tr>
+        </table>
         <input type="submit" class="savePrivateMessage" id="savePrivateMessage" value="发 送">
     </form>
 </div>

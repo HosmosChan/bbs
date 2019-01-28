@@ -1,9 +1,8 @@
-package com.bbs.privateMessage.controller;
+package com.bbs.privatemsg.controller;
 
 import com.bbs.domain.PrivateMessageVo;
 import com.bbs.domain.User1;
-import com.bbs.privateMessage.service.SelectMessageService;
-import com.bbs.utils.IpUtil;
+import com.bbs.privatemsg.service.SelectMessageService;
 import com.bbs.utils.RSAUtils;
 import com.github.pagehelper.Page;
 import org.apache.log4j.Logger;
@@ -15,7 +14,6 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.List;
 
 /**
  * 用户获取私信控制层
@@ -31,12 +29,12 @@ public class SelectMessageController {
     private SelectMessageService selectMessageService;
 
     @RequestMapping(value = "/selectMessage")
-    public ModelAndView getMessageList(String recievePersonAccount, HttpServletRequest request, Integer messageStatus, Integer currentPage) throws IOException {
+    public ModelAndView getMessageList(String receivePersonAccount, HttpServletRequest request, Integer messageStatus, Integer currentPage) throws IOException {
         selectMessageService.getNewMessageCount(request);
         ModelAndView selectPrivateMessageByUnread = new ModelAndView();
         HttpSession session = request.getSession();
         User1 user1 = (User1) session.getAttribute("user1");
-        recievePersonAccount = user1.getAccount();
+        receivePersonAccount = user1.getAccount();
         /*String ipAddress = IpUtil.getIpAddr(request);
         System.err.println(ipAddress);*/
         if (currentPage == null) {
@@ -46,7 +44,7 @@ public class SelectMessageController {
             messageStatus = -1;
         }
         Integer pageSize = 10;
-        Page<PrivateMessageVo> privateMessage = selectMessageService.getMessageList(recievePersonAccount, messageStatus, currentPage, pageSize);
+        Page<PrivateMessageVo> privateMessage = selectMessageService.getMessageList(receivePersonAccount, messageStatus, currentPage, pageSize);
         HttpSession messageStatusSession = request.getSession();
         messageStatusSession.setAttribute("messageStatus", messageStatus);
         selectPrivateMessageByUnread.setViewName("privateMessage/selectMessage");

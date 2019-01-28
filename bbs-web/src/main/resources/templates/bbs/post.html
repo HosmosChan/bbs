@@ -285,7 +285,12 @@
      * @version 2018/10/19
      */
     function sendPrivateMessage(postCode, userName) {
-        var account = $("#currentAccount").text();
+        try {
+            var account = "[[${session.user1.account}]]";
+        } catch (e) {
+            alert("发送私信前请先登录！");
+            window.location.href = "/user1/demo";
+        }
         if (account) {
             layer.open({
                 type: 2,
@@ -293,7 +298,7 @@
                 title: '给' + userName + '发送私信',
                 fix: false,
                 shadeClose: true,
-                area: ['353px', '369px'],
+                area: ['410px', '600px'],
                 content: '/sendMessage/sendPrivateMessage?code=' + postCode,
             });
         } else {

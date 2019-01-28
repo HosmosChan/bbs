@@ -92,7 +92,7 @@
             <!--列表形式展示出未读私信-->
             <tr th:each="message : ${message}">
                 <div class="writeFoot">
-                    <div class="writeFoot1" th:text="${message.recievePersonAccount}"></div>
+                    <div class="writeFoot1" th:text="${message.receivePersonAccount}"></div>
                     <div class="writeFoot2">
                         <a th:href="'/post/getPostByCode?code='+${message.aboutPostCode}" th:text="${message.title}"
                            target="_blank"></a>
@@ -204,7 +204,7 @@
             title: '私信详情',
             fix: false,
             shadeClose: true,
-            area: ['353px', '369px'],
+            area: ['410px', '600px'],
             content: '/selectMessage/getMessageByCode?code=' + code,
         });
     }
