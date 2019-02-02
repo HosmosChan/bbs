@@ -11,6 +11,12 @@
 		bbs.bbs_user_info(account,userName,password,roleName,createDate)
 		VALUES(#{account},#{userName},#{password},'普通用户',#{createDate})
 	</insert>
+	<!-- 添加用户积分行 -->
+	<insert id="createPoint" parameterType="String">
+		INSERT INTO
+		bbs.bbs_user_point(account,createTime)
+		VALUES(#{account}, now())
+	</insert>
     <!-- 添加用户信息 -->
     <insert id="addUserRole" parameterType="User1">
 		INSERT INTO

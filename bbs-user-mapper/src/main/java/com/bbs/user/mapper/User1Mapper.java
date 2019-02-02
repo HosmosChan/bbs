@@ -24,4 +24,6 @@ public interface User1Mapper {
     User1 findUser1ByAccount(String account);
 
     void updateuser1ByAccount(User1 user1);
+
+    void createPoint(String account);
 }

@@ -52,6 +52,7 @@ public class selectUser1Imp implements User1Service {
         User1 db_user = user1Mapper.findUser1ByAccount(user_account);
         if (db_user == null) {
             user1Mapper.addUser(user1);
+            user1Mapper.createPoint(user1.getAccount());
             return "1";
         } else {
             return "该用户已经存在";

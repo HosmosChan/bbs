@@ -64,6 +64,7 @@
             <li><a href="/../../role/mangerUser">基本设置</a></li>
             <li><a href="/../../post/myPost">我的贴子</a></li>
             <li><a href="/../../selectMessage/selectMessage">我的私信</a></li>
+            <li><a href="/../../point/selectPoint">我的积分</a></li>
             <li th:if="${session.user1.roleName =='版主'}"><a href="javascript:void(0)" id="moduleMessage">版块信息</a></li>
             <li th:if="${session.user1.roleName =='版主'}"><a href="/../../module/ModuleData">版块数据</a></li>
             <li th:if="${session.user1.roleName =='管理员'}"><a href="/../../role/login" target="_blank">后台数据管理</a></li>
@@ -81,6 +82,12 @@
             <ul>
                 <li>用户身份：</li>
                 <li th:text="${session.user1.roleName}"></li>
+            </ul>
+        </div>
+        <div class="home_msg">
+            <ul>
+                <li>积分：</li>
+                <li th:text="${point.pointAmount}"></li>
             </ul>
         </div>
     </div>

@@ -34,18 +34,15 @@ public class SendMessageController {
      */
     @ResponseBody
     @RequestMapping(value = "/savePrivateMessage")
-    public void savePrivateMessage(PrivateMessageVo privateMessageVo) {
-        try {
-            RSAUtils.RsaKeyPair keyPair = RSAUtils.generaterKeyPair();
-            String publicKey = keyPair.getPublicKey();
-            RSAPublicKey getPublicKey = RSAUtils.getPublicKey(publicKey);
-            privateMessageVo.setMessage(privateMessageVo.getMessage().replace("\r", " ").replace("\n", " ").replace("\t", " ").replace("\f", " ").replace("\b", " "));
-            privateMessageVo.setMessage(RSAUtils.encode(privateMessageVo.getMessage(), getPublicKey));
-            privateMessageVo.setPrivateKey(keyPair.getPrivateKey());
-            sendMessageService.savePrivateMessage(privateMessageVo);
-        } catch (Exception e) {
-            logger.info(e);
-        }
+    public void savePrivateMessage(PrivateMessageVo privateMessageVo) throws Exception {
+        RSAUtils.RsaKeyPair keyPair = null;
+        privateMessageVo.setMessage(privateMessageVo.getMessage().replace("\r", " ").replace("\n", " ").replace("\t", " ").replace("\f", " ").replace("\b", " "));
+        keyPair = RSAUtils.generaterKeyPair();
+        String publicKey = keyPair.getPublicKey();
+        RSAPublicKey getPublicKey = RSAUtils.getPublicKey(publicKey);
+        privateMessageVo.setMessage(RSAUtils.encode(privateMessageVo.getMessage(), getPublicKey));
+        privateMessageVo.setPrivateKey(keyPair.getPrivateKey());
+        sendMessageService.savePrivateMessage(privateMessageVo);
     }
 
     /**
@@ -56,19 +53,14 @@ public class SendMessageController {
      */
     @RequestMapping(value = "/sendPrivateMessage")
     public ModelAndView sendPrivateMessage(String code, String replyMessage) {
-        try {
-            ModelAndView sendPrivateMessage = new ModelAndView();
-            PostVo postInfo = sendMessageService.postInfo(code);
-            sendPrivateMessage.setViewName("privateMessage/sendMessageFromPost");
-            if(replyMessage != null) {
-                replyMessage = "Re：[" + replyMessage + "]\n------------------回复-------------------\n";
-                sendPrivateMessage.addObject("replyMessage", replyMessage);
-            }
-            sendPrivateMessage.addObject("postInfo", postInfo);
-            return sendPrivateMessage;
-        } catch (Exception e) {
-            logger.info(e);
-            throw e;
+        ModelAndView sendPrivateMessage = new ModelAndView();
+        PostVo postInfo = sendMessageService.postInfo(code);
+        sendPrivateMessage.setViewName("privateMessage/sendMessageFromPost");
+        if (replyMessage != null) {
+            replyMessage = "Re：[" + replyMessage + "]\n------------------回复-------------------\n";
+            sendPrivateMessage.addObject("replyMessage", replyMessage);
         }
+        sendPrivateMessage.addObject("postInfo", postInfo);
+        return sendPrivateMessage;
     }
 }

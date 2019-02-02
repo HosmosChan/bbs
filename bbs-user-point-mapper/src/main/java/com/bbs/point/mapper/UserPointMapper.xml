@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bbs.point.mapper.UserPointMapper">
+    <resultMap id="BaseResultMap" type="com.bbs.domain.Point">
+        <result column="account" property="account"/>
+        <result column="pointAmount" property="pointAmount"/>
+        <result column="pointChange" property="pointChange"/>
+        <result column="grade" property="grade"/>
+        <result column="status" property="status"/>
+        <result column="reason" property="reason"/>
+        <result column="createTime" property="createTime"/>
+        <result column="gmtTime" property="gmtTime"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+         tid, account, pointAmount, pointChange, grade, status, reason, createTime, gmtTime
+    </sql>
+    <!-- 查询积分纪录 -->
+    <select id="getPointRecord" parameterType="Point" resultType="Point">
+        SELECT tid, account, pointChange, status, reason, createTime
+        FROM bbs.bbs_user_point_record
+        <where>
+            <if test="account != null and account != ''">
+                and account=#{account}
+            </if>
+            <if test="pointChange != null">
+                and pointChange=#{pointChange}
+            </if>
+            <if test="status != null">
+                and status=#{status}
+            </if>
+            <if test="reason != null and reason != ''">
+                and reason=#{reason}
+            </if>
+            <if test="createTime != null">
+                and createTime &gt;= #{createTime}
+            </if>
+        </where>
+    </select>
+    <!-- 添加积分纪录 -->
+    <insert id="savePointRecord" parameterType="Point">
+		INSERT INTO bbs.bbs_user_point_record(account, pointChange, status, reason, createTime)
+		VALUES(#{account}, #{pointChange}, #{status}, #{reason}, now())
+	</insert>
+    <!-- 更新用户积分数 -->
+    <update id="updatePoint" parameterType="Point">
+        UPDATE bbs.bbs_user_point
+        <trim prefix="set" suffixOverrides=','>
+            <if test="pointChange != null and status != null">pointAmount = pointAmount + (#{status} * #{pointChange}),</if>
+            gmtTime = now(),
+        </trim>
+        WHERE account = #{account}
+    </update>
+    <!-- 查询积分 -->
+    <select id="getPoint" parameterType="Point" resultType="Point">
+        SELECT bup.account, bup.pointAmount, bug.grade
+        FROM bbs.bbs_user_point bup JOIN bbs.bbs_user_grade bug ON (bup.pointAmount &gt;= bug.pointAmount)
+        <where>
+            <if test="account != null and account != ''">
+                and bup.account=#{account}
+            </if>
+        </where>
+        ORDER BY bug.grade DESC
+        LIMIT 0,1
+    </select>
+</mapper>

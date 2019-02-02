@@ -2,6 +2,9 @@ package com.bbs.post.controller;
 
 import java.util.List;
 
+import com.bbs.domain.Point;
+import com.bbs.domain.User1;
+import com.bbs.point.service.UserPointService;
 import com.bbs.privatemsg.service.SelectMessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -25,6 +28,8 @@ public class IndexController {
     private AboutPostService aboutPostService;
     @Autowired
     private SelectMessageService selectMessageService;
+    @Autowired
+    private UserPointService userPointService;
 
     /**
      * author：wanghsixu 2018/8/9 11：21
@@ -56,6 +61,10 @@ public class IndexController {
     @RequestMapping(value = "/home")
     public ModelAndView home(HttpServletRequest request) {
         ModelAndView homePageModelAndView = new ModelAndView();
+        Point point = new Point();
+        point.setAccount(((User1) request.getSession().getAttribute("user1")).getAccount());
+        point = userPointService.getPoint(point);
+        homePageModelAndView.addObject("point", point);
         homePageModelAndView.setViewName("bbs/home");
         return homePageModelAndView;
     }

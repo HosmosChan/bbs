@@ -5,7 +5,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.bbs.domain.Point;
+import com.bbs.point.service.UserPointService;
 import com.bbs.utils.MD5Utils;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,6 +18,10 @@ import com.bbs.domain.User1;
 import com.bbs.domain.UserVo1;
 import com.bbs.user.service.User1Service;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+
 @Controller
 @RequestMapping(value = "user1")
 public class User1Controller {
@@ -22,6 +29,8 @@ public class User1Controller {
     private User1Service user1serviceImp;
     @Autowired
     private DataService dataserviceImpl;
+    @Autowired
+    private UserPointService userPointService;
 
     // 访问登录页面
     // @RequestMapping(value = "/login2")
@@ -43,6 +52,18 @@ public class User1Controller {
             String loginModuleId = "0";
             String time = dataserviceImpl.getnewtime();
             dataserviceImpl.updateUserLogintimes(account, time, loginModuleId);
+            //获取当前时间
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            Point pointRecord = new Point();
+            pointRecord.setAccount(account);
+            pointRecord.setReason("登录积分奖励");
+            pointRecord.setCreateTime(sdf.parse(time));
+            List<Point> pointChange = userPointService.getPointRecord(pointRecord);
+            if (pointChange.size() == 0) {
+                pointRecord.setPointChange(5);
+                pointRecord.setStatus(Point.statusEnum.increase.getCode());
+                userPointService.updatePoint(pointRecord);
+            }
         } else {
             userVo1.setMessage("3");
         }

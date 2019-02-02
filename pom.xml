@@ -38,6 +38,9 @@
         <module>bbs-private-message-controller</module>
         <module>bbs-private-message-service</module>
         <module>bbs-private-message-mapper</module>
+        <module>bbs-user-point-controller</module>
+        <module>bbs-user-point-service</module>
+        <module>bbs-user-point-mapper</module>
     </modules>
     <dependencies>
         <dependency>

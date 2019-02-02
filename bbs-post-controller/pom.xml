@@ -50,5 +50,10 @@
             <artifactId>bbs-private-message-service</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>bbs-user-point-service</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 </project>
